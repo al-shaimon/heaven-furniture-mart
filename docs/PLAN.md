@@ -442,48 +442,59 @@ Primary CTA:
 
 > **Book a Free Design Consultation**
 
-## Hero requirements
+## Tasks & Decisions
 
-Within approximately 5 seconds, the visitor should understand:
+- [x] Determine exact brand positioning (Chattogram's premier bespoke furniture atelier vs. mass-market retailer).
+- [x] Identify primary customer (homeowners, apartment buyers, and villa renovators across Chattogram).
+- [x] Articulate primary customer problem (dimension mismatches, particle-board decay, lack of customization, trust deficits with informal carpenters).
+- [x] Define primary value proposition ("Furniture, Crafted Around You" — 100% custom-sized from authentic Chittagong Teak with master finishings).
+- [x] Establish single primary CTA ("Book a Free Design Consultation").
+- [x] Establish secondary CTAs (WhatsApp direct link, telephone hotline, showroom visit).
+- [x] Formulate Hero messaging for 5-second clarity test.
+- [x] Create section-by-section copywriting blueprint for all 9 sections.
+- [x] Define above-the-fold content requirements (First 5 seconds test).
+- [x] Document intentionally excluded elements (no e-commerce carts, no fake pricing, no fake model reviews, no SaaS gimmicks).
+- [x] Map out 30-second customer journey (0-5s discovery, 5-12s pain point, 12-18s curation, 18-24s provenance, 24-30s conversion).
 
-- This is a furniture brand
-- It is premium
-- It offers custom/bespoke solutions
-- It serves real spaces/interiors
-- There is a clear next action
+## Deliverables
 
-## Copywriting rules
+Created:
+- [x] `docs/content-strategy.md`
 
-Use:
+## Phase 1 Status: COMPLETE
 
-- Short sentences
-- Specific language
-- Human language
-- Confident language
-- Real business information
-
-Avoid:
-
-- Generic AI marketing language
-- "Elevate your lifestyle"
-- "Transform your world"
-- Empty luxury buzzwords
-- Excessive adjectives
-- Fake statistics
-- Fake testimonials
+> **Core Decision Record:**
+> All website copy will be driven by real business facts from the company brief, brochure, and company deck. No generic AI buzzwords ("elevate your lifestyle", "synergy", "cutting-edge"). Every claim is backed by 20+ years of heritage, real Chittagong Teak, physical Agrabad showroom proof, and BFMA 2024 recognition.
 
 ---
 
-# PHASE 2: INFORMATION ARCHITECTURE
+# PHASE 2: INFORMATION ARCHITECTURE & UX BLUEPRINT
 
-Create a clear hierarchy.
+## Tasks & Decisions
 
-Recommended structure:
+- [x] Streamline section order into one continuous architectural story (eliminating fragmented isolated text sections).
+- [x] Define navigation structure (persistent desktop header with quick call badge + mobile slide-over drawer).
+- [x] Establish strict Hero hierarchy for the 5-second clarity test.
+- [x] Map out the 30-second customer journey (Discover → Differentiate → Aspire → Demystify → Trust → Convert).
+- [x] Standardize CTA placement across the page (Primary: Book a Free Design Consultation; Secondary: WhatsApp & Showroom).
+- [x] Map out content and heading hierarchy (`<h1>` Hero, `<h2>` sections, `<h3>` space cards).
+- [x] Establish image specifications and performance rules for every section.
+- [x] Define desktop (1280px max-width, editorial whitespace) and mobile (fluid single-column, minimum 48px touch targets) behaviors.
+- [x] Identify subtle, dignified interaction opportunities (header scroll blur, card hover lift, tab filters).
+- [x] Establish accessibility standards (WCAG AA contrast, keyboard navigation, reduced-motion queries, semantic HTML).
+- [x] Create centralized content source of truth: `src/content/brand.ts`.
 
-## Hero
+## Deliverables
 
-Eyebrow:
-`BESPOKE FURNITURE · CHATTOGRAM`
+Created:
+- [x] `src/content/brand.ts` (Single source of truth for all business details, milestones, collections, and copy)
+- [x] `docs/information-architecture.md` (Complete Information Architecture & UX Blueprint)
+
+## Phase 2 Status: COMPLETE
+
+---
+
+## Final Architecture Overview:
 
 Headline:
 `Furniture, Crafted Around You.`
@@ -622,26 +633,29 @@ Include:
 
 ---
 
-# PHASE 3: VISUAL DESIGN SYSTEM
+# PHASE 3: VISUAL DESIGN SYSTEM & DIRECTION
 
-Create the design system before building every section independently.
+## Tasks & Decisions
 
-Define:
+- [x] Conceptualize and evaluate 3 distinct directions (Neo-Dark Cyber, Scandinavian Flat, and The Architectural Atelier).
+- [x] Select "The Architectural Atelier: Warm Editorial Sanctuary" as the authentic, high-converting direction for Heaven Furniture Mart.
+- [x] Define exact Color System (Deep Forest Slate `#142420`, Warm Ecru `#FAF8F5`, Antique Brass `#C5A869`, Espresso `#161817`).
+- [x] Define Typography system (Display: Playfair Display / Cormorant Garamond serif; Body & UI: Plus Jakarta Sans).
+- [x] Establish Spacing & Grid scale (`max-w-7xl` container, asymmetric 7/5 editorial grid, 120px section breathing room).
+- [x] Define Container & Border treatment (crisp architectural 0–4px radii, 1px drafting hairlines, zero heavy drop shadows).
+- [x] Define Button design (Primary solid slate with fine brass border; Secondary ghost with directional arrow).
+- [x] Establish Image treatment rules (uncropped furniture integrity, warm backplates, zero artificial muddy overlays).
+- [x] Standardize Section transitions (Dark slate hero → Daylight ecru atelier → Alabaster gallery → Slate sanctuary finale).
+- [x] Define Animation philosophy (subtle 500ms opacity & micro-hover lift; strict reduced-motion adherence; zero gimmickry).
+- [x] Configure CSS tokens and typography variables in `src/app/globals.css`.
 
-- Colors
-- Typography
-- Spacing scale
-- Border radius
-- Shadows
-- Buttons
-- Cards
-- Section labels
-- Icons
-- Image ratios
-- Container widths
-- Responsive breakpoints
+## Deliverables
 
-The design system should feel consistent throughout the entire page.
+Created:
+- [x] `docs/visual-design-system.md` (Comprehensive Design Token and Visual Specification Document)
+- [x] `src/app/globals.css` (Configured with all architectural color tokens, typography variables, and Tailwind theme)
+
+## Phase 3 Status: COMPLETE
 
 ---
 

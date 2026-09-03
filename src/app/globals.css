@@ -1,26 +1,72 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Brand Primary Bases */
+  --color-brand-slate-deep: #142420;
+  --color-brand-slate-surface: #1b2f29;
+  --color-brand-slate-border: #28423a;
+  
+  /* Warm Neutral Surfaces */
+  --color-surface-ecru-light: #faf8f5;
+  --color-surface-ecru-paper: #f4efea;
+  --color-surface-ecru-muted: #e9e2d8;
+
+  /* Typography Colors */
+  --color-text-primary-dark: #161817;
+  --color-text-secondary-dark: #525754;
+  --color-text-primary-light: #faf8f5;
+  --color-text-secondary-light: #b3bdb7;
+
+  /* Metallic Accent - Antique Brass (Refined Restraint) */
+  --color-accent-brass: #c5a869;
+  --color-accent-brass-hover: #d8ba7b;
+  --color-accent-brass-muted: rgba(197, 168, 105, 0.2);
+
+  /* Functional WhatsApp & Status */
+  --color-accent-whatsapp: #25d366;
+  --color-accent-whatsapp-hover: #20ba5a;
+
+  --background: var(--color-surface-ecru-light);
+  --foreground: var(--color-text-primary-dark);
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+  --color-brand-slate-deep: var(--color-brand-slate-deep);
+  --color-brand-slate-surface: var(--color-brand-slate-surface);
+  --color-brand-slate-border: var(--color-brand-slate-border);
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-surface-ecru-light: var(--color-surface-ecru-light);
+  --color-surface-ecru-paper: var(--color-surface-ecru-paper);
+  --color-surface-ecru-muted: var(--color-surface-ecru-muted);
+
+  --color-text-primary-dark: var(--color-text-primary-dark);
+  --color-text-secondary-dark: var(--color-text-secondary-dark);
+  --color-text-primary-light: var(--color-text-primary-light);
+  --color-text-secondary-light: var(--color-text-secondary-light);
+
+  --color-accent-brass: var(--color-accent-brass);
+  --color-accent-brass-hover: var(--color-accent-brass-hover);
+  --color-accent-brass-muted: var(--color-accent-brass-muted);
+
+  --color-accent-whatsapp: var(--color-accent-whatsapp);
+  --color-accent-whatsapp-hover: var(--color-accent-whatsapp-hover);
+
+  --font-serif: var(--font-playfair), "Times New Roman", Georgia, serif;
+  --font-sans: var(--font-jakarta), var(--font-geist-sans), system-ui, sans-serif;
 }
 
 body {
-  background: var(--background);
+  background-color: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans);
+  overflow-x: hidden;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
 }
+
+/* Custom fine selection color */
+::selection {
+  background-color: rgba(197, 168, 105, 0.25);
+  color: #142420;
+}
+
