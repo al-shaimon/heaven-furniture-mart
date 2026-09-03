@@ -25,8 +25,10 @@ export default function BrandIntro() {
   return (
     <section
       id="why-bespoke"
-      className="bg-surface-ecru-light py-16 sm:py-24 lg:py-32"
+      className="relative bg-surface-ecru-light py-16 sm:py-24 lg:py-32"
     >
+      {/* Editorial top accent hairline */}
+      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-accent-brass/25 to-transparent" />
       <div className="mx-auto max-w-7xl px-4 sm:px-8 lg:px-12 reveal-on-scroll">
         <div className="grid gap-12 lg:grid-cols-12 lg:items-start lg:gap-16">
           {/* Left Column: Atelier Manifesto */}

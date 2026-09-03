@@ -130,7 +130,7 @@ export default function Showroom() {
                         className="font-medium text-text-primary-dark hover:text-accent-brass transition-colors"
                       >
                         {contact.primaryPhoneFormatted}{" "}
-                        <span className="text-xs text-text-secondary-dark">(01900-481898)</span>
+                        <span className="text-xs text-text-secondary-dark">(01960-481983 · WhatsApp)</span>
                       </a>
                       <span className="text-neutral-300">·</span>
                       <a
@@ -138,7 +138,7 @@ export default function Showroom() {
                         className="font-medium text-text-primary-dark hover:text-accent-brass transition-colors"
                       >
                         {contact.hotlineFormatted}{" "}
-                        <span className="text-xs text-text-secondary-dark">(01960-481983)</span>
+                        <span className="text-xs text-text-secondary-dark">(01900-481898)</span>
                       </a>
                     </div>
                   </div>

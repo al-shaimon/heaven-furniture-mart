@@ -27,7 +27,7 @@ export default function Hero() {
             </h1>
 
             {/* Supporting Copy */}
-            <p className="animate-fade-up delay-200 mt-4 max-w-xl text-sm leading-relaxed text-text-secondary-light sm:mt-6 sm:text-base md:text-lg sm:leading-relaxed">
+            <p className="mt-4 max-w-xl text-sm leading-relaxed text-text-secondary-light sm:mt-6 sm:text-base md:text-lg sm:leading-relaxed">
               We don&apos;t pull furniture off a shelf. From solid Chittagong
               Teak living suites to tailored bedroom sanctuaries, every piece is
               custom-designed and built to fit your room&apos;s exact dimensions,
@@ -35,7 +35,7 @@ export default function Hero() {
             </p>
 
             {/* CTA Row */}
-            <div className="animate-fade-up delay-300 mt-6 flex flex-col gap-3 sm:mt-8 sm:flex-row sm:items-center sm:gap-4">
+            <div className="mt-6 flex flex-col gap-3 sm:mt-8 sm:flex-row sm:items-center sm:gap-4">
               <a
                 href="#consultation"
                 className="inline-flex h-12 w-full items-center justify-center rounded-sm border border-accent-brass/40 bg-accent-brass px-6 text-xs font-semibold tracking-wide text-brand-slate-deep transition-all duration-300 hover:bg-accent-brass-hover active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-accent-brass focus-visible:ring-offset-2 focus-visible:ring-offset-brand-slate-deep sm:h-[52px] sm:w-auto sm:px-7 sm:text-sm"
@@ -59,7 +59,7 @@ export default function Hero() {
             </p>
 
             {/* Atelier Verification Strip */}
-            <div className="animate-fade-up delay-400 mt-8 flex flex-wrap items-center gap-x-3.5 gap-y-2 border-t border-brand-slate-border pt-6 text-xs text-text-secondary-light sm:text-sm">
+            <div className="mt-8 flex flex-wrap items-center gap-x-3.5 gap-y-2 border-t border-brand-slate-border pt-6 text-xs text-text-secondary-light sm:text-sm">
               <span className="font-medium text-text-primary-light tracking-wider uppercase text-[11px] sm:text-xs">
                 Standards:
               </span>
@@ -84,8 +84,9 @@ export default function Hero() {
                 alt="Heaven Furniture Mart handcrafted solid Chittagong Teak living room suite with silk damask cushions and carved coffee table in an ambient luxury setting"
                 fill
                 priority
+                loading="eager"
                 fetchPriority="high"
-                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 100vw, 55vw"
+                sizes="(max-width: 640px) calc(100vw - 32px), (max-width: 1024px) calc(100vw - 64px), 55vw"
                 className="object-cover transition-transform duration-1000 ease-out hover:scale-[1.015]"
               />
               {/* Subtle bottom gradient for text legibility on mobile */}
@@ -95,8 +96,11 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* Bottom Edge Transition */}
-      <div className="absolute bottom-0 left-0 right-0 h-px bg-accent-brass/15" />
+      {/* Bottom Architectural Transition */}
+      <div className="absolute bottom-0 left-0 right-0">
+        <div className="h-6 bg-gradient-to-b from-transparent to-black/15" />
+        <div className="h-px bg-accent-brass/25" />
+      </div>
     </section>
   );
 }

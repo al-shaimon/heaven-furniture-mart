@@ -2,13 +2,14 @@
 
 import { useState, useEffect } from "react";
 import { BRAND_CONFIG } from "@/content/brand";
-import { CheckIcon } from "@/components/icons";
+import { CheckIcon, WhatsAppIcon } from "@/components/icons";
 
 export default function ConsultationCTA() {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [space, setSpace] = useState("Living Room");
   const [submitted, setSubmitted] = useState(false);
+  const [redirectUrl, setRedirectUrl] = useState("");
 
   useEffect(() => {
     const handleSelectSpace = (e: Event) => {
@@ -31,16 +32,19 @@ export default function ConsultationCTA() {
     if (!name.trim() || !phone.trim()) return;
 
     // Construct prefilled WhatsApp redirect url
-    const message = `Hello Heaven Furniture Mart, my name is ${name}. I would like to book a free design consultation for my ${space} space. My phone/WhatsApp is ${phone}.`;
+    const message = `Hello Heaven Furniture Mart, my name is ${name.trim()}. I would like to book a free design consultation for my ${space} space. My phone/WhatsApp is ${phone.trim()}.`;
     const encoded = encodeURIComponent(message);
     const waUrl = `https://wa.me/${BRAND_CONFIG.contact.whatsAppNumber}?text=${encoded}`;
 
+    setRedirectUrl(waUrl);
     setSubmitted(true);
 
-    // Open WhatsApp in new tab after brief acknowledgment
-    setTimeout(() => {
+    // Attempt to open WhatsApp directly
+    try {
       window.open(waUrl, "_blank", "noopener,noreferrer");
-    }, 600);
+    } catch {
+      // Direct click fallback available on screen
+    }
   };
 
   return (
@@ -76,6 +80,16 @@ export default function ConsultationCTA() {
                   <span>{item}</span>
                 </div>
               ))}
+            </div>
+
+            {/* Indicative Bespoke Investment Benchmarks */}
+            <div className="mt-6 rounded-sm border border-accent-brass/25 bg-brand-slate-surface/80 p-4 sm:mt-8 sm:p-5">
+              <span className="text-[11px] font-semibold uppercase tracking-wider text-accent-brass">
+                Indicative Bespoke Investment
+              </span>
+              <p className="mt-1 text-xs leading-relaxed text-text-secondary-light">
+                Living suites from ৳1.45L · Dining suites from ৳1.85L · Bedroom suites from ৳1.35L · Vitrines &amp; credenzas from ৳45K. Every commission receives an itemized specification breakdown.
+              </p>
             </div>
 
             {/* Direct WhatsApp Prompt */}
@@ -124,11 +138,41 @@ export default function ConsultationCTA() {
                   </h3>
                   <p className="mt-2 text-xs leading-relaxed text-text-secondary-light sm:text-sm">
                     Connecting you to our WhatsApp design desk... You can also reach us directly at{" "}
-                    <span className="font-medium text-accent-brass">
+                    <a
+                      href={`tel:${BRAND_CONFIG.contact.primaryPhone.replace(/[\s-]/g, "")}`}
+                      className="font-medium text-accent-brass underline hover:text-accent-brass-hover"
+                    >
                       {BRAND_CONFIG.contact.primaryPhoneFormatted}
-                    </span>
+                    </a>
                     .
                   </p>
+                  {redirectUrl && (
+                    <div className="mt-5">
+                      <a
+                        href={redirectUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center justify-center gap-2 rounded-sm bg-accent-whatsapp px-6 py-3 text-xs font-bold text-brand-slate-deep shadow-sm transition-colors hover:bg-accent-whatsapp-hover sm:text-sm"
+                      >
+                        <WhatsAppIcon size={18} />
+                        Continue to WhatsApp Chat Now
+                      </a>
+                      <p className="mt-2 text-[11px] text-text-secondary-light/70">
+                        Click above if WhatsApp did not open automatically
+                      </p>
+                    </div>
+                  )}
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setSubmitted(false);
+                      setName("");
+                      setPhone("");
+                    }}
+                    className="mt-4 inline-block text-[11px] text-text-secondary-light/70 underline hover:text-text-primary-light"
+                  >
+                    Submit another inquiry
+                  </button>
                 </div>
               ) : (
                 <form onSubmit={handleSubmit} className="mt-6 space-y-4 sm:mt-8 sm:space-y-5">

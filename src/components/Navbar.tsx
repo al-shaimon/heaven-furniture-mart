@@ -45,7 +45,7 @@ export default function Navbar() {
             className="h-9 w-9 object-contain sm:h-11 sm:w-11"
           />
           <span className="hidden font-serif text-lg font-semibold tracking-tight text-text-primary-light sm:block">
-            Heaven
+            Heaven Furniture
           </span>
         </a>
 
