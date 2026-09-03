@@ -15,7 +15,7 @@ export default function Home() {
     <>
       <ScrollRevealProvider />
       <Navbar />
-      <main className="flex-1 pb-20 md:pb-0">
+      <main id="main-content" className="flex-1 pb-20 md:pb-0">
         <Hero />
         <BrandIntro />
         <CuratedSpaces />

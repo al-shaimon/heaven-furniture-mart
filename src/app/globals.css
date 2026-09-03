@@ -21,10 +21,13 @@
   --color-accent-brass: #c5a869;
   --color-accent-brass-hover: #d8ba7b;
   --color-accent-brass-muted: rgba(197, 168, 105, 0.2);
+  /* WCAG AA 5.5:1 compliant burnished brass for light backgrounds */
+  --color-accent-brass-dark: #7a5e18;
 
   /* Functional WhatsApp & Status */
   --color-accent-whatsapp: #25d366;
   --color-accent-whatsapp-hover: #20ba5a;
+  --color-accent-whatsapp-dark: #0f7a36;
 
   --background: var(--color-surface-ecru-light);
   --foreground: var(--color-text-primary-dark);
@@ -47,9 +50,11 @@
   --color-accent-brass: var(--color-accent-brass);
   --color-accent-brass-hover: var(--color-accent-brass-hover);
   --color-accent-brass-muted: var(--color-accent-brass-muted);
+  --color-accent-brass-dark: var(--color-accent-brass-dark);
 
   --color-accent-whatsapp: var(--color-accent-whatsapp);
   --color-accent-whatsapp-hover: var(--color-accent-whatsapp-hover);
+  --color-accent-whatsapp-dark: var(--color-accent-whatsapp-dark);
 
   --font-serif: var(--font-playfair), "Times New Roman", Georgia, serif;
   --font-sans: var(--font-jakarta), var(--font-geist-sans), system-ui, sans-serif;

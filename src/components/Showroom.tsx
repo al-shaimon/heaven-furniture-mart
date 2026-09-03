@@ -9,13 +9,14 @@ export default function Showroom() {
   return (
     <section id="showroom" className="bg-surface-ecru-light py-16 sm:py-24 lg:py-32">
       <div className="mx-auto max-w-7xl px-4 sm:px-8 lg:px-12 reveal-on-scroll">
-        {/* Eyebrow & Title */}
+        {/* Section Header */}
         <div className="max-w-2xl">
-          <p className="text-xs font-semibold uppercase tracking-[0.15em] text-accent-brass sm:text-sm sm:tracking-[0.2em]">
-            Visit Our Showroom
+          <p className="text-xs font-semibold uppercase tracking-[0.15em] text-accent-brass-dark sm:text-sm sm:tracking-[0.2em]">
+            Physical Showroom
           </p>
           <h2 className="mt-3 font-serif text-2xl font-semibold leading-tight tracking-tight text-text-primary-dark sm:mt-4 sm:text-3xl md:text-4xl lg:text-5xl">
-            Experience the Wood, Fabric &amp; Scale in Person.
+            Experience the Wood, Fabric &amp; Scale{" "}
+            <span className="text-text-secondary-dark italic">in Person.</span>
           </h2>
           <p className="mt-3 text-sm leading-relaxed text-text-secondary-dark sm:mt-4 sm:text-base md:text-lg">
             Nothing replaces running your fingers over seasoned Chittagong Teak or testing cushion firmness. Visit our 2-story flagship showroom on Agrabad Access Road to inspect completed living, dining, and bedroom settings.
@@ -28,11 +29,11 @@ export default function Showroom() {
           <div className="relative overflow-hidden rounded-sm border border-neutral-200/80 bg-surface-ecru-paper shadow-xs lg:col-span-7">
             <div className="relative aspect-[4/3] w-full lg:h-full lg:min-h-[420px]">
               <Image
-                src="/assets/showroom/heaven-agrabad-flagship-building.jpg"
-                alt="Exterior of Heaven Furniture Mart two-story flagship showroom on Agrabad Access Road, Chattogram"
+                src="/assets/showroom/heaven-agrabad-flagship-building.webp"
+                alt="Heaven Furniture Mart multi-level flagship building and showroom on Agrabad Access Road, Chattogram"
                 fill
-                sizes="(max-width: 1024px) 100vw, 55vw"
-                className="object-cover"
+                sizes="(max-width: 1024px) 100vw, 50vw"
+                className="object-cover transition-transform duration-700 hover:scale-[1.02]"
               />
             </div>
             {/* Showroom Label */}
@@ -46,8 +47,8 @@ export default function Showroom() {
             <div>
               {/* Landmark Header */}
               <div className="flex items-center gap-2">
-                <span className="h-2 w-2 rounded-full bg-accent-brass" />
-                <p className="text-xs font-semibold uppercase tracking-widest text-accent-brass">
+                <span className="h-2 w-2 rounded-full bg-accent-brass-dark" />
+                <p className="text-xs font-semibold uppercase tracking-widest text-accent-brass-dark">
                   Prime Chattogram Location
                 </p>
               </div>
@@ -68,7 +69,7 @@ export default function Showroom() {
                     strokeWidth="2"
                     strokeLinecap="round"
                     strokeLinejoin="round"
-                    className="mt-0.5 shrink-0 text-accent-brass"
+                    className="mt-0.5 shrink-0 text-accent-brass-dark"
                     aria-hidden="true"
                   >
                     <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
@@ -77,7 +78,7 @@ export default function Showroom() {
                   <div>
                     <p className="font-semibold text-text-primary-dark">Address</p>
                     <p className="mt-0.5 leading-relaxed">{loc.fullAddress}</p>
-                    <p className="mt-1 text-xs text-accent-brass font-medium">Landmark: {loc.landmark}</p>
+                    <p className="mt-1 text-xs text-accent-brass-dark font-semibold">Landmark: {loc.landmark}</p>
                   </div>
                 </div>
 
@@ -123,18 +124,21 @@ export default function Showroom() {
                   </svg>
                   <div>
                     <p className="font-semibold text-text-primary-dark">Direct Hotlines</p>
-                    <div className="mt-1 flex flex-wrap gap-x-4 gap-y-1">
+                    <div className="mt-1 flex flex-wrap gap-x-4 gap-y-1 text-sm">
                       <a
                         href={`tel:${contact.primaryPhone.replace(/[\s-]/g, "")}`}
-                        className="font-medium text-text-primary-dark hover:text-accent-brass"
+                        className="font-medium text-text-primary-dark hover:text-accent-brass transition-colors"
                       >
-                        {contact.primaryPhoneFormatted}
+                        {contact.primaryPhoneFormatted}{" "}
+                        <span className="text-xs text-text-secondary-dark">(01900-481898)</span>
                       </a>
+                      <span className="text-neutral-300">·</span>
                       <a
                         href={`tel:${contact.hotlinePhone.replace(/[\s-]/g, "")}`}
-                        className="font-medium text-text-primary-dark hover:text-accent-brass"
+                        className="font-medium text-text-primary-dark hover:text-accent-brass transition-colors"
                       >
-                        {contact.hotlineFormatted}
+                        {contact.hotlineFormatted}{" "}
+                        <span className="text-xs text-text-secondary-dark">(01960-481983)</span>
                       </a>
                     </div>
                   </div>

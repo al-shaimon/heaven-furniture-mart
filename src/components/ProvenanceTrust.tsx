@@ -9,7 +9,7 @@ export default function ProvenanceTrust() {
       <div className="mx-auto max-w-7xl px-4 sm:px-8 lg:px-12 reveal-on-scroll">
         {/* Section Eyebrow & Headline */}
         <div className="max-w-2xl">
-          <p className="text-xs font-semibold uppercase tracking-[0.15em] text-accent-brass sm:text-sm sm:tracking-[0.2em]">
+          <p className="text-xs font-semibold uppercase tracking-[0.15em] text-accent-brass-dark sm:text-sm sm:tracking-[0.2em]">
             Provenance & Trust
           </p>
           <h2 className="mt-3 font-serif text-2xl font-semibold leading-tight tracking-tight text-text-primary-dark sm:mt-4 sm:text-3xl md:text-4xl lg:text-5xl">
@@ -35,7 +35,7 @@ export default function ProvenanceTrust() {
                 fill="none"
                 stroke="currentColor"
                 strokeWidth="1.5"
-                className="text-accent-brass/50 sm:h-9 sm:w-9"
+                className="text-accent-brass-dark/50 sm:h-9 sm:w-9"
                 aria-hidden="true"
               >
                 <path d="M3 21c3 0 7-1 7-8V5c0-1.25-.756-2.017-2-2H4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V20c0 1 0 1 1 1z" />
@@ -48,7 +48,7 @@ export default function ProvenanceTrust() {
                 <p className="font-semibold text-text-primary-dark sm:text-lg">
                   {BRAND_CONFIG.mdQuote.author}
                 </p>
-                <p className="text-xs uppercase tracking-wider text-accent-brass sm:text-sm">
+                <p className="text-xs uppercase tracking-wider text-accent-brass-dark sm:text-sm font-semibold">
                   {BRAND_CONFIG.mdQuote.title}
                 </p>
               </div>
@@ -59,7 +59,7 @@ export default function ProvenanceTrust() {
               <div className="relative overflow-hidden rounded-sm border border-neutral-200 bg-surface-ecru-paper">
                 <div className="relative aspect-[4/3] w-full">
                   <Image
-                    src="/assets/trust/heaven-md-receiving-bfma-award.jpg"
+                    src="/assets/trust/heaven-md-receiving-bfma-award.webp"
                     alt="Managing Director Abul Kalam Bhuiyan receiving the official BFMA recognition crest at the 13th Chattogram Furniture Fair 2024"
                     fill
                     sizes="(max-width: 1024px) 100vw, 30vw"
@@ -90,7 +90,7 @@ export default function ProvenanceTrust() {
               {milestones.map((m) => (
                 <div key={m.year} className="flex flex-col gap-1.5 py-4 sm:flex-row sm:items-baseline sm:gap-6 sm:py-5">
                   <div className="shrink-0 sm:w-20">
-                    <span className="font-serif text-lg font-bold text-accent-brass sm:text-2xl">
+                    <span className="font-serif text-lg font-bold text-accent-brass-dark sm:text-2xl">
                       {m.year}
                     </span>
                   </div>
@@ -119,7 +119,7 @@ export default function ProvenanceTrust() {
             <div className="overflow-hidden rounded-sm border border-neutral-200/80 bg-surface-ecru-light shadow-xs">
               <div className="relative aspect-[16/10] w-full">
                 <Image
-                  src="/assets/trust/heaven-team-expo-booth.jpg"
+                  src="/assets/trust/heaven-team-expo-booth.webp"
                   alt="Heaven Furniture Mart leadership and craftsmanship team at their official exposition pavilion"
                   fill
                   sizes="(max-width: 1024px) 100vw, 40vw"
@@ -127,11 +127,11 @@ export default function ProvenanceTrust() {
                 />
               </div>
               <div className="p-6">
-                <h4 className="font-serif text-lg font-semibold text-text-primary-dark">
+                <h3 className="font-serif text-lg font-semibold text-text-primary-dark">
                   Our Dedicated Atelier Team
-                </h4>
+                </h3>
                 <p className="mt-2 text-xs leading-relaxed text-text-secondary-dark sm:text-sm">
-                  From master wood carvers and upholstery seamstresses to in-house interior consultants, our 30+ team members work under one unified vision of craftsmanship.
+                  From master wood carvers and upholstery seamstresses to in-house interior consultants, our dedicated atelier team works under one unified vision of craftsmanship.
                 </p>
               </div>
             </div>
