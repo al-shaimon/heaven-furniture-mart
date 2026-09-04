@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Playfair_Display, Plus_Jakarta_Sans } from "next/font/google";
+import { Playfair_Display, Plus_Jakarta_Sans, Noto_Sans_Bengali } from "next/font/google";
 import "./globals.css";
 
 import JsonLd from "@/components/JsonLd";
@@ -16,78 +16,83 @@ const jakarta = Plus_Jakarta_Sans({
   display: "swap",
 });
 
+const bengali = Noto_Sans_Bengali({
+  variable: "--font-bengali",
+  subsets: ["bengali"],
+  display: "swap",
+  weight: ["400", "500", "600", "700"],
+});
+
 export const metadata: Metadata = {
   metadataBase: new URL("https://heavenfurnituremart.com"),
-  title: "Heaven Furniture Mart | Bespoke Furniture & Interior Styling — Chattogram",
+  title: "হেভেন ফার্নিচার মার্ট | Heaven Furniture Mart — আগ্রাবাদ, চট্টগ্রাম",
   description:
-    "Chattogram's premier bespoke furniture atelier. Custom-designed living room, dining, and bedroom furniture handcrafted from authentic Chittagong Teak. Flagship showroom on Agrabad Access Road.",
+    "আগ্রাবাদ এক্সেস রোড, চট্টগ্রাম। হোম ও অফিস ফার্নিচার এবং আপনার ঘরের নির্দিষ্ট মাপে কাস্টম ফার্নিচার তৈরির বিশ্বস্ত ঠিকানা। সরাসরি কল: 01960-481983।",
   keywords: [
-    "bespoke furniture Chattogram",
-    "custom furniture Bangladesh",
-    "Chittagong Teak furniture",
     "Heaven Furniture Mart",
-    "luxury furniture Chattogram",
+    "হেভেন ফার্নিচার মার্ট",
+    "furniture showroom Chittagong",
+    "চট্টগ্রাম ফার্নিচার",
+    "custom furniture Chattogram",
+    "কাস্টম ফার্নিচার চট্টগ্রাম",
     "Agrabad furniture showroom",
-    "made to order furniture",
-    "interior styling Chattogram",
+    "সোফা সেট চট্টগ্রাম",
+    "ডাইনিং টেবিল চট্টগ্রাম",
+    "অফিস ফার্নিচার",
   ],
   alternates: {
     canonical: "/",
   },
   openGraph: {
-    title: "Heaven Furniture Mart — Furniture, Crafted Around You",
+    title: "হেভেন ফার্নিচার মার্ট — আপনার জায়গার জন্য, আপনার পছন্দের ফার্নিচার।",
     description:
-      "Custom-designed and handcrafted furniture for discerning Chattogram residences since 2003. Flagship showroom on Agrabad Access Road.",
+      "হোম ও অফিস ফার্নিচার এবং আপনার ঘরের নির্দিষ্ট মাপে কাস্টমাইজেশন। শোরুম: আগ্রাবাদ এক্সেস রোড, চট্টগ্রাম।",
     url: "https://heavenfurnituremart.com",
     siteName: "Heaven Furniture Mart",
-    locale: "en_BD",
+    locale: "bn_BD",
     type: "website",
     images: [
       {
         url: "/assets/hero/heaven-classic-living-hero.webp",
         width: 1200,
         height: 630,
-        alt: "Heaven Furniture Mart handcrafted solid Chittagong Teak living room suite",
+        alt: "হেভেন ফার্নিচার মার্ট ড্রয়িং রুম সোফা ও সেন্টার টেবিল সেট",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Heaven Furniture Mart — Furniture, Crafted Around You",
+    title: "হেভেন ফার্নিচার মার্ট | Heaven Furniture Mart",
     description:
-      "Custom-designed and handcrafted furniture for discerning Chattogram residences since 2003.",
+      "হোম ও অফিস ফার্নিচার এবং কাস্টম ফার্নিচার। আগ্রাবাদ এক্সেস রোড, চট্টগ্রাম।",
     images: ["/assets/hero/heaven-classic-living-hero.webp"],
   },
   icons: {
-    icon: "/assets/brand/heaven-logo-white.png",
-    apple: "/assets/brand/heaven-logo-white.png",
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/favicon.png", type: "image/png" },
+    ],
+    apple: "/apple-icon.png",
   },
   robots: {
     index: true,
     follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-      "max-video-preview": -1,
-      "max-image-preview": "large",
-      "max-snippet": -1,
-    },
   },
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html
-      lang="en"
-      className={`${playfair.variable} ${jakarta.variable} h-full antialiased`}
+      lang="bn"
+      className={`${playfair.variable} ${jakarta.variable} ${bengali.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-surface-ecru-light text-text-primary-dark">
         <JsonLd />
         <a
           href="#main-content"
-          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:rounded-sm focus:bg-accent-brass focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-brand-slate-deep focus:shadow-lg focus:outline-none focus:ring-2 focus:ring-accent-brass"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:rounded-sm focus:bg-brand-slate-deep focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-white focus:shadow-lg focus:outline-none focus:ring-2 focus:ring-accent-whatsapp"
         >
-          Skip to main content
+          মূল কন্টেন্টে যান (Skip to main content)
         </a>
         {children}
       </body>

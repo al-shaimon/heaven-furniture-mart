@@ -1,256 +1,164 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { BRAND_CONFIG } from "@/content/brand";
-import { CheckIcon, WhatsAppIcon } from "@/components/icons";
+import { PhoneIcon, WhatsAppIcon, CheckIcon } from "@/components/icons";
 
 export default function ConsultationCTA() {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
-  const [space, setSpace] = useState("Living Room");
   const [submitted, setSubmitted] = useState(false);
-  const [redirectUrl, setRedirectUrl] = useState("");
-
-  useEffect(() => {
-    const handleSelectSpace = (e: Event) => {
-      const customEvent = e as CustomEvent<string>;
-      if (!customEvent.detail) return;
-      const d = customEvent.detail;
-      if (d.includes("Living")) setSpace("Living Room");
-      else if (d.includes("Dining")) setSpace("Dining Room");
-      else if (d.includes("Bed")) setSpace("Master Bedroom");
-      else if (d.includes("Custom") || d.includes("Storage") || d.includes("Cabinet"))
-        setSpace("Custom Bespoke Cabinetry");
-    };
-
-    window.addEventListener("select-space", handleSelectSpace);
-    return () => window.removeEventListener("select-space", handleSelectSpace);
-  }, []);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!name.trim() || !phone.trim()) return;
 
-    // Construct prefilled WhatsApp redirect url
-    const message = `Hello Heaven Furniture Mart, my name is ${name.trim()}. I would like to book a free design consultation for my ${space} space. My phone/WhatsApp is ${phone.trim()}.`;
-    const encoded = encodeURIComponent(message);
-    const waUrl = `https://wa.me/${BRAND_CONFIG.contact.whatsAppNumber}?text=${encoded}`;
-
-    setRedirectUrl(waUrl);
     setSubmitted(true);
-
-    // Attempt to open WhatsApp directly
-    try {
-      window.open(waUrl, "_blank", "noopener,noreferrer");
-    } catch {
-      // Direct click fallback available on screen
-    }
   };
 
+  const whatsappDirectUrl = `https://wa.me/8801960481983?text=${encodeURIComponent(
+    `আসসালামু আলাইকুম, আমার নাম ${name || "গ্রাহক"}। আমি হেভেন ফার্নিচার মার্ট থেকে ফার্নিচার সম্পর্কে জানতে চাই। আমার ফোন: ${phone || ""}`
+  )}`;
+
   return (
-    <section id="consultation" className="relative bg-brand-slate-deep py-16 text-text-primary-light sm:py-24 lg:py-32">
-      {/* Subtle top divider line */}
-      <div className="absolute top-0 left-0 right-0 h-px bg-accent-brass/20" />
-
-      <div className="mx-auto max-w-7xl px-4 sm:px-8 lg:px-12 reveal-on-scroll">
-        <div className="grid gap-10 lg:grid-cols-12 lg:items-center lg:gap-16">
-          {/* Left Column: Heading & Reassurance */}
+    <section id="contact" className="relative bg-brand-slate-deep py-14 text-white sm:py-20 lg:py-24">
+      <div className="mx-auto max-w-7xl px-4 sm:px-8 lg:px-12">
+        <div className="grid gap-10 lg:grid-cols-12 lg:items-center lg:gap-12">
+          {/* Left Column: Direct Contact Details */}
           <div className="lg:col-span-6">
-            <p className="text-xs font-semibold uppercase tracking-[0.15em] text-accent-brass sm:text-sm sm:tracking-[0.2em]">
-              Start Your Project
-            </p>
-            <h2 className="mt-3 font-serif text-2xl font-semibold leading-[1.15] tracking-tight sm:mt-4 sm:text-3xl md:text-4xl lg:text-5xl">
-              {BRAND_CONFIG.cta.headline}
+            <h2 className="font-serif text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-white">
+              কথা বলুন বা মেসেজ দিন
             </h2>
-            <p className="mt-4 text-sm leading-relaxed text-text-secondary-light sm:mt-6 sm:text-base md:text-lg sm:leading-relaxed">
-              {BRAND_CONFIG.cta.subhead}
+            <p className="mt-2 text-base text-neutral-300 leading-relaxed">
+              যেকোনো ফার্নিচারের দাম, সাইজ বা কাস্টমাইজেশন সম্পর্কে জানতে আমাদের সরাসরি কল করতে পারেন বা হোয়াটসঅ্যাপে মেসেজ পাঠাতে পারেন।
             </p>
 
-            {/* Trust Checklist answering Pricing & Process concerns */}
-            <div className="mt-6 space-y-2.5 border-t border-brand-slate-border pt-6 sm:mt-8 sm:space-y-3">
-              {[
-                "100% Free, No-Obligation Design Review",
-                "Direct Atelier Value: Zero Middleman / Retail Dealer Markups",
-                "Itemized Estimate Before Any Crafting Begins",
-                "Blueprint & Room Measurement Analysis",
-                "Expert Guidance on Chittagong Teak, Marble & Fabrics",
-              ].map((item, idx) => (
-                <div key={idx} className="flex items-center gap-3 text-xs sm:text-sm text-text-secondary-light">
-                  <CheckIcon size={16} className="shrink-0 text-accent-brass" />
-                  <span>{item}</span>
-                </div>
-              ))}
-            </div>
-
-            {/* Indicative Bespoke Investment Benchmarks */}
-            <div className="mt-6 rounded-sm border border-accent-brass/25 bg-brand-slate-surface/80 p-4 sm:mt-8 sm:p-5">
-              <span className="text-[11px] font-semibold uppercase tracking-wider text-accent-brass">
-                Indicative Bespoke Investment
-              </span>
-              <p className="mt-1 text-xs leading-relaxed text-text-secondary-light">
-                Living suites from ৳1.45L · Dining suites from ৳1.85L · Bedroom suites from ৳1.35L · Vitrines &amp; credenzas from ৳45K. Every commission receives an itemized specification breakdown.
-              </p>
-            </div>
-
-            {/* Direct WhatsApp Prompt */}
-            <div className="mt-6 flex items-center gap-2.5 text-xs text-text-secondary-light sm:mt-8 sm:text-sm">
-              <span>Prefer instant messaging?</span>
+            {/* Direct Contact Cards */}
+            <div className="mt-6 space-y-3">
               <a
-                href={BRAND_CONFIG.cta.whatsappUrl}
+                href={BRAND_CONFIG.contact.phoneUrl}
+                className="flex items-center gap-3 rounded-sm border border-brand-slate-border bg-brand-slate-surface p-3.5 transition-colors hover:border-accent-brass group"
+              >
+                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-brand-slate-deep text-accent-brass group-hover:text-accent-whatsapp">
+                  <PhoneIcon />
+                </span>
+                <div>
+                  <p className="text-xs text-neutral-400">সরাসরি কল দিন</p>
+                  <p className="text-base font-bold text-white group-hover:text-accent-brass transition-colors">
+                    {BRAND_CONFIG.contact.primaryPhoneDisplay}
+                  </p>
+                </div>
+              </a>
+
+              <a
+                href={BRAND_CONFIG.contact.whatsAppUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-1 font-semibold text-accent-whatsapp hover:underline"
+                className="flex items-center gap-3 rounded-sm border border-accent-whatsapp/40 bg-brand-slate-surface p-3.5 transition-colors hover:border-accent-whatsapp group"
               >
-                Chat directly on WhatsApp →
+                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-accent-whatsapp text-brand-slate-deep">
+                  <WhatsAppIcon size={20} />
+                </span>
+                <div>
+                  <p className="text-xs text-neutral-400">হোয়াটসঅ্যাপ মেসেজ</p>
+                  <p className="text-base font-bold text-accent-whatsapp group-hover:underline">
+                    {BRAND_CONFIG.contact.primaryPhoneDisplay}
+                  </p>
+                </div>
               </a>
+
+              <div className="flex items-center gap-3 rounded-sm border border-brand-slate-border bg-brand-slate-surface p-3.5">
+                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-brand-slate-deep text-base">
+                  📍
+                </span>
+                <div>
+                  <p className="text-xs text-neutral-400">শোরুমের ঠিকানা</p>
+                  <p className="text-sm font-medium text-white">
+                    {BRAND_CONFIG.location.fullAddressBn}
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
 
-          {/* Right Column: Clean Interactive Form */}
+          {/* Right Column: Simple 2-Field Callback Form */}
           <div className="lg:col-span-6">
-            <div className="rounded-sm border border-brand-slate-border bg-brand-slate-surface p-6 shadow-lg sm:p-8 lg:p-10">
-              <h3 className="font-serif text-xl font-semibold text-text-primary-light sm:text-2xl">
-                Book a Free Design Consultation
-              </h3>
-              <p className="mt-1.5 text-xs text-text-secondary-light sm:mt-2 sm:text-sm">
-                Fill in your details below and our senior furniture designer will reach out to review your room requirements.
-              </p>
-
-              {submitted ? (
-                <div className="mt-6 rounded-sm border border-accent-brass/40 bg-brand-slate-deep p-6 text-center sm:mt-8">
-                  <svg
-                    width="40"
-                    height="40"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    className="mx-auto text-accent-brass"
-                    aria-hidden="true"
-                  >
-                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
-                    <polyline points="22 4 12 14.01 9 11.01" />
-                  </svg>
-                  <h3 className="mt-4 font-serif text-lg font-semibold text-text-primary-light sm:text-xl">
-                    Consultation Request Received
+            <div className="rounded-sm border border-neutral-700 bg-brand-slate-surface p-6 shadow-xl sm:p-8">
+              {!submitted ? (
+                <>
+                  <h3 className="font-serif text-xl sm:text-2xl font-bold text-white">
+                    কলব্যাক চান?
                   </h3>
-                  <p className="mt-2 text-xs leading-relaxed text-text-secondary-light sm:text-sm">
-                    Connecting you to our WhatsApp design desk... You can also reach us directly at{" "}
-                    <a
-                      href={`tel:${BRAND_CONFIG.contact.primaryPhone.replace(/[\s-]/g, "")}`}
-                      className="font-medium text-accent-brass underline hover:text-accent-brass-hover"
-                    >
-                      {BRAND_CONFIG.contact.primaryPhoneFormatted}
-                    </a>
-                    .
+                  <p className="mt-1 text-xs sm:text-sm text-neutral-400">
+                    আপনার নাম ও নম্বর দিলে আমাদের টিম থেকে আপনাকে কল করা হবে।
                   </p>
-                  {redirectUrl && (
-                    <div className="mt-5">
-                      <a
-                        href={redirectUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center justify-center gap-2 rounded-sm bg-accent-whatsapp px-6 py-3 text-xs font-bold text-brand-slate-deep shadow-sm transition-colors hover:bg-accent-whatsapp-hover sm:text-sm"
-                      >
-                        <WhatsAppIcon size={18} />
-                        Continue to WhatsApp Chat Now
-                      </a>
-                      <p className="mt-2 text-[11px] text-text-secondary-light/70">
-                        Click above if WhatsApp did not open automatically
-                      </p>
+
+                  <form onSubmit={handleSubmit} className="mt-6 space-y-4">
+                    <div>
+                      <label htmlFor="customer-name" className="block text-xs font-semibold text-neutral-300 mb-1.5">
+                        আপনার নাম
+                      </label>
+                      <input
+                        id="customer-name"
+                        type="text"
+                        required
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                        placeholder="আপনার নাম লিখুন"
+                        className="w-full rounded-sm border border-neutral-600 bg-brand-slate-deep px-4 py-3 text-sm text-white placeholder-neutral-500 focus:border-accent-whatsapp focus:outline-none focus:ring-1 focus:ring-accent-whatsapp"
+                      />
                     </div>
-                  )}
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setSubmitted(false);
-                      setName("");
-                      setPhone("");
-                    }}
-                    className="mt-4 inline-block text-[11px] text-text-secondary-light/70 underline hover:text-text-primary-light"
-                  >
-                    Submit another inquiry
-                  </button>
-                </div>
+
+                    <div>
+                      <label htmlFor="customer-phone" className="block text-xs font-semibold text-neutral-300 mb-1.5">
+                        মোবাইল নম্বর
+                      </label>
+                      <input
+                        id="customer-phone"
+                        type="tel"
+                        required
+                        value={phone}
+                        onChange={(e) => setPhone(e.target.value)}
+                        placeholder="01XXXXXXXXX"
+                        className="w-full rounded-sm border border-neutral-600 bg-brand-slate-deep px-4 py-3 text-sm text-white placeholder-neutral-500 focus:border-accent-whatsapp focus:outline-none focus:ring-1 focus:ring-accent-whatsapp"
+                      />
+                    </div>
+
+                    <button
+                      type="submit"
+                      className="w-full h-[52px] rounded-sm bg-accent-whatsapp px-6 text-base font-bold text-brand-slate-deep transition-colors hover:bg-accent-whatsapp-hover cursor-pointer"
+                    >
+                      📞 আমাকে কল করুন
+                    </button>
+                  </form>
+                </>
               ) : (
-                <form onSubmit={handleSubmit} className="mt-6 space-y-4 sm:mt-8 sm:space-y-5">
-                  {/* Name Field */}
-                  <div>
-                    <label
-                      htmlFor="consultation-name"
-                      className="block text-xs font-semibold uppercase tracking-wider text-text-secondary-light"
-                    >
-                      Your Full Name *
-                    </label>
-                    <input
-                      id="consultation-name"
-                      type="text"
-                      required
-                      autoComplete="name"
-                      value={name}
-                      onChange={(e) => setName(e.target.value)}
-                      placeholder="e.g. Tanvir Ahmed"
-                      className="mt-1.5 w-full rounded-sm border border-brand-slate-border bg-brand-slate-deep px-3.5 py-3 text-base text-text-primary-light placeholder-neutral-500 transition-colors focus:border-accent-brass focus:outline-none focus:ring-1 focus:ring-accent-brass sm:text-sm"
-                    />
+                <div className="py-6 text-center">
+                  <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-accent-whatsapp/20 text-accent-whatsapp mb-4">
+                    <CheckIcon size={28} />
                   </div>
-
-                  {/* Phone / WhatsApp Field */}
-                  <div>
-                    <label
-                      htmlFor="consultation-phone"
-                      className="block text-xs font-semibold uppercase tracking-wider text-text-secondary-light"
-                    >
-                      Phone / WhatsApp Number *
-                    </label>
-                    <input
-                      id="consultation-phone"
-                      type="tel"
-                      required
-                      autoComplete="tel"
-                      value={phone}
-                      onChange={(e) => setPhone(e.target.value)}
-                      placeholder="e.g. +880 1819-000000"
-                      className="mt-1.5 w-full rounded-sm border border-brand-slate-border bg-brand-slate-deep px-3.5 py-3 text-base text-text-primary-light placeholder-neutral-500 transition-colors focus:border-accent-brass focus:outline-none focus:ring-1 focus:ring-accent-brass sm:text-sm"
-                    />
-                  </div>
-
-                  {/* Space Type Dropdown */}
-                  <div>
-                    <label
-                      htmlFor="consultation-space"
-                      className="block text-xs font-semibold uppercase tracking-wider text-text-secondary-light"
-                    >
-                      What space are you furnishing?
-                    </label>
-                    <select
-                      id="consultation-space"
-                      value={space}
-                      onChange={(e) => setSpace(e.target.value)}
-                      className="mt-1.5 w-full rounded-sm border border-brand-slate-border bg-brand-slate-deep px-3.5 py-3 text-base text-text-primary-light transition-colors focus:border-accent-brass focus:outline-none focus:ring-1 focus:ring-accent-brass sm:text-sm"
-                    >
-                      <option value="Living Room">Living Room (Sofas, Center Table, TV Console)</option>
-                      <option value="Dining Room">Dining Room (Marble/Teak Table &amp; Chairs)</option>
-                      <option value="Master Bedroom">Master Bedroom (Bed, Wardrobe, Dressing Table)</option>
-                      <option value="Full Apartment / Residence">Full Apartment / Residence Interior</option>
-                      <option value="Custom Bespoke Cabinetry">Custom Cabinetry &amp; Display Vitrines</option>
-                      <option value="Executive Office">Executive Office &amp; Study</option>
-                    </select>
-                  </div>
-
-                  {/* Submit Button */}
-                  <button
-                    type="submit"
-                    className="w-full rounded-sm border border-accent-brass bg-accent-brass py-3.5 text-sm font-semibold tracking-wide text-brand-slate-deep transition-all duration-300 hover:bg-accent-brass-hover focus-visible:ring-2 focus-visible:ring-accent-brass"
-                  >
-                    Request Free Design Consultation
-                  </button>
-
-                  <p className="text-center text-[11px] text-neutral-400">
-                    🔒 We respect your privacy. No spam — only direct design consultation.
+                  <h3 className="font-serif text-xl sm:text-2xl font-bold text-white">
+                    ধন্যবাদ, {name}!
+                  </h3>
+                  <p className="mt-2 text-sm text-neutral-300">
+                    আপনার নম্বরটি পেয়েছি। আমাদের টিম খুব দ্রুত আপনার সাথে কথা বলবে।
                   </p>
-                </form>
+
+                  <div className="mt-6 pt-4 border-t border-brand-slate-border">
+                    <p className="text-xs text-neutral-400 mb-3">
+                      এখনই মেসেজ পাঠাতে চাইলে:
+                    </p>
+                    <a
+                      href={whatsappDirectUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex h-11 items-center justify-center gap-2 rounded-sm bg-accent-whatsapp px-5 text-sm font-bold text-brand-slate-deep transition-colors hover:bg-accent-whatsapp-hover"
+                    >
+                      <WhatsAppIcon size={18} />
+                      <span>হোয়াটসঅ্যাপে সরাসরি মেসেজ দিন</span>
+                    </a>
+                  </div>
+                </div>
               )}
             </div>
           </div>

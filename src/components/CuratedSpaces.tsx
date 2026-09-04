@@ -2,60 +2,45 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { BRAND_CONFIG, CollectionItem } from "@/content/brand";
+import { BRAND_CONFIG, GalleryItem } from "@/content/brand";
+import { WhatsAppIcon } from "@/components/icons";
 
 const CATEGORIES = [
-  { key: "all", label: "All Spaces" },
-  { key: "living", label: "Living Room" },
-  { key: "dining", label: "Dining Room" },
-  { key: "bedroom", label: "Bedrooms" },
-  { key: "bespoke", label: "Bespoke & Storage" },
+  { key: "all", labelBn: "সব ফার্নিচার" },
+  { key: "living", labelBn: "লিভিং ও ড্রয়িং" },
+  { key: "bedroom", labelBn: "বেডরুম" },
+  { key: "dining", labelBn: "ডাইনিং" },
+  { key: "office", labelBn: "অফিস ও স্টোরেজ" },
+  { key: "custom", labelBn: "কাস্টম ফার্নিচার" },
 ] as const;
 
 export default function CuratedSpaces() {
   const [activeCategory, setActiveCategory] = useState<string>("all");
 
-  const filteredItems =
+  const items =
     activeCategory === "all"
-      ? BRAND_CONFIG.collections
-      : BRAND_CONFIG.collections.filter(
-          (item) => item.category === activeCategory
-        );
-
-  const handleSelectSpace = (label: string) => {
-    if (typeof window !== "undefined") {
-      window.dispatchEvent(
-        new CustomEvent("select-space", { detail: label })
-      );
-    }
-  };
+      ? BRAND_CONFIG.gallery
+      : BRAND_CONFIG.gallery.filter((item) => item.category === activeCategory);
 
   return (
-    <section id="spaces" className="bg-surface-ecru-paper py-16 sm:py-24 lg:py-32">
-      <div className="mx-auto max-w-7xl px-4 sm:px-8 lg:px-12 reveal-on-scroll">
+    <section id="collection" className="bg-surface-ecru-paper py-14 sm:py-20 lg:py-24 border-t border-b border-neutral-200">
+      <div className="mx-auto max-w-7xl px-4 sm:px-8 lg:px-12">
         {/* Section Header */}
-        <div className="flex flex-col md:flex-row md:items-end md:justify-between">
+        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
           <div className="max-w-2xl">
-            <p className="text-xs font-semibold uppercase tracking-[0.15em] text-accent-brass-dark sm:text-sm sm:tracking-[0.2em]">
-              Curated Spaces
-            </p>
-            <h2 className="mt-3 font-serif text-2xl font-semibold leading-tight tracking-tight text-text-primary-dark sm:mt-4 sm:text-3xl md:text-4xl lg:text-5xl">
-              Designed for Living.{" "}
-              <span className="text-text-secondary-dark italic">
-                Crafted for Life.
-              </span>
+            <h2 className="font-serif text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-text-primary-dark">
+              আমাদের ফার্নিচার কালেকশন
             </h2>
-            <p className="mt-3 text-sm leading-relaxed text-text-secondary-dark sm:mt-4 sm:text-base md:text-lg">
-              Explore bespoke environments crafted for discerning Chattogram homes.
-              Every piece can be dimensioned to your room&apos;s blueprint.
+            <p className="mt-2 text-base text-text-secondary-dark">
+              আগ্রাবাদ শোরুমে থাকা আমাদের তৈরি ফার্নিচার। ছবি দেখুন, পছন্দ হলে সরাসরি শোরুমে আসুন বা দাম ও সাইজ জানতে মেসেজ দিন।
             </p>
           </div>
 
-          {/* Category Filter Pills — Smooth horizontal swipe on mobile */}
+          {/* Simple Category Tabs */}
           <div
-            className="mt-6 flex gap-2 overflow-x-auto pb-2 scrollbar-none sm:flex-wrap sm:pb-0 md:mt-0"
+            className="flex gap-2 overflow-x-auto pb-1 scrollbar-none sm:flex-wrap"
             role="tablist"
-            aria-label="Furniture spaces filter"
+            aria-label="ফার্নিচার ক্যাটাগরি"
           >
             {CATEGORIES.map((cat) => (
               <button
@@ -63,214 +48,78 @@ export default function CuratedSpaces() {
                 role="tab"
                 aria-selected={activeCategory === cat.key}
                 onClick={() => setActiveCategory(cat.key)}
-                className={`shrink-0 rounded-sm px-3.5 py-2 text-xs font-semibold tracking-wide transition-all duration-300 sm:px-4 sm:text-sm ${
+                className={`shrink-0 rounded-sm px-4 py-2 text-sm font-semibold transition-colors cursor-pointer ${
                   activeCategory === cat.key
-                    ? "bg-brand-slate-deep text-text-primary-light shadow-sm"
-                    : "border border-neutral-300 bg-transparent text-text-secondary-dark hover:border-accent-brass hover:text-text-primary-dark"
+                    ? "bg-brand-slate-deep text-white"
+                    : "border border-neutral-300 bg-white text-text-secondary-dark hover:border-neutral-500 hover:text-text-primary-dark"
                 }`}
               >
-                {cat.label}
+                {cat.labelBn}
               </button>
             ))}
           </div>
         </div>
 
-        {/* Collections Editorial Grid */}
-        <div className="mt-12 grid gap-8 sm:grid-cols-2 lg:mt-16 lg:grid-cols-3">
-          {filteredItems.map((item: CollectionItem, index: number) => {
-            const isFeatured = activeCategory === "all" && index === 0;
-
-            if (isFeatured) {
-              return (
-                <article
-                  key={item.id}
-                  className="group flex flex-col overflow-hidden rounded-sm border border-neutral-200/90 bg-surface-ecru-light transition-all duration-300 hover:border-accent-brass/50 hover:shadow-md sm:col-span-2 lg:col-span-2 lg:grid lg:grid-cols-12"
-                >
-                  {/* Featured Large Image Container */}
-                  <div className="relative aspect-[16/10] w-full overflow-hidden bg-neutral-100 lg:col-span-7 lg:h-full lg:aspect-auto">
-                    <Image
-                      src={item.imageSrc}
-                      alt={item.imageAlt}
-                      fill
-                      sizes="(max-width: 1024px) 100vw, 55vw"
-                      className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.02]"
-                    />
-                    <span className="absolute top-3 left-3 rounded-xs bg-brand-slate-deep/90 px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-accent-brass backdrop-blur-xs">
-                      Featured Atelier Suite · {item.categoryLabel}
-                    </span>
-                  </div>
-
-                  {/* Featured Card Content */}
-                  <div className="flex flex-1 flex-col justify-between p-6 sm:p-8 lg:col-span-5">
-                    <div>
-                      <h3 className="font-serif text-2xl font-semibold tracking-tight text-text-primary-dark sm:text-3xl">
-                        {item.title}
-                      </h3>
-                      <p className="mt-1 text-xs font-semibold uppercase tracking-wider text-accent-brass-dark">
-                        {item.headline}
-                      </p>
-                      <p className="mt-4 text-sm leading-relaxed text-text-secondary-dark sm:text-base sm:leading-relaxed">
-                        {item.description}
-                      </p>
-
-                      {/* Features list */}
-                      <div className="mt-6 flex flex-wrap gap-1.5 border-t border-neutral-200/70 pt-4">
-                        {item.features.map((feat, idx) => (
-                          <span
-                            key={idx}
-                            className="rounded-xs bg-surface-ecru-paper px-2.5 py-1 text-xs font-medium text-text-secondary-dark"
-                          >
-                            {feat}
-                          </span>
-                        ))}
-                      </div>
-
-                      {/* Indicative Price Guidance */}
-                      {item.indicativePrice && (
-                        <div className="mt-4 flex items-center gap-2 text-xs font-semibold text-accent-brass-dark">
-                          <span className="inline-block h-1.5 w-1.5 rounded-full bg-accent-brass-dark" aria-hidden="true" />
-                          <span>{item.indicativePrice}</span>
-                        </div>
-                      )}
-                    </div>
-
-                    {/* Card Action */}
-                    <div className="mt-6 border-t border-neutral-200/70 pt-4">
-                      <a
-                        href="#consultation"
-                        onClick={() => handleSelectSpace(item.categoryLabel)}
-                        className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-brand-slate-deep transition-colors group-hover:text-accent-brass sm:text-sm"
-                      >
-                        Request Blueprint Sizing for Living Suite
-                        <svg
-                          width="14"
-                          height="14"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          aria-hidden="true"
-                          className="transition-transform duration-300 group-hover:translate-x-1"
-                        >
-                          <line x1="5" y1="12" x2="19" y2="12" />
-                          <polyline points="12 5 19 12 12 19" />
-                        </svg>
-                      </a>
-                    </div>
-                  </div>
-                </article>
-              );
-            }
+        {/* Gallery Grid — Photography First */}
+        <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {items.map((item: GalleryItem) => {
+            const itemWhatsAppUrl = `https://wa.me/8801960481983?text=${encodeURIComponent(
+              `আসসালামু আলাইকুম, আমি হেভেন ফার্নিচার মার্টের "${item.titleBn}" এর দাম আর সাইজ সম্পর্কে জানতে চাই।`
+            )}`;
 
             return (
               <article
                 key={item.id}
-                className="group flex flex-col overflow-hidden rounded-sm border border-neutral-200/80 bg-surface-ecru-light transition-all duration-300 hover:border-accent-brass/40 hover:shadow-md"
+                className="group flex flex-col overflow-hidden rounded-sm border border-neutral-200 bg-white shadow-xs transition-shadow duration-200 hover:shadow-md"
               >
-                {/* Image Container with Natural Ratio */}
+                {/* Real Photo Dominates */}
                 <div className="relative aspect-[4/3] w-full overflow-hidden bg-neutral-100">
                   <Image
                     src={item.imageSrc}
                     alt={item.imageAlt}
                     fill
                     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                    className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.02]"
+                    className="object-cover transition-transform duration-300 group-hover:scale-[1.02]"
                   />
-                  <span className="absolute top-3 left-3 rounded-xs bg-brand-slate-deep/85 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wider text-accent-brass backdrop-blur-xs">
-                    {item.categoryLabel}
-                  </span>
+                  {item.badge && (
+                    <span className="absolute top-3 left-3 rounded-xs bg-brand-slate-deep/90 px-2.5 py-1 text-[11px] font-semibold text-accent-brass backdrop-blur-xs">
+                      {item.badge}
+                    </span>
+                  )}
                 </div>
 
-                {/* Card Content */}
-                <div className="flex flex-1 flex-col p-6 sm:p-7">
-                  <h3 className="font-serif text-xl font-semibold tracking-tight text-text-primary-dark sm:text-2xl">
-                    {item.title}
-                  </h3>
-                  <p className="mt-1 text-xs font-semibold uppercase tracking-wider text-accent-brass-dark">
-                    {item.headline}
-                  </p>
-                  <p className="mt-3 flex-1 text-sm leading-relaxed text-text-secondary-dark">
-                    {item.description}
-                  </p>
-
-                  {/* Features list */}
-                  <div className="mt-5 flex flex-wrap gap-1.5 border-t border-neutral-200/60 pt-4">
-                    {item.features.map((feat, idx) => (
-                      <span
-                        key={idx}
-                        className="rounded-xs bg-surface-ecru-paper px-2 py-0.5 text-[11px] font-medium text-text-secondary-dark"
-                      >
-                        {feat}
-                      </span>
-                    ))}
+                {/* Short Product Info & Single Clear Action */}
+                <div className="flex flex-1 flex-col p-4 sm:p-5 justify-between">
+                  <div>
+                    <h3 className="font-serif text-lg font-bold text-text-primary-dark">
+                      {item.titleBn}
+                    </h3>
+                    <p className="mt-1 text-xs text-text-secondary-dark leading-relaxed">
+                      {item.descriptionBn}
+                    </p>
                   </div>
 
-                  {/* Indicative Price Guidance */}
-                  {item.indicativePrice && (
-                    <div className="mt-3.5 flex items-center gap-2 text-xs font-semibold text-accent-brass-dark">
-                      <span className="inline-block h-1.5 w-1.5 rounded-full bg-accent-brass-dark" aria-hidden="true" />
-                      <span>{item.indicativePrice}</span>
-                    </div>
-                  )}
-
-                  {/* Card Action */}
-                  <div className="mt-5 flex items-center justify-between border-t border-neutral-200/60 pt-3.5">
+                  {/* Clean Human Action */}
+                  <div className="mt-4 pt-3 border-t border-neutral-100 flex items-center justify-between">
                     <a
-                      href="#consultation"
-                      onClick={() => handleSelectSpace(item.categoryLabel)}
-                      className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-brand-slate-deep transition-colors group-hover:text-accent-brass"
+                      href={itemWhatsAppUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-bold text-accent-whatsapp-dark hover:text-accent-whatsapp transition-colors"
+                      aria-label={`${item.titleBn} এর দাম আর সাইজ জানতে হোয়াটসঅ্যাপ করুন`}
                     >
-                      Request Custom Sizing
-                      <svg
-                        width="14"
-                        height="14"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        aria-hidden="true"
-                        className="transition-transform duration-300 group-hover:translate-x-1"
-                      >
-                        <line x1="5" y1="12" x2="19" y2="12" />
-                        <polyline points="12 5 19 12 12 19" />
-                      </svg>
+                      <WhatsAppIcon size={16} className="text-accent-whatsapp shrink-0" />
+                      <span>দাম আর সাইজ জানতে মেসেজ করুন</span>
                     </a>
+
+                    <span className="text-[11px] text-neutral-400">
+                      {item.categoryLabelBn}
+                    </span>
                   </div>
                 </div>
               </article>
             );
           })}
-        </div>
-
-        {/* Transparent Bespoke Investment Advisory Banner */}
-        <div className="mt-14 rounded-sm border border-accent-brass/25 bg-surface-ecru-paper p-6 sm:p-8">
-          <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
-            <div className="max-w-2xl">
-              <span className="text-xs font-semibold uppercase tracking-wider text-accent-brass-dark">
-                Transparent Atelier Pricing
-              </span>
-              <h4 className="mt-1 font-serif text-lg font-semibold text-text-primary-dark sm:text-xl">
-                Custom Architectural Fit · Zero Middleman Showroom Markups
-              </h4>
-              <p className="mt-2 text-xs leading-relaxed text-text-secondary-dark sm:text-sm">
-                Every commission is quoted with complete line-item transparency based on timber species (seasoned Chittagong Teak or Mahogany), certified marble slabs, and custom upholstery weaves. Never pay off-the-shelf retail markups for standard factory furniture that compromises your floor plan.
-              </p>
-            </div>
-            <a
-              href="#consultation"
-              className="inline-flex shrink-0 items-center justify-center gap-2 rounded-sm border border-accent-brass/40 bg-brand-slate-deep px-6 py-3 text-xs font-semibold tracking-wide text-text-primary-light transition-all hover:bg-brand-slate-surface sm:text-sm"
-            >
-              Request Sizing &amp; Quotation
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                <line x1="5" y1="12" x2="19" y2="12" />
-                <polyline points="12 5 19 12 12 19" />
-              </svg>
-            </a>
-          </div>
         </div>
       </div>
     </section>

@@ -1,89 +1,85 @@
 import Image from "next/image";
 import { BRAND_CONFIG } from "@/content/brand";
+import { WhatsAppIcon } from "@/components/icons";
 
 export default function BespokeProcess() {
-  const steps = BRAND_CONFIG.bespokeProcess;
+  const steps = BRAND_CONFIG.customSteps;
 
   return (
-    <section id="process" className="bg-surface-ecru-light py-16 sm:py-24 lg:py-32">
-      <div className="mx-auto max-w-7xl px-4 sm:px-8 lg:px-12 reveal-on-scroll">
+    <section id="custom" className="bg-surface-ecru-light py-14 sm:py-20 lg:py-24">
+      <div className="mx-auto max-w-7xl px-4 sm:px-8 lg:px-12">
         {/* Section Header */}
         <div className="max-w-2xl">
-          <p className="text-xs font-semibold uppercase tracking-[0.15em] text-accent-brass-dark sm:text-sm sm:tracking-[0.2em]">
-            How We Work
-          </p>
-          <h2 className="mt-3 font-serif text-2xl font-semibold leading-tight tracking-tight text-text-primary-dark sm:mt-4 sm:text-3xl md:text-4xl lg:text-5xl">
-            From Floor Plan to Finished Home in{" "}
-            <span className="italic text-accent-brass-dark">4 Transparent Steps.</span>
+          <h2 className="font-serif text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-text-primary-dark">
+            আপনার জায়গার মাপ অনুযায়ী ফার্নিচার
           </h2>
-          <p className="mt-3 text-sm leading-relaxed text-text-secondary-dark sm:mt-4 sm:text-base md:text-lg">
-            Custom furniture shouldn&apos;t be an uncertain gamble. We take you through a structured, collaborative design process with clear milestones and dedicated craftsmen.
+          <p className="mt-2 text-base text-text-secondary-dark leading-relaxed">
+            রেডিমেড ফার্নিচার অনেক সময় ঘরের মাপে খাপ খায় না। আমাদের জানান আপনার কতটুকু জায়গা আছে—আমরা সঠিক মাপে নিখুঁতভাবে বানিয়ে দেব।
           </p>
         </div>
 
-        {/* 4 Steps Grid & Craftsmanship Feature */}
-        <div className="mt-12 grid gap-10 lg:mt-16 lg:grid-cols-12 lg:items-start lg:gap-16">
+        {/* 4 Steps Grid & Real Craftsmanship Showcase */}
+        <div className="mt-10 grid gap-8 lg:grid-cols-12 lg:items-start lg:gap-12">
           {/* Steps Timeline Column */}
-          <div className="space-y-6 sm:space-y-8 lg:col-span-7">
+          <div className="space-y-6 lg:col-span-7">
             {steps.map((step) => (
               <div
                 key={step.stepNumber}
-                className="group relative flex gap-4 border-b border-surface-ecru-muted pb-6 last:border-0 last:pb-0 sm:gap-6 sm:pb-8"
+                className="flex gap-4 border-b border-neutral-200/80 pb-5 last:border-0 last:pb-0 sm:gap-5"
               >
                 {/* Step Number Badge */}
-                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-sm border border-accent-brass-dark/40 bg-surface-ecru-paper font-serif text-base font-bold text-accent-brass-dark transition-colors group-hover:border-accent-brass group-hover:bg-brand-slate-deep group-hover:text-text-primary-light sm:h-14 sm:w-14 sm:text-xl">
+                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-sm bg-brand-slate-deep font-serif text-base font-bold text-accent-brass">
                   {step.stepNumber}
                 </div>
 
-                {/* Step Body */}
+                {/* Step Content */}
                 <div className="flex-1">
-                  <div className="flex flex-wrap items-baseline justify-between gap-2">
-                    <h3 className="font-serif text-xl font-semibold tracking-tight text-text-primary-dark sm:text-2xl">
-                      {step.title}
-                    </h3>
-                    {step.duration && (
-                      <span className="text-xs font-semibold uppercase tracking-wider text-accent-brass-dark">
-                        {step.duration}
-                      </span>
-                    )}
-                  </div>
-                  <p className="mt-1 text-xs font-semibold uppercase tracking-wider text-text-secondary-dark">
-                    {step.headline}
-                  </p>
-                  <p className="mt-2 text-sm leading-relaxed text-text-secondary-dark sm:text-base sm:leading-relaxed">
-                    {step.description}
+                  <h3 className="font-serif text-base sm:text-lg font-bold text-text-primary-dark">
+                    {step.titleBn}
+                  </h3>
+                  <p className="mt-1 text-sm text-text-secondary-dark leading-relaxed">
+                    {step.descriptionBn}
                   </p>
                 </div>
               </div>
             ))}
+
+            {/* Custom Furniture CTA */}
+            <div className="pt-3">
+              <a
+                href={`https://wa.me/8801960481983?text=${encodeURIComponent(
+                  "আসসালামু আলাইকুম, আমি আমার জায়গার মাপে কাস্টম ফার্নিচার তৈরি করাতে চাই। কীভাবে শুরু করব?"
+                )}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex h-[52px] items-center justify-center gap-2.5 rounded-sm bg-accent-whatsapp px-6 text-base font-bold text-brand-slate-deep shadow-xs transition-colors hover:bg-accent-whatsapp-hover"
+                aria-label="আপনার মাপ বা ছবি পাঠাতে হোয়াটসঅ্যাপ করুন"
+              >
+                <WhatsAppIcon size={20} className="shrink-0" />
+                <span>আপনার মাপ বা ছবি পাঠাতে হোয়াটসঅ্যাপ করুন</span>
+              </a>
+            </div>
           </div>
 
           {/* Authentic Craftsmanship Image Showcase */}
           <div className="lg:col-span-5">
-            <div className="relative overflow-hidden rounded-sm border border-neutral-200/80 bg-surface-ecru-paper shadow-sm">
-              <div className="relative aspect-[3/4] w-full overflow-hidden">
+            <div className="overflow-hidden rounded-sm border border-neutral-200 bg-white shadow-xs">
+              <div className="relative aspect-[4/3] sm:aspect-[16/11] w-full overflow-hidden bg-neutral-100">
                 <Image
                   src="/assets/craftsmanship/heaven-handcrafted-sofa-process.webp"
-                  alt="Master woodworker and upholsterer at Heaven Furniture Mart atelier hammering individual brass upholstery studs into custom teak furniture"
+                  alt="হেভেন ফার্নিচার মার্টের কারিগরদের কাজের দৃশ্য"
                   fill
                   sizes="(max-width: 1024px) 100vw, 40vw"
                   className="object-cover"
                 />
               </div>
 
-              {/* Caption Card */}
-              <div className="p-6">
-                <div className="flex items-center gap-2">
-                  <span className="h-2 w-2 rounded-full bg-accent-brass-dark" />
-                  <p className="text-xs font-semibold uppercase tracking-widest text-accent-brass-dark">
-                    The Atelier Benchmark
-                  </p>
-                </div>
-                <h3 className="mt-2 font-serif text-lg font-semibold text-text-primary-dark sm:text-xl">
-                  Human Hands. CNC Precision.
-                </h3>
-                <p className="mt-2 text-xs leading-relaxed text-text-secondary-dark sm:text-sm">
-                  While our CNC cutters ensure sub-millimeter structural joints, every curve, button tuft, and brass nail is placed by hand by master craftsmen with decades of woodworking heritage in Chattogram.
+              <div className="p-4 sm:p-5">
+                <h4 className="font-serif text-base font-bold text-text-primary-dark">
+                  দক্ষ কারিগরের যত্নে তৈরি
+                </h4>
+                <p className="mt-1 text-xs sm:text-sm text-text-secondary-dark leading-relaxed">
+                  আমাদের কারিগররা প্রতিটি কাঠ, জোড়া ও ফিনিশিং নিজেদের চোখে দেখে নিখুঁতভাবে তৈরি করেন।
                 </p>
               </div>
             </div>
