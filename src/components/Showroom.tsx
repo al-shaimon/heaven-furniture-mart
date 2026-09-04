@@ -12,7 +12,7 @@ export default function Showroom() {
       <div className="mx-auto max-w-7xl px-4 sm:px-8 lg:px-12">
         {/* Section Header */}
         <div className="max-w-2xl">
-          <h2 className="font-serif text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-text-primary-dark">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-text-primary-dark">
             শোরুমে এসে নিজের চোখে দেখে পছন্দ করুন
           </h2>
           <p className="mt-2 text-base text-text-secondary-dark leading-relaxed">
@@ -41,7 +41,7 @@ export default function Showroom() {
           {/* Location & Hours Card */}
           <div className="flex flex-col justify-between rounded-sm border border-neutral-200 bg-white p-6 shadow-xs sm:p-8 lg:col-span-5">
             <div>
-              <h3 className="font-serif text-xl sm:text-2xl font-bold text-text-primary-dark">
+              <h3 className="text-xl sm:text-2xl font-bold text-text-primary-dark">
                 আগ্রাবাদ শোরুম
               </h3>
 

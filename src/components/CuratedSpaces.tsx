@@ -28,7 +28,7 @@ export default function CuratedSpaces() {
         {/* Section Header */}
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
           <div className="max-w-2xl">
-            <h2 className="font-serif text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-text-primary-dark">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-text-primary-dark">
               আমাদের ফার্নিচার কালেকশন
             </h2>
             <p className="mt-2 text-base text-text-secondary-dark">
@@ -91,7 +91,7 @@ export default function CuratedSpaces() {
                 {/* Short Product Info & Single Clear Action */}
                 <div className="flex flex-1 flex-col p-4 sm:p-5 justify-between">
                   <div>
-                    <h3 className="font-serif text-lg font-bold text-text-primary-dark">
+                    <h3 className="text-lg font-bold text-text-primary-dark">
                       {item.titleBn}
                     </h3>
                     <p className="mt-1 text-xs text-text-secondary-dark leading-relaxed">

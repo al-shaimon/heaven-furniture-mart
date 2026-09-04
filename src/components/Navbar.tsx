@@ -15,166 +15,211 @@ export default function Navbar() {
   }, []);
 
   useEffect(() => {
-    document.body.style.overflow = mobileOpen ? "hidden" : "";
+    if (mobileOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
     return () => {
       document.body.style.overflow = "";
     };
   }, [mobileOpen]);
 
   return (
-    <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ease-out ${
-        scrolled
-          ? "bg-brand-slate-deep/98 backdrop-blur-md shadow-md py-2.5 sm:py-3"
-          : "bg-brand-slate-deep/90 sm:bg-brand-slate-deep/80 backdrop-blur-sm py-3 sm:py-3.5"
-      }`}
-    >
-      <nav
-        className="mx-auto flex max-w-7xl items-center justify-between px-4 sm:px-8 lg:px-12"
-        aria-label="প্রধান নেভিগেশন"
-      >
-        {/* ================= DESKTOP VIEW ================= */}
-        {/* Desktop Brand Text (no logo) */}
-        <div className="hidden lg:flex items-center">
-          <a
-            href="#top"
-            className="flex flex-col focus-visible:outline-none group"
-            aria-label="Heaven Furniture Mart — হেভেন ফার্নিচার মার্ট · আগ্রাবাদ"
-          >
-            <span className="font-sans text-base sm:text-lg font-bold tracking-tight text-white group-hover:text-accent-brass transition-colors leading-tight">
-              Heaven Furniture Mart
-            </span>
-            <span className="font-sans text-[11px] sm:text-xs text-neutral-300 font-normal leading-tight mt-0.5">
-              হেভেন ফার্নিচার মার্ট · আগ্রাবাদ
-            </span>
-          </a>
-        </div>
-
-        {/* Desktop Links */}
-        <ul className="hidden lg:flex items-center gap-7">
-          {BRAND_CONFIG.navigation.map((link) => (
-            <li key={link.href}>
-              <a
-                href={link.href}
-                className="text-sm font-medium tracking-wide text-neutral-300 hover:text-white transition-colors focus-visible:text-accent-brass"
-              >
-                {link.label}
-              </a>
-            </li>
-          ))}
-        </ul>
-
-        {/* Desktop Hotline Action */}
-        <div className="hidden lg:flex items-center">
-          <a
-            href={BRAND_CONFIG.contact.phoneUrl}
-            className="flex items-center gap-2 rounded-sm border border-neutral-600 bg-brand-slate-surface px-4 py-2 text-sm font-semibold text-white transition-all hover:border-accent-brass hover:text-accent-brass"
-            aria-label={`সরাসরি কল করুন: ${BRAND_CONFIG.contact.primaryPhoneDisplay}`}
-          >
-            <PhoneIcon />
-            <span>কল: {BRAND_CONFIG.contact.primaryPhoneDisplay}</span>
-          </a>
-        </div>
-
-        {/* ================= MOBILE VIEW ================= */}
-        {/* Layout: Text on Left | Call icon + Hamburger on Right */}
-        <div className="flex w-full items-center justify-between lg:hidden">
-          {/* Brand Text on Left */}
-          <a
-            href="#top"
-            className="flex flex-col focus-visible:outline-none text-left"
-            aria-label="Heaven Furniture Mart — হেভেন ফার্নিচার মার্ট · আগ্রাবাদ"
-          >
-            <span className="font-sans text-sm sm:text-base font-bold tracking-tight text-white leading-tight">
-              Heaven Furniture Mart
-            </span>
-            <span className="font-sans text-[11px] text-neutral-300 font-normal leading-tight mt-0.5">
-              হেভেন ফার্নিচার মার্ট · আগ্রাবাদ
-            </span>
-          </a>
-
-          {/* Call icon + Hamburger on Right */}
-          <div className="flex items-center gap-1">
-            {/* Call icon */}
-            <a
-              href={BRAND_CONFIG.contact.phoneUrl}
-              className="flex h-10 w-10 items-center justify-center rounded-sm text-neutral-200 hover:text-white hover:bg-brand-slate-surface focus-visible:ring-2 focus-visible:ring-accent-whatsapp"
-              aria-label="সরাসরি কল করুন"
-            >
-              <PhoneIcon />
-            </a>
-
-            {/* Hamburger button */}
-            <button
-              onClick={() => setMobileOpen(!mobileOpen)}
-              className="flex h-10 w-10 flex-col items-center justify-center gap-1.5 rounded-sm text-neutral-200 hover:text-white hover:bg-brand-slate-surface focus-visible:ring-2 focus-visible:ring-accent-whatsapp"
-              aria-label={mobileOpen ? "মেনু বন্ধ করুন" : "মেনু খুলুন"}
-              aria-expanded={mobileOpen}
-            >
-              <span
-                className={`block h-0.5 w-5 bg-current transition-all duration-300 ${
-                  mobileOpen ? "translate-y-2 rotate-45" : ""
-                }`}
-              />
-              <span
-                className={`block h-0.5 w-5 bg-current transition-opacity duration-300 ${
-                  mobileOpen ? "opacity-0" : ""
-                }`}
-              />
-              <span
-                className={`block h-0.5 w-5 bg-current transition-all duration-300 ${
-                  mobileOpen ? "-translate-y-2 -rotate-45" : ""
-                }`}
-              />
-            </button>
-          </div>
-        </div>
-      </nav>
-
-      {/* Mobile Drawer */}
-      <div
-        className={`fixed inset-x-0 top-[56px] bottom-0 z-40 overflow-y-auto bg-brand-slate-deep/98 px-6 pb-24 pt-4 backdrop-blur-md transition-all duration-300 lg:hidden ${
-          mobileOpen
-            ? "pointer-events-auto opacity-100 translate-y-0 visible"
-            : "pointer-events-none opacity-0 -translate-y-4 invisible"
+    <>
+      <header
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ease-out ${
+          scrolled
+            ? "bg-brand-slate-deep/98 backdrop-blur-md shadow-md py-2.5 sm:py-3"
+            : "bg-brand-slate-deep/90 sm:bg-brand-slate-deep/80 backdrop-blur-sm py-3 sm:py-3.5"
         }`}
-        aria-hidden={!mobileOpen}
       >
-        <div className="flex flex-col gap-1 pt-2">
-          {BRAND_CONFIG.navigation.map((link) => (
+        <nav
+          className="mx-auto flex max-w-7xl items-center justify-between px-4 sm:px-8 lg:px-12"
+          aria-label="প্রধান নেভিগেশন"
+        >
+          {/* ================= DESKTOP VIEW ================= */}
+          {/* Desktop Brand Text */}
+          <div className="hidden lg:flex items-center">
             <a
-              key={link.href}
-              href={link.href}
-              tabIndex={mobileOpen ? 0 : -1}
-              onClick={() => setMobileOpen(false)}
-              className="border-b border-brand-slate-border py-4 text-base font-medium text-white transition-colors hover:text-accent-brass"
+              href="#top"
+              className="flex flex-col focus-visible:outline-none group"
+              aria-label="Heaven Furniture Mart — হেভেন ফার্নিচার মার্ট · আগ্রাবাদ"
             >
-              {link.label}
+              <span className="font-sans text-lg sm:text-xl font-bold tracking-normal text-white group-hover:text-accent-brass transition-colors leading-tight">
+                Heaven Furniture Mart
+              </span>
+              <span className="text-xs text-neutral-300 font-normal leading-normal mt-1">
+                হেভেন ফার্নিচার মার্ট · আগ্রাবাদ
+              </span>
             </a>
-          ))}
+          </div>
 
-          {/* Direct Call Button in Drawer */}
-          <div className="mt-6 flex flex-col gap-3">
+          {/* Desktop Links */}
+          <ul className="hidden lg:flex items-center gap-7">
+            {BRAND_CONFIG.navigation.map((link) => (
+              <li key={link.href}>
+                <a
+                  href={link.href}
+                  className="text-sm font-medium tracking-normal text-neutral-300 hover:text-white transition-colors focus-visible:text-accent-brass"
+                >
+                  {link.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+
+          {/* Desktop Hotline Action */}
+          <div className="hidden lg:flex items-center">
             <a
               href={BRAND_CONFIG.contact.phoneUrl}
-              tabIndex={mobileOpen ? 0 : -1}
-              className="flex h-12 items-center justify-center gap-2 rounded-sm border border-neutral-600 bg-brand-slate-surface px-6 text-sm font-semibold text-white transition-colors hover:border-accent-brass"
+              className="flex items-center gap-2 rounded-sm border border-neutral-600 bg-brand-slate-surface px-4 py-2 text-sm font-semibold text-white transition-all hover:border-accent-brass hover:text-accent-brass"
+              aria-label={`সরাসরি কল করুন: ${BRAND_CONFIG.contact.primaryPhoneDisplay}`}
             >
               <PhoneIcon />
-              <span>কল করুন: {BRAND_CONFIG.contact.primaryPhoneDisplay}</span>
+              <span>কল: {BRAND_CONFIG.contact.primaryPhoneDisplay}</span>
             </a>
           </div>
 
-          <div className="mt-8 border-t border-brand-slate-border pt-5">
-            <p className="text-xs text-neutral-300">
-              📍 {BRAND_CONFIG.location.fullAddressBn}
-            </p>
-            <p className="mt-2 text-xs text-neutral-400">
-              🕒 {BRAND_CONFIG.operatingHours.daysBn}: {BRAND_CONFIG.operatingHours.timeBn}
-            </p>
+          {/* ================= MOBILE VIEW TOP BAR ================= */}
+          {/* Layout: Text on Left | Call icon + Hamburger on Right */}
+          <div className="flex w-full items-center justify-between lg:hidden">
+            {/* Brand Text on Left */}
+            <a
+              href="#top"
+              className="flex flex-col focus-visible:outline-none text-left"
+              aria-label="Heaven Furniture Mart — হেভেন ফার্নিচার মার্ট · আগ্রাবাদ"
+            >
+              <span className="font-sans text-base font-bold tracking-normal text-white leading-tight">
+                Heaven Furniture Mart
+              </span>
+              <span className="text-[11px] text-neutral-300 font-normal leading-normal mt-0.5">
+                হেভেন ফার্নিচার মার্ট · আগ্রাবাদ
+              </span>
+            </a>
+
+            {/* Call icon + Hamburger on Right */}
+            <div className="flex items-center gap-1">
+              {/* Call icon */}
+              <a
+                href={BRAND_CONFIG.contact.phoneUrl}
+                className="flex h-10 w-10 items-center justify-center rounded-sm text-neutral-200 hover:text-white hover:bg-brand-slate-surface focus-visible:ring-2 focus-visible:ring-accent-whatsapp"
+                aria-label="সরাসরি কল করুন"
+              >
+                <PhoneIcon />
+              </a>
+
+              {/* Hamburger button */}
+              <button
+                onClick={() => setMobileOpen(true)}
+                className="flex h-10 w-10 flex-col items-center justify-center gap-1.5 rounded-sm text-neutral-200 hover:text-white hover:bg-brand-slate-surface focus-visible:ring-2 focus-visible:ring-accent-whatsapp cursor-pointer"
+                aria-label="মেনু খুলুন"
+                aria-expanded={mobileOpen}
+              >
+                <span className="block h-0.5 w-5 bg-current" />
+                <span className="block h-0.5 w-5 bg-current" />
+                <span className="block h-0.5 w-5 bg-current" />
+              </button>
+            </div>
+          </div>
+        </nav>
+      </header>
+
+      {/* ================= FULLSCREEN MOBILE DRAWER ================= */}
+      {/* Placed outside header to avoid backdrop-filter containing block truncation */}
+      {mobileOpen && (
+        <div
+          className="fixed inset-0 z-[100] flex flex-col bg-brand-slate-deep text-white lg:hidden overflow-y-auto"
+          role="dialog"
+          aria-modal="true"
+          aria-label="মোবাইল নেভিগেশন মেনু"
+        >
+          {/* Top Bar inside Drawer matching the header */}
+          <div className="flex items-center justify-between px-4 py-3 sm:px-8 border-b border-brand-slate-border bg-brand-slate-deep shrink-0">
+            {/* Brand on Left */}
+            <a
+              href="#top"
+              onClick={() => setMobileOpen(false)}
+              className="flex flex-col text-left"
+            >
+              <span className="font-sans text-base font-bold tracking-normal text-white leading-tight">
+                Heaven Furniture Mart
+              </span>
+              <span className="text-[11px] text-neutral-300 font-normal leading-normal mt-0.5">
+                হেভেন ফার্নিচার মার্ট · আগ্রাবাদ
+              </span>
+            </a>
+
+            {/* Call icon + Close icon on Right */}
+            <div className="flex items-center gap-1">
+              <a
+                href={BRAND_CONFIG.contact.phoneUrl}
+                className="flex h-10 w-10 items-center justify-center rounded-sm text-neutral-200 hover:text-white hover:bg-brand-slate-surface focus-visible:ring-2 focus-visible:ring-accent-whatsapp"
+                aria-label="সরাসরি কল করুন"
+              >
+                <PhoneIcon />
+              </a>
+
+              <button
+                onClick={() => setMobileOpen(false)}
+                className="flex h-10 w-10 items-center justify-center rounded-sm text-neutral-200 hover:text-white hover:bg-brand-slate-surface focus-visible:ring-2 focus-visible:ring-accent-whatsapp cursor-pointer"
+                aria-label="মেনু বন্ধ করুন"
+              >
+                <svg
+                  width="22"
+                  height="22"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  aria-hidden="true"
+                >
+                  <line x1="18" y1="6" x2="6" y2="18" />
+                  <line x1="6" y1="6" x2="18" y2="18" />
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          {/* Scrollable Navigation Links */}
+          <div className="flex-1 overflow-y-auto px-6 py-4 flex flex-col justify-between">
+            <nav className="flex flex-col">
+              {BRAND_CONFIG.navigation.map((link) => (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  onClick={() => setMobileOpen(false)}
+                  className="border-b border-brand-slate-border/70 py-4 text-base font-medium text-white transition-colors hover:text-accent-brass active:text-accent-brass"
+                >
+                  {link.label}
+                </a>
+              ))}
+            </nav>
+
+            {/* Direct Call Button in Drawer */}
+            <div className="mt-8 pb-20 space-y-4">
+              <a
+                href={BRAND_CONFIG.contact.phoneUrl}
+                className="flex h-12 items-center justify-center gap-2 rounded-sm border border-neutral-600 bg-brand-slate-surface px-6 text-sm font-semibold text-white transition-colors hover:border-accent-brass"
+              >
+                <PhoneIcon />
+                <span>কল করুন: {BRAND_CONFIG.contact.primaryPhoneDisplay}</span>
+              </a>
+
+              <div className="border-t border-brand-slate-border/80 pt-4 text-xs text-neutral-400 space-y-1.5">
+                <p className="text-neutral-300">
+                  📍 {BRAND_CONFIG.location.fullAddressBn}
+                </p>
+                <p>
+                  🕒 {BRAND_CONFIG.operatingHours.daysBn}: {BRAND_CONFIG.operatingHours.timeBn}
+                </p>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-    </header>
+      )}
+    </>
   );
 }

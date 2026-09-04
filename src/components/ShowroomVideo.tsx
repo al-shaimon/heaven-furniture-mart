@@ -14,7 +14,7 @@ export default function ShowroomVideo() {
       <div className="mx-auto max-w-5xl px-4 sm:px-8 lg:px-12 text-center">
         {/* Section Header */}
         <div className="max-w-2xl mx-auto">
-          <h2 className="font-serif text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-white">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white">
             শোরুমটা আগে একবার দেখে নিন
           </h2>
           <p className="mt-2.5 text-base sm:text-lg text-neutral-300 leading-relaxed">

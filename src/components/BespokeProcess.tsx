@@ -10,7 +10,7 @@ export default function BespokeProcess() {
       <div className="mx-auto max-w-7xl px-4 sm:px-8 lg:px-12">
         {/* Section Header */}
         <div className="max-w-2xl">
-          <h2 className="font-serif text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-text-primary-dark">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-text-primary-dark">
             আপনার জায়গার মাপ অনুযায়ী ফার্নিচার
           </h2>
           <p className="mt-2 text-base text-text-secondary-dark leading-relaxed">
@@ -28,13 +28,13 @@ export default function BespokeProcess() {
                 className="flex gap-4 border-b border-neutral-200/80 pb-5 last:border-0 last:pb-0 sm:gap-5"
               >
                 {/* Step Number Badge */}
-                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-sm bg-brand-slate-deep font-serif text-base font-bold text-accent-brass">
+                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-sm bg-brand-slate-deep text-base font-bold text-accent-brass">
                   {step.stepNumber}
                 </div>
 
                 {/* Step Content */}
                 <div className="flex-1">
-                  <h3 className="font-serif text-base sm:text-lg font-bold text-text-primary-dark">
+                  <h3 className="text-base sm:text-lg font-bold text-text-primary-dark">
                     {step.titleBn}
                   </h3>
                   <p className="mt-1 text-sm text-text-secondary-dark leading-relaxed">
@@ -75,7 +75,7 @@ export default function BespokeProcess() {
               </div>
 
               <div className="p-4 sm:p-5">
-                <h4 className="font-serif text-base font-bold text-text-primary-dark">
+                <h4 className="text-base font-bold text-text-primary-dark">
                   দক্ষ কারিগরের যত্নে তৈরি
                 </h4>
                 <p className="mt-1 text-xs sm:text-sm text-text-secondary-dark leading-relaxed">

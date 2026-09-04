@@ -26,7 +26,7 @@ export default function ConsultationCTA() {
         <div className="grid gap-10 lg:grid-cols-12 lg:items-center lg:gap-12">
           {/* Left Column: Direct Contact Details */}
           <div className="lg:col-span-6">
-            <h2 className="font-serif text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-white">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white">
               কথা বলুন বা মেসেজ দিন
             </h2>
             <p className="mt-2 text-base text-neutral-300 leading-relaxed">
@@ -86,7 +86,7 @@ export default function ConsultationCTA() {
             <div className="rounded-sm border border-neutral-700 bg-brand-slate-surface p-6 shadow-xl sm:p-8">
               {!submitted ? (
                 <>
-                  <h3 className="font-serif text-xl sm:text-2xl font-bold text-white">
+                  <h3 className="text-xl sm:text-2xl font-bold text-white">
                     কলব্যাক চান?
                   </h3>
                   <p className="mt-1 text-xs sm:text-sm text-neutral-400">
@@ -137,7 +137,7 @@ export default function ConsultationCTA() {
                   <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-accent-whatsapp/20 text-accent-whatsapp mb-4">
                     <CheckIcon size={28} />
                   </div>
-                  <h3 className="font-serif text-xl sm:text-2xl font-bold text-white">
+                  <h3 className="text-xl sm:text-2xl font-bold text-white">
                     ধন্যবাদ, {name}!
                   </h3>
                   <p className="mt-2 text-sm text-neutral-300">

@@ -43,7 +43,7 @@ export default function SocialGallery() {
         {/* Section Header */}
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
           <div>
-            <h2 className="font-serif text-2xl sm:text-3xl font-bold tracking-tight text-text-primary-dark">
+            <h2 className="text-2xl sm:text-3xl font-bold text-text-primary-dark">
               আরও কিছু ফার্নিচার দেখুন
             </h2>
             <p className="mt-1.5 text-sm sm:text-base text-text-secondary-dark">

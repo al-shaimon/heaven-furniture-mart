@@ -9,7 +9,7 @@ export default function ProvenanceTrust() {
       <div className="mx-auto max-w-7xl px-4 sm:px-8 lg:px-12">
         {/* Section Eyebrow & Headline */}
         <div className="max-w-2xl">
-          <h2 className="font-serif text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-text-primary-dark">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-text-primary-dark">
             আমাদের পরিচয় ও নির্ভরযোগ্যতা
           </h2>
           <p className="mt-2 text-base text-text-secondary-dark leading-relaxed">
@@ -23,7 +23,7 @@ export default function ProvenanceTrust() {
             {/* Quote Body */}
             <div className="lg:col-span-7 xl:col-span-8">
               <span className="text-3xl sm:text-4xl text-accent-brass-dark font-serif block mb-2">“</span>
-              <blockquote className="font-serif text-base sm:text-lg md:text-xl font-medium leading-relaxed text-text-primary-dark">
+              <blockquote className="text-base sm:text-lg md:text-xl font-medium leading-relaxed text-text-primary-dark">
                 {founder.quoteBn}
               </blockquote>
               <p className="mt-3 text-xs text-text-secondary-dark italic">
@@ -31,7 +31,7 @@ export default function ProvenanceTrust() {
               </p>
 
               <div className="mt-5 border-t border-neutral-100 pt-4">
-                <p className="font-serif text-base sm:text-lg font-bold text-text-primary-dark">
+                <p className="text-base sm:text-lg font-bold text-text-primary-dark">
                   {founder.nameBn} ({founder.nameEn})
                 </p>
                 <p className="text-xs font-semibold text-accent-brass-dark">
@@ -69,7 +69,7 @@ export default function ProvenanceTrust() {
         <div className="mt-8 grid gap-8 lg:grid-cols-12 lg:items-center">
           {/* 3 Verified Badges */}
           <div className="space-y-4 lg:col-span-7">
-            <h3 className="font-serif text-lg sm:text-xl font-bold text-text-primary-dark">
+            <h3 className="text-lg sm:text-xl font-bold text-text-primary-dark">
               স্বীকৃতি ও সম্মাননা
             </h3>
             <div className="grid gap-3 sm:grid-cols-3">

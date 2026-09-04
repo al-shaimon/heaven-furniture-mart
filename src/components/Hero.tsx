@@ -13,12 +13,12 @@ export default function Hero() {
           {/* Text Column (5 cols on lg, 6 on xl) */}
           <div className="flex flex-col justify-center lg:col-span-6">
             {/* Brand Eyebrow */}
-            <p className="font-serif text-lg sm:text-xl font-bold tracking-wide text-accent-brass mb-1">
+            <p className="text-lg sm:text-xl font-bold text-accent-brass mb-1">
               হেভেন ফার্নিচার মার্ট
             </p>
 
             {/* Main Headline */}
-            <h1 className="font-serif text-3xl sm:text-4xl md:text-5xl lg:text-[46px] font-bold leading-[1.2] tracking-tight text-white mt-1">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-[46px] font-bold leading-[1.25] text-white mt-1">
               আপনার ঘরের জন্য
               <br />
               <span className="text-accent-brass">পছন্দের ফার্নিচার।</span>

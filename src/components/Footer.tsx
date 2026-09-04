@@ -13,10 +13,10 @@ export default function Footer() {
           {/* Col 1: Brand & Social (5 cols) */}
           <div className="lg:col-span-5">
             <a href="#top" className="inline-flex flex-col focus-visible:outline-none group">
-              <span className="font-sans text-base sm:text-lg font-bold tracking-tight text-white group-hover:text-accent-brass transition-colors leading-tight">
+              <span className="font-sans text-lg sm:text-xl font-bold tracking-normal text-white group-hover:text-accent-brass transition-colors leading-tight">
                 Heaven Furniture Mart
               </span>
-              <span className="font-sans text-[11px] sm:text-xs text-neutral-300 font-normal leading-tight mt-0.5">
+              <span className="text-xs text-neutral-300 font-normal leading-normal mt-1">
                 হেভেন ফার্নিচার মার্ট · আগ্রাবাদ
               </span>
             </a>
