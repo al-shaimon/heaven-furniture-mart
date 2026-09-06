@@ -11,6 +11,7 @@
 [![License](https://img.shields.io/badge/License-MIT-green?style=flat-square)](LICENSE)
 
 🌐 **Live Production Website:** [https://hfm.alshaimon.com](https://hfm.alshaimon.com)  
+🚀 **Alternative Mirror (Netlify):** [https://heaven-furniture-mart-ctg.netlify.app](https://heaven-furniture-mart-ctg.netlify.app/)  
 📁 **GitHub Repository:** [https://github.com/al-shaimon/heaven-furniture-mart](https://github.com/al-shaimon/heaven-furniture-mart)
 
 ---
@@ -286,8 +287,11 @@ In `src/content/brand.ts`, update `SHOWROOM_VIDEOS` with new Cloudinary CDN URLs
 
 ## ✦ Deployment
 
-### Vercel (Recommended)
-Connect the repository to Vercel. Next.js 16 will automatically detect settings, compile the Turbopack production bundle, and deploy to edge networks with zero configuration.
+- **Primary Custom Domain:** [https://hfm.alshaimon.com](https://hfm.alshaimon.com) (Vercel Edge Network)
+- **Alternative Mirror:** [https://heaven-furniture-mart-ctg.netlify.app](https://heaven-furniture-mart-ctg.netlify.app/) (Netlify)
+
+### Vercel / Netlify
+Connect the repository directly to Vercel or Netlify. Next.js 16 will automatically detect settings, compile the Turbopack production bundle, and deploy with zero configuration.
 
 ### Self-Hosted VPS (Docker / Node.js)
 ```bash
