@@ -194,6 +194,7 @@ export default function ProductPreviewModal({ product, onClose }: ProductPreview
                             src={src}
                             alt={`${productTitle} - ${idx + 1}`}
                             fill
+                            quality={90}
                             sizes="(max-width: 1024px) 100vw, 650px"
                             className="object-contain drop-shadow-md transition-transform duration-300 group-hover:scale-[1.02]"
                           />

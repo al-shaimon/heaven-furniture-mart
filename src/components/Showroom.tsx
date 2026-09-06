@@ -120,6 +120,7 @@ export default function Showroom() {
                   src="/assets/showroom/heaven-agrabad-flagship-building.webp"
                   alt="হেভেন ফার্নিচার মার্ট শোরুম ভবন · আগ্রাবাদ, চট্টগ্রাম"
                   fill
+                  quality={85}
                   sizes="(max-width: 1024px) 100vw, 55vw"
                   className="object-cover"
                   loading="lazy"

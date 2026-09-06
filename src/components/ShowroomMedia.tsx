@@ -29,56 +29,71 @@ function LocalAutoVideo({
   const [isPlaying, setIsPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(true);
 
-  // Optimize poster URL using Next.js image optimizer so we don't load 500KB+ raw files
+  // High-definition crisp poster optimization (85 quality, retina responsive sizing)
+  const posterWidth = isPrimary ? 1080 : 828;
   const optimizedPoster = poster
-    ? `/_next/image?url=${encodeURIComponent(poster)}&w=640&q=75`
+    ? `/_next/image?url=${encodeURIComponent(poster)}&w=${posterWidth}&q=85`
     : undefined;
 
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
 
-    // Viewport Autoplay / Pause Observer - only loads video data when actually visible
-    const observer = new IntersectionObserver(
+    // 1. Proactive Stream Preload Observer: Attach Cloudinary stream 450px BEFORE user enters section
+    const preloadObserver = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          // Lazy attach video src on first viewport entry
           setActiveSrc((prev) => prev || src);
-          const video = videoRef.current;
-          if (video) {
-            video
-              .play()
-              .then(() => setIsPlaying(true))
-              .catch(() => {
-                // Autoplay might be blocked if unmuted; handled safely
-              });
-          }
-        } else {
-          const video = videoRef.current;
-          if (video) {
-            video.pause();
-            setIsPlaying(false);
-          }
+          preloadObserver.disconnect();
         }
       },
-      { threshold: isPrimary ? 0.2 : 0.3 }
+      { rootMargin: "450px 0px 450px 0px" }
     );
+    preloadObserver.observe(container);
 
-    observer.observe(container);
-    return () => observer.disconnect();
+    // 2. Playback Observer: Autoplay the instant the video enters screen, pause when scrolled away
+    const playbackObserver = new IntersectionObserver(
+      ([entry]) => {
+        const video = videoRef.current;
+        if (!video) return;
+
+        if (entry.isIntersecting) {
+          setActiveSrc((prev) => prev || src);
+          video
+            .play()
+            .then(() => setIsPlaying(true))
+            .catch(() => {
+              // Autoplay safety fallback if browser restricts unmuted audio
+            });
+        } else {
+          video.pause();
+          setIsPlaying(false);
+        }
+      },
+      { threshold: isPrimary ? 0.15 : 0.2 }
+    );
+    playbackObserver.observe(container);
+
+    return () => {
+      preloadObserver.disconnect();
+      playbackObserver.disconnect();
+    };
   }, [isPrimary, src]);
 
   const togglePlay = () => {
-    // If not loaded yet, load it now on user click
     if (!activeSrc) {
       setActiveSrc(src);
     }
     const video = videoRef.current;
     if (!video) return;
     if (video.paused) {
-      video.play().catch(() => {});
+      video
+        .play()
+        .then(() => setIsPlaying(true))
+        .catch(() => {});
     } else {
       video.pause();
+      setIsPlaying(false);
     }
   };
 
@@ -117,7 +132,7 @@ function LocalAutoVideo({
           muted={isMuted}
           playsInline
           loop
-          preload="none"
+          preload="metadata"
           onPlay={() => setIsPlaying(true)}
           onPause={() => setIsPlaying(false)}
           className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-102"
@@ -126,12 +141,22 @@ function LocalAutoVideo({
           <track kind="captions" srcLang="bn" label="Bengali" />
         </video>
 
-        {/* Video Overlay Badge */}
+        {/* Video Type / Category Badge */}
         {badge && (
-          <div className="absolute top-3 left-3 z-10 rounded-md bg-brand-slate-deep/85 backdrop-blur-xs px-2.5 py-1 text-xs font-bold text-accent-brass shadow-xs">
+          <div className="absolute top-3 left-3 z-10 rounded-md bg-brand-slate-deep/90 backdrop-blur-xs px-2.5 py-1 text-xs font-bold text-accent-brass shadow-md border border-neutral-700/50">
             {badge}
           </div>
         )}
+
+        {/* Live Status Indicator Badge (Top Right) */}
+        <div className="absolute top-3 right-3 z-10 flex items-center gap-1.5 rounded-full bg-black/75 backdrop-blur-xs px-2.5 py-1 text-[11px] font-bold text-white border border-white/20 shadow-md">
+          <span
+            className={`h-2 w-2 rounded-full ${
+              isPlaying ? "bg-emerald-400 animate-pulse" : "bg-red-500 animate-pulse"
+            }`}
+          />
+          <span>{isPlaying ? t("ভিডিও চলছে", "PLAYING") : t("ভিডিও", "VIDEO")}</span>
+        </div>
 
         {/* Play/Pause Center Indicator */}
         <div
@@ -139,11 +164,14 @@ function LocalAutoVideo({
             isPlaying ? "opacity-0 group-hover:opacity-100" : "opacity-100"
           }`}
         >
-          <div className="flex h-12 w-12 sm:h-14 sm:w-14 items-center justify-center rounded-full bg-black/60 text-white backdrop-blur-xs border border-white/20 shadow-lg">
+          <div className="relative flex h-14 w-14 sm:h-16 sm:w-16 items-center justify-center rounded-full bg-black/65 text-white backdrop-blur-xs border border-accent-brass/60 shadow-2xl transition-transform duration-300 group-hover:scale-110">
+            {!isPlaying && (
+              <span className="absolute -inset-1 rounded-full border border-accent-brass/40 animate-ping pointer-events-none opacity-40" />
+            )}
             {isPlaying ? (
-              <span className="text-sm font-bold">❚❚</span>
+              <span className="text-base font-bold">❚❚</span>
             ) : (
-              <span className="text-base font-bold ml-0.5">▶</span>
+              <span className="text-xl font-bold ml-1 text-accent-brass">▶</span>
             )}
           </div>
         </div>
@@ -152,11 +180,18 @@ function LocalAutoVideo({
         <button
           type="button"
           onClick={toggleMute}
-          className="absolute bottom-3 right-3 z-10 flex h-8 items-center gap-1.5 rounded-full bg-black/70 backdrop-blur-xs px-3 text-xs font-semibold text-white border border-white/10 hover:bg-black/90 transition-colors cursor-pointer"
+          className="absolute bottom-3 right-3 z-10 flex h-8 items-center gap-1.5 rounded-full bg-black/75 backdrop-blur-xs px-3 text-xs font-semibold text-white border border-white/20 hover:bg-black/90 transition-colors cursor-pointer"
           aria-label={isMuted ? t("সাউন্ড অন করুন", "Unmute audio") : t("সাউন্ড অফ করুন", "Mute audio")}
         >
           <span>{isMuted ? `🔇 ${t("সাউন্ড অন", "Sound On")}` : `🔊 ${t("সাউন্ড অফ", "Sound Off")}`}</span>
         </button>
+
+        {/* Click-to-play subtle guidance bar */}
+        {!isPlaying && (
+          <div className="absolute bottom-3 left-3 z-10 rounded-md bg-black/60 backdrop-blur-xs px-2 py-0.5 text-[10px] text-neutral-300 pointer-events-none hidden sm:block">
+            {t("ট্যাপ করে প্লে করুন", "Tap to play")}
+          </div>
+        )}
       </div>
 
       {/* Narrative Footer */}
@@ -180,7 +215,7 @@ export default function ShowroomMedia() {
   const { lang, t } = useLanguage();
   const tt = TRANSLATIONS.tour;
 
-  const tourVideoSrc = "/videos/showroom/heaven-virtual-showroom-tour.mp4";
+  const tourVideoSrc = BRAND_CONFIG.social.youtube.tourLocalVideoSrc;
   const tourPoster = "/assets/showroom/heaven-virtual-showroom-tour.webp";
 
   return (

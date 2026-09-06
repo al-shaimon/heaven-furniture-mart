@@ -17,47 +17,66 @@ export default function BespokeProcess() {
 
   const tb = TRANSLATIONS.bespoke;
 
+  const SOFA_VIDEO_URL =
+    "https://res.cloudinary.com/dr4guscnl/video/upload/v1788693928/heaven-sofa-detailing_lwqbxg.mp4";
+
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
 
-    const observer = new IntersectionObserver(
+    // 1. Preload stream 450px before entering viewport
+    const preloadObserver = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          setVideoSrc((prev) => prev || "/videos/craftsmanship/heaven-sofa-detailing.mp4");
-          const video = videoRef.current;
-          if (video) {
-            video
-              .play()
-              .then(() => setIsPlaying(true))
-              .catch(() => {});
-          }
-        } else {
-          const video = videoRef.current;
-          if (video) {
-            video.pause();
-            setIsPlaying(false);
-          }
+          setVideoSrc((prev) => prev || SOFA_VIDEO_URL);
+          preloadObserver.disconnect();
         }
       },
-      { threshold: 0.25 }
+      { rootMargin: "450px 0px 450px 0px" }
     );
+    preloadObserver.observe(container);
 
-    observer.observe(container);
-    return () => observer.disconnect();
-  }, []);
+    // 2. Autoplay instantly on entry, pause when out of view
+    const playbackObserver = new IntersectionObserver(
+      ([entry]) => {
+        const video = videoRef.current;
+        if (!video) return;
+
+        if (entry.isIntersecting) {
+          setVideoSrc((prev) => prev || SOFA_VIDEO_URL);
+          video
+            .play()
+            .then(() => setIsPlaying(true))
+            .catch(() => {});
+        } else {
+          video.pause();
+          setIsPlaying(false);
+        }
+      },
+      { threshold: 0.15 }
+    );
+    playbackObserver.observe(container);
+
+    return () => {
+      preloadObserver.disconnect();
+      playbackObserver.disconnect();
+    };
+  }, [SOFA_VIDEO_URL]);
 
   const togglePlay = () => {
     if (!videoSrc) {
-      setVideoSrc("/videos/craftsmanship/heaven-sofa-detailing.mp4");
+      setVideoSrc(SOFA_VIDEO_URL);
     }
-    if (!videoRef.current) return;
+    const video = videoRef.current;
+    if (!video) return;
     if (isPlaying) {
-      videoRef.current.pause();
+      video.pause();
       setIsPlaying(false);
     } else {
-      videoRef.current.play();
-      setIsPlaying(true);
+      video
+        .play()
+        .then(() => setIsPlaying(true))
+        .catch(() => {});
     }
   };
 
@@ -161,11 +180,11 @@ export default function BespokeProcess() {
                 <video
                   ref={videoRef}
                   src={videoSrc || undefined}
-                  poster="/_next/image?url=%2Fassets%2Fcraftsmanship%2Fheaven-handcrafted-sofa-process.webp&w=640&q=75"
+                  poster="/_next/image?url=%2Fassets%2Fcraftsmanship%2Fheaven-handcrafted-sofa-process.webp&w=1080&q=85"
                   muted={isMuted}
                   playsInline
                   loop
-                  preload="none"
+                  preload="metadata"
                   onPlay={() => setIsPlaying(true)}
                   onPause={() => setIsPlaying(false)}
                   className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-102"
@@ -173,10 +192,19 @@ export default function BespokeProcess() {
                   <track kind="captions" srcLang="bn" label="Bengali" />
                 </video>
 
-                {/* Video Overlay Badge */}
-                <div className="absolute top-3 left-3 z-10 flex items-center gap-1.5 rounded-md bg-brand-slate-deep/90 backdrop-blur-xs px-2.5 py-1 text-xs font-bold text-accent-brass shadow-xs">
-                  <span className="h-2 w-2 rounded-full bg-red-500 animate-pulse" />
+                {/* Video Overlay Badge (Top Left) */}
+                <div className="absolute top-3 left-3 z-10 flex items-center gap-1.5 rounded-md bg-brand-slate-deep/90 backdrop-blur-xs px-2.5 py-1 text-xs font-bold text-accent-brass shadow-md border border-neutral-700/50">
+                  <span
+                    className={`h-2 w-2 rounded-full ${
+                      isPlaying ? "bg-emerald-400 animate-pulse" : "bg-red-500 animate-pulse"
+                    }`}
+                  />
                   <span>{t("বাস্তব কারিগরি ভিডিও", "Live Workshop Craftsmanship")}</span>
+                </div>
+
+                {/* Live Status Badge (Top Right) */}
+                <div className="absolute top-3 right-3 z-10 flex items-center gap-1.5 rounded-full bg-black/75 backdrop-blur-xs px-2.5 py-1 text-[11px] font-bold text-white border border-white/20 shadow-md">
+                  <span>{isPlaying ? t("চলছে", "PLAYING") : t("ভিডিও", "VIDEO")}</span>
                 </div>
 
                 {/* Play/Pause Center Indicator */}
@@ -185,11 +213,14 @@ export default function BespokeProcess() {
                     isPlaying ? "opacity-0 group-hover:opacity-100" : "opacity-100"
                   }`}
                 >
-                  <div className="flex h-12 w-12 sm:h-14 sm:w-14 items-center justify-center rounded-full bg-black/60 text-white backdrop-blur-xs border border-white/20 shadow-lg transition-transform group-hover:scale-110">
+                  <div className="relative flex h-14 w-14 sm:h-16 sm:w-16 items-center justify-center rounded-full bg-black/65 text-white backdrop-blur-xs border border-accent-brass/60 shadow-2xl transition-transform duration-300 group-hover:scale-110">
+                    {!isPlaying && (
+                      <span className="absolute -inset-1 rounded-full border border-accent-brass/40 animate-ping pointer-events-none opacity-40" />
+                    )}
                     {isPlaying ? (
-                      <span className="text-sm font-bold">❚❚</span>
+                      <span className="text-base font-bold">❚❚</span>
                     ) : (
-                      <span className="text-base font-bold ml-0.5">▶</span>
+                      <span className="text-xl font-bold ml-1 text-accent-brass">▶</span>
                     )}
                   </div>
                 </div>
