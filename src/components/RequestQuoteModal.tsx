@@ -12,6 +12,7 @@ export default function RequestQuoteModal() {
   const { lang, t } = useLanguage();
   const { isOpen, initialData, closeQuoteModal } = useQuoteModal();
   const modalRef = useRef<HTMLDivElement>(null);
+  const quoteFormRef = useRef<HTMLFormElement>(null);
 
   // Form State
   const [category, setCategory] = useState<string>("living");
@@ -21,6 +22,7 @@ export default function RequestQuoteModal() {
   const [customerName, setCustomerName] = useState<string>("");
   const [customerPhone, setCustomerPhone] = useState<string>("");
   const [customerCity, setCustomerCity] = useState<string>("");
+  const [errors, setErrors] = useState<{ name?: boolean; phone?: boolean }>({});
   const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
   const [quoteRefId, setQuoteRefId] = useState<string>("");
 
@@ -35,6 +37,7 @@ export default function RequestQuoteModal() {
       } else {
         setSpecificItem("");
       }
+      setErrors({});
       setIsSubmitted(false);
       setQuoteRefId(`HFM-${Math.floor(100000 + Math.random() * 900000)}`);
       document.body.style.overflow = "hidden";
@@ -62,13 +65,22 @@ export default function RequestQuoteModal() {
 
   const tq = TRANSLATIONS.quoteModal;
 
+  const validateFields = () => {
+    const newErrors: { name?: boolean; phone?: boolean } = {};
+    if (!customerName.trim()) newErrors.name = true;
+    if (!customerPhone.trim()) newErrors.phone = true;
+    setErrors(newErrors);
+
+    if (quoteFormRef.current) {
+      quoteFormRef.current.reportValidity();
+    }
+    return Object.keys(newErrors).length === 0;
+  };
+
   // Format WhatsApp message
   const handleWhatsAppSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!customerPhone.trim() && !customerName.trim()) {
-      alert(t("দয়া করে আপনার নাম ও ফোন নম্বর লিখুন", "Please enter your name and phone number"));
-      return;
-    }
+    if (!validateFields()) return;
 
     const catName = t(
       tq.categories[category as keyof typeof tq.categories]?.bn || category,
@@ -83,8 +95,8 @@ export default function RequestQuoteModal() {
       `*হেভেন ফার্নিচার মার্ট — কোটেশন রিকোয়েস্ট*`,
       `রেফারেন্স: #${quoteRefId}`,
       `---------------------------------`,
-      `👤 গ্রাহকের নাম: ${customerName || "গ্রাহক"}`,
-      `📞 ফোন: ${customerPhone || "দেওয়া হয়নি"}`,
+      `👤 গ্রাহকের নাম: ${customerName.trim()}`,
+      `📞 ফোন: ${customerPhone.trim()}`,
       `📍 ডেলিভারি এলাকা: ${customerCity || "চট্টগ্রাম"}`,
       `🪑 ফার্নিচারের ধরন: ${catName}`,
       specificItem ? `✨ মডেল / পছন্দ: ${specificItem}` : "",
@@ -103,10 +115,7 @@ export default function RequestQuoteModal() {
 
   const handleOnlineSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!customerPhone.trim() && !customerName.trim()) {
-      alert(t("দয়া করে আপনার নাম ও ফোন নম্বর লিখুন", "Please enter your name and phone number"));
-      return;
-    }
+    if (!validateFields()) return;
     setIsSubmitted(true);
   };
 
@@ -157,7 +166,7 @@ export default function RequestQuoteModal() {
             </div>
 
             {/* Form */}
-            <form className="mt-5 space-y-4 sm:space-y-5">
+            <form ref={quoteFormRef} className="mt-5 space-y-4 sm:space-y-5">
               {/* If prefilled from a specific product */}
               {specificItem && (
                 <div className="flex items-center justify-between rounded-lg border border-accent-brass/40 bg-surface-ecru-light/60 p-3 text-xs">
@@ -237,39 +246,71 @@ export default function RequestQuoteModal() {
               {/* Customer Info: Grid of 2 cols */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs font-bold text-text-primary-dark mb-1">
+                  <label htmlFor="quote-customer-name" className="block text-xs font-bold text-text-primary-dark mb-1">
                     {t(tq.nameLabel.bn, tq.nameLabel.en)} *
                   </label>
                   <input
+                    id="quote-customer-name"
+                    name="customerName"
                     type="text"
                     required
                     value={customerName}
-                    onChange={(e) => setCustomerName(e.target.value)}
+                    onChange={(e) => {
+                      setCustomerName(e.target.value);
+                      if (errors.name) setErrors((prev) => ({ ...prev, name: false }));
+                    }}
                     placeholder={t(tq.namePlaceholder.bn, tq.namePlaceholder.en)}
-                    className="w-full rounded-lg border border-neutral-300 bg-white px-3 py-2 text-xs sm:text-sm text-text-primary-dark focus:border-accent-brass focus:outline-none focus:ring-1 focus:ring-accent-brass"
+                    className={`w-full rounded-lg border bg-white px-3 py-2 text-xs sm:text-sm text-text-primary-dark focus:outline-none focus:ring-1 transition-colors ${
+                      errors.name
+                        ? "border-red-500 focus:border-red-500 focus:ring-red-400 bg-red-50/20"
+                        : "border-neutral-300 focus:border-accent-brass focus:ring-accent-brass"
+                    }`}
                   />
+                  {errors.name && (
+                    <p className="mt-1 text-[11px] font-medium text-red-600 flex items-center gap-1">
+                      <span>⚠️</span>
+                      <span>{t("দয়া করে আপনার নাম লিখুন", "Please enter your name")}</span>
+                    </p>
+                  )}
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold text-text-primary-dark mb-1">
+                  <label htmlFor="quote-customer-phone" className="block text-xs font-bold text-text-primary-dark mb-1">
                     {t(tq.phoneLabel.bn, tq.phoneLabel.en)} *
                   </label>
                   <input
+                    id="quote-customer-phone"
+                    name="customerPhone"
                     type="tel"
                     required
                     value={customerPhone}
-                    onChange={(e) => setCustomerPhone(e.target.value)}
+                    onChange={(e) => {
+                      setCustomerPhone(e.target.value);
+                      if (errors.phone) setErrors((prev) => ({ ...prev, phone: false }));
+                    }}
                     placeholder={t(tq.phonePlaceholder.bn, tq.phonePlaceholder.en)}
-                    className="w-full rounded-lg border border-neutral-300 bg-white px-3 py-2 text-xs sm:text-sm text-text-primary-dark focus:border-accent-brass focus:outline-none focus:ring-1 focus:ring-accent-brass"
+                    className={`w-full rounded-lg border bg-white px-3 py-2 text-xs sm:text-sm text-text-primary-dark focus:outline-none focus:ring-1 transition-colors ${
+                      errors.phone
+                        ? "border-red-500 focus:border-red-500 focus:ring-red-400 bg-red-50/20"
+                        : "border-neutral-300 focus:border-accent-brass focus:ring-accent-brass"
+                    }`}
                   />
+                  {errors.phone && (
+                    <p className="mt-1 text-[11px] font-medium text-red-600 flex items-center gap-1">
+                      <span>⚠️</span>
+                      <span>{t("দয়া করে মোবাইল নম্বর লিখুন", "Please enter your phone number")}</span>
+                    </p>
+                  )}
                 </div>
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-text-primary-dark mb-1">
+                <label htmlFor="quote-customer-city" className="block text-xs font-bold text-text-primary-dark mb-1">
                   {t(tq.cityLabel.bn, tq.cityLabel.en)}
                 </label>
                 <input
+                  id="quote-customer-city"
+                  name="customerCity"
                   type="text"
                   value={customerCity}
                   onChange={(e) => setCustomerCity(e.target.value)}

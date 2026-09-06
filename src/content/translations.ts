@@ -287,10 +287,6 @@ export const TRANSLATIONS = {
       bn: "আগ্রাবাদ শোরুম ভবন",
       en: "Agrabad Showroom Building",
     },
-    mapBadge: {
-      bn: "গুগল ম্যাপে হেভেন ফার্নিচার",
-      en: "Heaven Furniture Mart on Google Maps",
-    },
     cardTitle: {
       bn: "আগ্রাবাদ শোরুমের অবস্থান",
       en: "Agrabad Showroom Location",

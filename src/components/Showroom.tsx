@@ -104,9 +104,6 @@ export default function Showroom() {
                     loading="lazy"
                     referrerPolicy="no-referrer-when-downgrade"
                   />
-                  <div className="absolute top-3 left-3 rounded-md bg-brand-slate-deep/90 px-3 py-1.5 text-xs font-semibold text-accent-brass backdrop-blur-xs shadow-xs pointer-events-none">
-                    {t(ts.mapBadge.bn, ts.mapBadge.en)}
-                  </div>
                 </div>
               )}
             </div>

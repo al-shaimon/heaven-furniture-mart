@@ -22,6 +22,7 @@ function LocalAutoVideo({
   badge,
   isPrimary = false,
 }: AutoPlayVideoProps) {
+  const { t } = useLanguage();
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(true);
@@ -75,15 +76,15 @@ function LocalAutoVideo({
 
   return (
     <div
-      className={`group relative overflow-hidden rounded-xl border border-neutral-700/80 bg-neutral-950 shadow-xl ${
-        isPrimary ? "w-full" : "flex flex-col"
+      className={`group relative overflow-hidden rounded-xl border border-neutral-700/80 bg-brand-slate-surface shadow-xl flex flex-col ${
+        isPrimary ? "w-full" : "h-full"
       }`}
     >
       {/* Video Container */}
       <div
         className={`relative ${
           isPrimary ? "aspect-video w-full" : "aspect-[16/10] w-full"
-        } bg-black cursor-pointer overflow-hidden select-none`}
+        } bg-black cursor-pointer overflow-hidden select-none shrink-0`}
         onClick={togglePlay}
         role="button"
         tabIndex={0}
@@ -130,15 +131,15 @@ function LocalAutoVideo({
           type="button"
           onClick={toggleMute}
           className="absolute bottom-3 right-3 z-10 flex h-8 items-center gap-1.5 rounded-full bg-black/70 backdrop-blur-xs px-3 text-xs font-semibold text-white border border-white/10 hover:bg-black/90 transition-colors cursor-pointer"
-          aria-label={isMuted ? "Unmute audio" : "Mute audio"}
+          aria-label={isMuted ? t("সাউন্ড অন করুন", "Unmute audio") : t("সাউন্ড অফ করুন", "Mute audio")}
         >
-          <span>{isMuted ? "🔇 সাউন্ড অন" : "🔊 সাউন্ড অফ"}</span>
+          <span>{isMuted ? `🔇 ${t("সাউন্ড অন", "Sound On")}` : `🔊 ${t("সাউন্ড অফ", "Sound Off")}`}</span>
         </button>
       </div>
 
       {/* Narrative Footer */}
       {(title || description) && (
-        <div className="p-4 bg-brand-slate-surface border-t border-neutral-800">
+        <div className="flex-1 flex flex-col justify-start p-4 bg-brand-slate-surface border-t border-neutral-800/80">
           <h4 className="text-sm sm:text-base font-bold text-white line-clamp-1">
             {title}
           </h4>

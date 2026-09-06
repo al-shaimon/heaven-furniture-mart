@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { BRAND_CONFIG } from "@/content/brand";
 import { TRANSLATIONS } from "@/content/translations";
 import { useLanguage } from "@/context/LanguageContext";
@@ -16,6 +16,7 @@ export default function ConsultationCTA() {
   const [phone, setPhone] = useState("");
   const [category, setCategory] = useState("living");
   const [submitted, setSubmitted] = useState(false);
+  const formRef = useRef<HTMLFormElement>(null);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -23,11 +24,33 @@ export default function ConsultationCTA() {
     setSubmitted(true);
   };
 
-  const handleWhatsAppSend = () => {
-    const waUrl = `https://wa.me/${BRAND_CONFIG.contact.whatsAppNumber}?text=${encodeURIComponent(
-      `আসসালামু আলাইকুম, আমার নাম ${name || "গ্রাহক"}। আমি হেভেন ফার্নিচার মার্টের ফার্নিচার সম্পর্কে জানতে চাই। আমার ফোন: ${phone || ""}`
-    )}`;
+  const categoryLabels: Record<string, { bn: string; en: string }> = {
+    living: { bn: "লিভিং রুম সোফা সেট", en: "Living Room Sofa Set" },
+    bedroom: { bn: "বেডরুম খাট ও আলমারি", en: "Bedroom Bed & Wardrobe" },
+    dining: { bn: "ডাইনিং টেবিল ও চেয়ার", en: "Dining Table & Chairs" },
+    custom: { bn: "কাস্টম মাপের ফার্নিচার", en: "Custom Dimensions Furniture" },
+  };
+
+  const handleWhatsAppSend = (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (formRef.current && !formRef.current.reportValidity()) {
+      return;
+    }
+    if (!name.trim() || !phone.trim()) {
+      return;
+    }
+
+    const catText = categoryLabels[category]
+      ? (lang === "en" ? categoryLabels[category].en : categoryLabels[category].bn)
+      : category;
+
+    const message = lang === "en"
+      ? `Hello Heaven Furniture Mart,\nMy Name: ${name.trim()}\nPhone: ${phone.trim()}\nInterested in: ${catText}\nI would like to inquire about pricing and custom options.`
+      : `আসসালামু আলাইকুম হেভেন ফার্নিচার মার্ট,\nআমার নাম: ${name.trim()}\nফোন: ${phone.trim()}\nআগ্রহের ফার্নিচার: ${catText}\nআমি এই ফার্নিচারের দাম ও বিস্তারিত জানতে চাই।`;
+
+    const waUrl = `https://wa.me/${BRAND_CONFIG.contact.whatsAppNumber}?text=${encodeURIComponent(message)}`;
     window.open(waUrl, "_blank", "noopener,noreferrer");
+    setSubmitted(true);
   };
 
   return (
@@ -118,7 +141,7 @@ export default function ConsultationCTA() {
                     </button>
                   </div>
 
-                  <form onSubmit={handleSubmit} className="space-y-4">
+                  <form ref={formRef} onSubmit={handleSubmit} className="space-y-4">
                     <div>
                       <label htmlFor="customer-name" className="block text-xs font-semibold text-neutral-300 mb-1.5">
                         {t("আপনার নাম", "Your Name")} *

@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import { useState, useRef } from "react";
 import { TRANSLATIONS } from "@/content/translations";
 import { useLanguage } from "@/context/LanguageContext";
 import { useQuoteModal } from "@/context/QuoteModalContext";
@@ -9,7 +9,29 @@ import { WhatsAppIcon } from "@/components/icons";
 export default function BespokeProcess() {
   const { lang, t } = useLanguage();
   const { openQuoteModal } = useQuoteModal();
+  const [isPlaying, setIsPlaying] = useState(true);
+  const [isMuted, setIsMuted] = useState(true);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
   const tb = TRANSLATIONS.bespoke;
+
+  const togglePlay = () => {
+    if (!videoRef.current) return;
+    if (isPlaying) {
+      videoRef.current.pause();
+      setIsPlaying(false);
+    } else {
+      videoRef.current.play();
+      setIsPlaying(true);
+    }
+  };
+
+  const toggleMute = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (!videoRef.current) return;
+    videoRef.current.muted = !isMuted;
+    setIsMuted(!isMuted);
+  };
 
   return (
     <section id="custom" className="bg-surface-ecru-light py-12 sm:py-16 lg:py-20">
@@ -85,24 +107,79 @@ export default function BespokeProcess() {
             </div>
           </div>
 
-          {/* Authentic Craftsmanship Image Showcase */}
+          {/* Authentic Craftsmanship Video Showcase */}
           <div className="lg:col-span-5">
             <div className="overflow-hidden rounded-2xl border border-neutral-200 bg-white shadow-xs">
-              <div className="relative aspect-[4/3] sm:aspect-[16/11] w-full overflow-hidden bg-neutral-100">
-                <Image
-                  src="/assets/craftsmanship/heaven-handcrafted-sofa-process.webp"
-                  alt="হেভেন ফার্নিচার মার্টের কারিগরদের কাজের দৃশ্য"
-                  fill
-                  sizes="(max-width: 1024px) 100vw, 40vw"
-                  className="object-cover"
+              <div
+                className="group relative aspect-[4/3] sm:aspect-[16/11] w-full overflow-hidden bg-neutral-950 cursor-pointer select-none"
+                onClick={togglePlay}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault();
+                    togglePlay();
+                  }
+                }}
+                tabIndex={0}
+                role="button"
+                aria-label={isPlaying ? "Pause video" : "Play video"}
+              >
+                <video
+                  ref={videoRef}
+                  src="/videos/craftsmanship/heaven-sofa-detailing.mp4"
+                  poster="/assets/craftsmanship/heaven-handcrafted-sofa-process.webp"
+                  muted={isMuted}
+                  autoPlay
+                  playsInline
+                  loop
+                  preload="metadata"
+                  onPlay={() => setIsPlaying(true)}
+                  onPause={() => setIsPlaying(false)}
+                  className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-102"
                 />
+
+                {/* Video Overlay Badge */}
+                <div className="absolute top-3 left-3 z-10 flex items-center gap-1.5 rounded-md bg-brand-slate-deep/90 backdrop-blur-xs px-2.5 py-1 text-xs font-bold text-accent-brass shadow-xs">
+                  <span className="h-2 w-2 rounded-full bg-red-500 animate-pulse" />
+                  <span>{t("বাস্তব কারিগরি ভিডিও", "Live Workshop Craftsmanship")}</span>
+                </div>
+
+                {/* Play/Pause Center Indicator */}
+                <div
+                  className={`absolute inset-0 flex items-center justify-center transition-opacity pointer-events-none ${
+                    isPlaying ? "opacity-0 group-hover:opacity-100" : "opacity-100"
+                  }`}
+                >
+                  <div className="flex h-12 w-12 sm:h-14 sm:w-14 items-center justify-center rounded-full bg-black/60 text-white backdrop-blur-xs border border-white/20 shadow-lg transition-transform group-hover:scale-110">
+                    {isPlaying ? (
+                      <span className="text-sm font-bold">❚❚</span>
+                    ) : (
+                      <span className="text-base font-bold ml-0.5">▶</span>
+                    )}
+                  </div>
+                </div>
+
+                {/* Bottom Audio Toggle Button */}
+                <button
+                  type="button"
+                  onClick={toggleMute}
+                  className="absolute bottom-3 right-3 z-10 flex h-8 items-center gap-1.5 rounded-full bg-black/70 backdrop-blur-xs px-3 text-xs font-semibold text-white border border-white/10 hover:bg-black/90 transition-colors cursor-pointer"
+                  aria-label={isMuted ? "Unmute audio" : "Mute audio"}
+                >
+                  <span>{isMuted ? `🔇 ${t("সাউন্ড অন", "Sound On")}` : `🔊 ${t("সাউন্ড অফ", "Sound Off")}`}</span>
+                </button>
               </div>
 
               <div className="p-4 sm:p-5">
-                <h4 className="text-base font-bold text-text-primary-dark">
-                  {t("দক্ষ কারিগরের যত্নে তৈরি", "Artisanal Heritage Craftsmanship")}
-                </h4>
-                <p className="mt-1 text-xs sm:text-sm text-text-secondary-dark leading-relaxed">
+                <div className="flex items-center justify-between gap-2">
+                  <h4 className="text-base font-bold text-text-primary-dark">
+                    {t("দক্ষ কারিগরের যত্নে তৈরি", "Artisanal Heritage Craftsmanship")}
+                  </h4>
+                  <span className="inline-flex items-center gap-1.5 text-[11px] font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full shrink-0">
+                    <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                    {t("হাতে তৈরি", "Handcrafted")}
+                  </span>
+                </div>
+                <p className="mt-1.5 text-xs sm:text-sm text-text-secondary-dark leading-relaxed">
                   {t(
                     "আমাদের কারিগররা প্রতিটি কাঠ, জোড়া ও ফিনিশিং নিজেদের চোখে দেখে নিখুঁতভাবে তৈরি করেন।",
                     "Our master woodworkers inspect every grain, joint, and hand-rubbed finish to ensure generational longevity."

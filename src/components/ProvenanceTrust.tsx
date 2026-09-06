@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import Image from "next/image";
 import { BRAND_CONFIG, TIMELINE_MILESTONES, TimelineMilestone } from "@/content/brand";
 import { TRANSLATIONS } from "@/content/translations";
@@ -11,45 +11,75 @@ export default function ProvenanceTrust() {
   const { lang, t } = useLanguage();
   const { founder, credentials, social } = BRAND_CONFIG;
   const [activeMilestoneIdx, setActiveMilestoneIdx] = useState<number>(0);
-  const [timelineProgress, setTimelineProgress] = useState<number>(0);
   const [revealedSet, setRevealedSet] = useState<Set<number>>(new Set([0]));
 
   const timelineContainerRef = useRef<HTMLDivElement>(null);
+  // Direct DOM refs for buttery-smooth spine animation (no React re-renders)
+  const spineDesktopRef = useRef<HTMLDivElement>(null);
+  const spineMobileRef = useRef<HTMLDivElement>(null);
+  const beadRef = useRef<HTMLDivElement>(null);
+  // Interpolation target for silky animation
+  const currentProgress = useRef(0);
+  const targetProgress = useRef(0);
+  const rafId = useRef<number | null>(null);
 
-  // Smooth scroll listener to dynamically track timeline progress and active milestone
+  // Lerp loop — runs outside React render cycle for 60fps smoothness
+  const animateSpine = useCallback(() => {
+    const lerp = 0.08; // lower = silkier (0.06–0.12 sweet spot)
+    currentProgress.current += (targetProgress.current - currentProgress.current) * lerp;
+
+    const p = Math.max(0, Math.min(currentProgress.current * 100, 100));
+
+    if (spineDesktopRef.current) {
+      spineDesktopRef.current.style.height = `${Math.max(4, p)}%`;
+    }
+    if (spineMobileRef.current) {
+      spineMobileRef.current.style.height = `${Math.max(4, p)}%`;
+    }
+    if (beadRef.current) {
+      beadRef.current.style.top = `calc(1rem + ${Math.max(0, p) * 0.96}%)`;
+    }
+
+    rafId.current = requestAnimationFrame(animateSpine);
+  }, []);
+
+  useEffect(() => {
+    rafId.current = requestAnimationFrame(animateSpine);
+    return () => {
+      if (rafId.current !== null) cancelAnimationFrame(rafId.current);
+    };
+  }, [animateSpine]);
+
+  // Scroll listener — only updates targetProgress and milestone state
   useEffect(() => {
     const handleScroll = () => {
       if (!timelineContainerRef.current) return;
       const rect = timelineContainerRef.current.getBoundingClientRect();
-      const windowHeight = window.innerHeight;
+      const wh = window.innerHeight;
 
-      // Calculate progress of timeline traversal
-      const startTrigger = windowHeight * 0.75;
-      const endTrigger = windowHeight * 0.35;
-      const totalScrollableDistance = rect.height;
+      const startTrigger = wh * 0.75;
+      const endTrigger = wh * 0.35;
+      const scrollOffset = startTrigger - rect.top;
+      const raw = scrollOffset / (rect.height + (startTrigger - endTrigger));
+      targetProgress.current = Math.min(Math.max(raw, 0), 1);
 
-      const currentScrollOffset = startTrigger - rect.top;
-      const rawProgress = currentScrollOffset / (totalScrollableDistance + (startTrigger - endTrigger));
-      const clampedProgress = Math.min(Math.max(rawProgress, 0), 1);
-      setTimelineProgress(clampedProgress);
-
-      // Determine active milestone based on viewport center
-      const focalLine = windowHeight * 0.5;
+      // Active milestone detection
+      const focalLine = wh * 0.5;
       let closestIdx = 0;
-      let minDistance = Infinity;
+      let minDist = Infinity;
 
-      TIMELINE_MILESTONES.forEach((m, idx) => {
+      TIMELINE_MILESTONES.forEach((_, idx) => {
         const el = document.getElementById(`milestone-node-${idx}`);
         if (el) {
           const elRect = el.getBoundingClientRect();
           const dist = Math.abs(elRect.top - focalLine);
-          if (dist < minDistance) {
-            minDistance = dist;
+          if (dist < minDist) {
+            minDist = dist;
             closestIdx = idx;
           }
 
-          // Mark as revealed when approaching viewport
-          if (elRect.top < windowHeight * 0.88) {
+          // Reveal when approaching viewport (threshold: 92% of window height for stagger)
+          if (elRect.top < wh * 0.92) {
             setRevealedSet((prev) => {
               if (prev.has(idx)) return prev;
               const next = new Set(prev);
@@ -83,7 +113,7 @@ export default function ProvenanceTrust() {
           </h2>
           <p className="mt-2 text-sm sm:text-base text-text-secondary-dark leading-relaxed">
             {t(
-              "শুধু ফার্নিচার বিক্রি নয়, বিগত ১৫+ বছর ধরে বিভিন্ন মেলা ও প্রাতিষ্ঠানিক স্বীকৃতির মধ্য দিয়েও আমাদের পথচলা হয়েছে। এই ছবিগুলো সেই পথচলার কিছু বাস্তব মুহূর্ত।",
+              "শুধু ফার্নিচার বিক্রি নয়, বিগত ১৫+ বছর ধরে বিভিন্ন মেলা ও প্রাতিষ্ঠানিক স্বীকৃতির মধ্য দিয়েও আমাদের পথচলা হয়েছে। এই ছবিগুলো সেই পথচলার কিছু বাস্তব মুহূর্ত।",
               "Beyond crafting furniture, Heaven Furniture Mart has been celebrated across regional and international furniture exhibitions. These photographs document our genuine heritage."
             )}
           </p>
@@ -100,7 +130,7 @@ export default function ProvenanceTrust() {
                   <span className="inline-flex items-center gap-1.5 rounded-full bg-accent-brass-dark/10 px-3 py-1 text-xs font-bold text-accent-brass-dark uppercase tracking-wider">
                     ⭐ {t("১৫+ বছরের সুনাম ও অঙ্গীকার", "15+ Years Heritage & Commitment")}
                   </span>
-                  <span className="text-3xl text-accent-brass-dark/30 font-serif select-none">“</span>
+                  <span className="text-3xl text-accent-brass-dark/30 font-serif select-none">&ldquo;</span>
                 </div>
 
                 {/* Quote Body */}
@@ -199,18 +229,18 @@ export default function ProvenanceTrust() {
             {/* Background Central Track Line */}
             <div className="absolute left-1/2 top-4 bottom-4 w-1 -translate-x-1/2 rounded-full bg-neutral-200/80" />
 
-            {/* Glowing Active Progress Spine */}
+            {/* Glowing Active Progress Spine — animated via ref, no React state */}
             <div
-              className="absolute left-1/2 top-4 w-1 -translate-x-1/2 rounded-full bg-gradient-to-b from-accent-brass via-amber-400 to-accent-brass-dark shadow-[0_0_10px_rgba(197,168,105,0.7)] transition-[height] duration-150 ease-out"
-              style={{ height: `${Math.max(4, Math.min(timelineProgress * 100, 100))}%` }}
+              ref={spineDesktopRef}
+              className="absolute left-1/2 top-4 w-1 -translate-x-1/2 rounded-full bg-gradient-to-b from-accent-brass via-amber-400 to-accent-brass-dark shadow-[0_0_10px_rgba(197,168,105,0.7)]"
+              style={{ height: "4%", willChange: "height" }}
             />
 
-            {/* Traveling Glowing Head Bead */}
+            {/* Traveling Glowing Head Bead — animated via ref */}
             <div
-              className="absolute left-1/2 w-3.5 h-3.5 -translate-x-1/2 rounded-full bg-accent-brass border-2 border-white shadow-[0_0_14px_rgba(197,168,105,0.95)] transition-[top] duration-150 ease-out pointer-events-none z-20"
-              style={{
-                top: `calc(1rem + ${Math.max(0, Math.min(timelineProgress * 100, 100)) * 0.96}%)`,
-              }}
+              ref={beadRef}
+              className="absolute left-1/2 w-3.5 h-3.5 -translate-x-1/2 rounded-full bg-accent-brass border-2 border-white shadow-[0_0_14px_rgba(197,168,105,0.95)] pointer-events-none z-20"
+              style={{ top: "1rem", willChange: "top" }}
             />
 
             <div className="space-y-16">
@@ -220,9 +250,13 @@ export default function ProvenanceTrust() {
                 const isPastOrCurrent = idx <= activeMilestoneIdx;
                 const isRevealed = revealedSet.has(idx);
 
+                const itemYear = lang === "en" && item.yearEn ? item.yearEn : item.year;
                 const itemTitle = lang === "en" && item.titleEn ? item.titleEn : item.titleBn;
                 const itemDesc = lang === "en" && item.descriptionEn ? item.descriptionEn : item.descriptionBn;
                 const itemCaption = lang === "en" && item.captionEn ? item.captionEn : item.captionBn;
+
+                // Stagger delay per milestone for cascading reveal
+                const staggerDelay = `${idx * 80}ms`;
 
                 return (
                   <div
@@ -232,7 +266,7 @@ export default function ProvenanceTrust() {
                   >
                     {/* Central Year Glowing Node */}
                     <div
-                      className={`absolute left-1/2 -translate-x-1/2 z-10 flex h-11 px-3.5 items-center justify-center rounded-full border-2 transition-all duration-500 shadow-md ${
+                      className={`absolute left-1/2 -translate-x-1/2 z-10 flex h-11 px-3.5 items-center justify-center rounded-full border-2 transition-all duration-700 ease-out shadow-md ${
                         isHighlighted
                           ? "border-accent-brass bg-brand-slate-deep text-accent-brass scale-110 ring-4 ring-accent-brass/25 shadow-[0_0_15px_rgba(197,168,105,0.5)]"
                           : isPastOrCurrent
@@ -240,7 +274,7 @@ export default function ProvenanceTrust() {
                           : "border-neutral-300 bg-white text-neutral-400 scale-95 opacity-70"
                       } text-xs font-bold`}
                     >
-                      <span>{item.year}</span>
+                      <span>{itemYear}</span>
                     </div>
 
                     {isEven ? (
@@ -248,18 +282,19 @@ export default function ProvenanceTrust() {
                         {/* Left: Narrative Card */}
                         <div className="col-span-5 text-right pr-6">
                           <div
-                            className={`rounded-xl border p-5 transition-all duration-700 ease-out ${
+                            className={`rounded-xl border p-5 transition-all duration-[900ms] ease-[cubic-bezier(0.16,1,0.3,1)] ${
                               isRevealed
                                 ? "opacity-100 translate-x-0 translate-y-0"
-                                : "opacity-0 -translate-x-6 translate-y-4"
+                                : "opacity-0 -translate-x-8 translate-y-5"
                             } ${
                               isHighlighted
                                 ? "border-accent-brass-dark/50 bg-white shadow-md ring-1 ring-accent-brass/20"
                                 : "border-neutral-200/80 bg-white/95 shadow-2xs"
                             }`}
+                            style={{ transitionDelay: isRevealed ? "0ms" : staggerDelay }}
                           >
                             <span className="text-xs font-bold text-accent-brass-dark uppercase tracking-wider">
-                              {item.year} {t("মাইলফলক", "Milestone")}
+                              {itemYear} {t("মাইলফলক", "Milestone")}
                             </span>
                             <h4 className="text-base sm:text-lg font-bold text-text-primary-dark mt-1">
                               {itemTitle}
@@ -276,11 +311,12 @@ export default function ProvenanceTrust() {
                         {/* Right: Photograph Card */}
                         <div className="col-span-5 pl-6">
                           <div
-                            className={`group overflow-hidden rounded-xl border border-neutral-200 bg-white shadow-xs transition-all duration-700 ease-out hover:shadow-md ${
+                            className={`group overflow-hidden rounded-xl border border-neutral-200 bg-white shadow-xs transition-all duration-[900ms] ease-[cubic-bezier(0.16,1,0.3,1)] hover:shadow-md ${
                               isRevealed
                                 ? "opacity-100 translate-x-0 translate-y-0"
-                                : "opacity-0 translate-x-6 translate-y-4"
+                                : "opacity-0 translate-x-8 translate-y-5"
                             } ${isHighlighted ? "border-accent-brass/50 ring-1 ring-accent-brass/20" : ""}`}
+                            style={{ transitionDelay: isRevealed ? "0ms" : `${idx * 80 + 120}ms` }}
                           >
                             <div className="relative aspect-[16/10] w-full overflow-hidden bg-neutral-100">
                               <Image
@@ -304,11 +340,12 @@ export default function ProvenanceTrust() {
                         {/* Left: Photograph Card */}
                         <div className="col-span-5 pr-6">
                           <div
-                            className={`group overflow-hidden rounded-xl border border-neutral-200 bg-white shadow-xs transition-all duration-700 ease-out hover:shadow-md ${
+                            className={`group overflow-hidden rounded-xl border border-neutral-200 bg-white shadow-xs transition-all duration-[900ms] ease-[cubic-bezier(0.16,1,0.3,1)] hover:shadow-md ${
                               isRevealed
                                 ? "opacity-100 translate-x-0 translate-y-0"
-                                : "opacity-0 -translate-x-6 translate-y-4"
+                                : "opacity-0 -translate-x-8 translate-y-5"
                             } ${isHighlighted ? "border-accent-brass/50 ring-1 ring-accent-brass/20" : ""}`}
+                            style={{ transitionDelay: isRevealed ? "0ms" : `${idx * 80 + 120}ms` }}
                           >
                             <div className="relative aspect-[16/10] w-full overflow-hidden bg-neutral-100">
                               <Image
@@ -333,18 +370,19 @@ export default function ProvenanceTrust() {
                         {/* Right: Narrative Card */}
                         <div className="col-span-5 text-left pl-6">
                           <div
-                            className={`rounded-xl border p-5 transition-all duration-700 ease-out ${
+                            className={`rounded-xl border p-5 transition-all duration-[900ms] ease-[cubic-bezier(0.16,1,0.3,1)] ${
                               isRevealed
                                 ? "opacity-100 translate-x-0 translate-y-0"
-                                : "opacity-0 translate-x-6 translate-y-4"
+                                : "opacity-0 translate-x-8 translate-y-5"
                             } ${
                               isHighlighted
                                 ? "border-accent-brass-dark/50 bg-white shadow-md ring-1 ring-accent-brass/20"
                                 : "border-neutral-200/80 bg-white/95 shadow-2xs"
                             }`}
+                            style={{ transitionDelay: isRevealed ? "0ms" : staggerDelay }}
                           >
                             <span className="text-xs font-bold text-accent-brass-dark uppercase tracking-wider">
-                              {item.year} {t("মাইলফলক", "Milestone")}
+                              {itemYear} {t("মাইলফলক", "Milestone")}
                             </span>
                             <h4 className="text-base sm:text-lg font-bold text-text-primary-dark mt-1">
                               {itemTitle}
@@ -367,10 +405,11 @@ export default function ProvenanceTrust() {
             {/* Left Vertical Track Line */}
             <div className="absolute left-4 sm:left-6 top-3 bottom-3 w-0.5 bg-neutral-200 rounded-full" />
 
-            {/* Dynamic Progress Fill Line on Mobile */}
+            {/* Dynamic Progress Fill Line on Mobile — animated via ref */}
             <div
-              className="absolute left-4 sm:left-6 top-3 w-0.5 bg-gradient-to-b from-accent-brass via-amber-400 to-accent-brass-dark rounded-full shadow-[0_0_6px_rgba(197,168,105,0.6)] transition-[height] duration-150 ease-out"
-              style={{ height: `${Math.max(4, Math.min(timelineProgress * 100, 100))}%` }}
+              ref={spineMobileRef}
+              className="absolute left-4 sm:left-6 top-3 w-0.5 bg-gradient-to-b from-accent-brass via-amber-400 to-accent-brass-dark rounded-full shadow-[0_0_6px_rgba(197,168,105,0.6)]"
+              style={{ height: "4%", willChange: "height" }}
             />
 
             <div className="space-y-8">
@@ -379,6 +418,7 @@ export default function ProvenanceTrust() {
                 const isPastOrCurrent = idx <= activeMilestoneIdx;
                 const isRevealed = revealedSet.has(idx);
 
+                const itemYear = lang === "en" && item.yearEn ? item.yearEn : item.year;
                 const itemTitle = lang === "en" && item.titleEn ? item.titleEn : item.titleBn;
                 const itemDesc = lang === "en" && item.descriptionEn ? item.descriptionEn : item.descriptionBn;
                 const itemCaption = lang === "en" && item.captionEn ? item.captionEn : item.captionBn;
@@ -386,11 +426,11 @@ export default function ProvenanceTrust() {
                 return (
                   <div
                     key={item.year}
-                    className="relative pl-10 sm:pl-14 transition-all duration-700 ease-out"
+                    className="relative pl-10 sm:pl-14"
                   >
                     {/* Left Node Badge */}
                     <div
-                      className={`absolute left-4 sm:left-6 -translate-x-1/2 top-3 z-10 flex h-7 px-2.5 items-center justify-center rounded-full border-2 text-[11px] font-bold shadow-xs transition-all duration-300 ${
+                      className={`absolute left-4 sm:left-6 -translate-x-1/2 top-3 z-10 flex h-7 px-2.5 items-center justify-center rounded-full border-2 text-[11px] font-bold shadow-xs transition-all duration-500 ease-out ${
                         isHighlighted
                           ? "border-accent-brass bg-brand-slate-deep text-accent-brass scale-110 ring-2 ring-accent-brass/30"
                           : isPastOrCurrent
@@ -398,20 +438,21 @@ export default function ProvenanceTrust() {
                           : "border-neutral-300 bg-white text-neutral-400"
                       }`}
                     >
-                      <span>{item.year}</span>
+                      <span>{itemYear}</span>
                     </div>
 
                     {/* Milestone Card */}
                     <div
-                      className={`overflow-hidden rounded-xl border bg-white p-4 shadow-2xs transition-all duration-700 ease-out ${
+                      className={`overflow-hidden rounded-xl border bg-white p-4 shadow-2xs transition-all duration-[900ms] ease-[cubic-bezier(0.16,1,0.3,1)] ${
                         isRevealed
                           ? "opacity-100 translate-y-0"
-                          : "opacity-0 translate-y-6"
+                          : "opacity-0 translate-y-8"
                       } ${
                         isHighlighted
                           ? "border-accent-brass-dark/40 shadow-sm ring-1 ring-accent-brass/15"
                           : "border-neutral-200"
                       }`}
+                      style={{ transitionDelay: isRevealed ? "0ms" : `${idx * 60}ms` }}
                     >
                       <div className="mb-2">
                         <span className="text-xs font-bold text-text-primary-dark">
@@ -457,7 +498,7 @@ export default function ProvenanceTrust() {
           </h4>
           <p className="mt-1.5 text-xs sm:text-sm text-text-secondary-dark max-w-lg mx-auto leading-relaxed">
             {t(
-              "চট্টগ্রামের আগ্রাবাদ এক্সেস রোডে আমাদের শোরুমে সরাসরি ডিসপ্লে দেখে পছন্দ করতে পারেন অথবা আপনার পছন্দের সাইজ ও কালার অনুযায়ী অর্ডার করতে পারেন।",
+              "চট্টগ্রামের আগ্রাবাদ এক্সেস রোডে আমাদের শোরুমে সরাসরি ডিসপ্লে দেখে পছন্দ করতে পারেন অথবা আপনার পছন্দের সাইজ ও কালার অনুযায়ী অর্ডার করতে পারেন।",
               "Visit our showroom on Agrabad Access Road, Chattogram to explore floor collections or commission bespoke furniture tailored to your residence."
             )}
           </p>

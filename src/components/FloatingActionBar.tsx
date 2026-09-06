@@ -143,6 +143,18 @@ export default function FloatingActionBar() {
                 </span>
               </a>
 
+              {/* Secondary Request Quote Link inside Bubble */}
+              <div className="mt-2.5 pt-2 border-t border-neutral-100 flex items-center justify-between">
+                <button
+                  type="button"
+                  onClick={() => openQuoteModal()}
+                  className="text-[11px] font-semibold text-accent-brass-dark hover:text-brand-slate-deep transition-colors inline-flex items-center gap-1 cursor-pointer hover:underline"
+                >
+                  <span>📋 {t("কোটেশন রিকোয়েস্ট করুন", "Request a Quote")}</span>
+                  <span>→</span>
+                </button>
+              </div>
+
               {/* Subtle Pointer Tail */}
               <div className="absolute -bottom-2 right-5 h-3 w-3 rotate-45 border-r border-b border-neutral-200/90 bg-white" />
             </div>
@@ -150,28 +162,22 @@ export default function FloatingActionBar() {
         )}
 
         {/* Floating WhatsApp Action Button */}
-        <div className="pointer-events-auto flex items-center gap-3">
-          {/* Request Quote Floating Pill Button */}
-          <button
-            type="button"
-            onClick={() => openQuoteModal()}
-            className="flex items-center gap-1.5 rounded-full bg-brand-slate-deep px-4 py-2.5 text-xs font-bold text-accent-brass border border-accent-brass/40 shadow-xl hover:bg-brand-slate-surface transition-all cursor-pointer"
-          >
-            <span>📋 {t("কোটেশন রিকোয়েস্ট", "Request Quote")}</span>
-          </button>
+        <div className="pointer-events-auto relative">
+          {/* Subtle Looping Radar Ping Effect */}
+          <div className="pointer-events-none absolute inset-0 -m-1 rounded-full bg-accent-whatsapp/30 animate-radar" />
 
           {/* Floating WhatsApp Button */}
           <a
             href={BRAND_CONFIG.contact.whatsAppUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="relative flex h-14 w-14 items-center justify-center rounded-full bg-accent-whatsapp text-brand-slate-deep shadow-2xl transition-all duration-300 hover:scale-108 hover:bg-accent-whatsapp-hover active:scale-95 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-accent-whatsapp/50 group"
+            className="relative flex h-14 w-14 items-center justify-center rounded-full bg-accent-whatsapp text-brand-slate-deep shadow-2xl transition-all duration-300 hover:scale-108 hover:bg-accent-whatsapp-hover active:scale-95 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-accent-whatsapp/50 group cursor-pointer"
             aria-label="WhatsApp Support"
           >
             <WhatsAppIcon size={28} className="transition-transform group-hover:scale-110" />
-            <span className="absolute -top-1 -right-1 flex h-4 w-4">
+            <span className="absolute -top-0.5 -right-0.5 flex h-4 w-4">
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
-              <span className="relative inline-flex h-4 w-4 rounded-full bg-emerald-500 border-2 border-white" />
+              <span className="relative inline-flex h-4 w-4 rounded-full bg-emerald-500 border-2 border-white shadow-xs" />
             </span>
           </a>
         </div>
