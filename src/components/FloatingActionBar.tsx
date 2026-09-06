@@ -58,7 +58,7 @@ export default function FloatingActionBar() {
 
           {/* WhatsApp Button */}
           <a
-            href={BRAND_CONFIG.contact.whatsAppUrl}
+            href={BRAND_CONFIG.contact.getWhatsAppUrl(lang)}
             target="_blank"
             rel="noopener noreferrer"
             className="flex h-[48px] flex-[1.2] flex-col items-center justify-center rounded-lg bg-accent-whatsapp text-[11px] font-bold text-brand-slate-deep shadow-xs transition-colors hover:bg-accent-whatsapp-hover"
@@ -129,7 +129,7 @@ export default function FloatingActionBar() {
 
               {/* Message Body */}
               <a
-                href={BRAND_CONFIG.contact.whatsAppUrl}
+                href={BRAND_CONFIG.contact.getWhatsAppUrl(lang)}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="block text-xs font-medium text-text-primary-dark hover:text-accent-whatsapp-dark transition-colors leading-relaxed group"
@@ -168,7 +168,7 @@ export default function FloatingActionBar() {
 
           {/* Floating WhatsApp Button */}
           <a
-            href={BRAND_CONFIG.contact.whatsAppUrl}
+            href={BRAND_CONFIG.contact.getWhatsAppUrl(lang)}
             target="_blank"
             rel="noopener noreferrer"
             className="relative flex h-14 w-14 items-center justify-center rounded-full bg-accent-whatsapp text-brand-slate-deep shadow-2xl transition-all duration-300 hover:scale-108 hover:bg-accent-whatsapp-hover active:scale-95 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-accent-whatsapp/50 group cursor-pointer"

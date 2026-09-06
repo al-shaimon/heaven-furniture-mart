@@ -87,7 +87,7 @@ export default function ConsultationCTA() {
               </a>
 
               <a
-                href={BRAND_CONFIG.contact.whatsAppUrl}
+                href={BRAND_CONFIG.contact.getWhatsAppUrl(lang)}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-3 rounded-xl border border-accent-whatsapp/40 bg-brand-slate-surface p-3.5 transition-colors hover:border-accent-whatsapp group"

@@ -514,7 +514,7 @@ export default function ProvenanceTrust() {
 
           <div className="mt-5 flex flex-wrap items-center justify-center gap-3">
             <a
-              href={BRAND_CONFIG.contact.whatsAppUrl}
+              href={BRAND_CONFIG.contact.getWhatsAppUrl(lang)}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 rounded-xl bg-accent-whatsapp px-4 py-2.5 text-xs sm:text-sm font-bold text-brand-slate-deep shadow-xs hover:bg-accent-whatsapp-hover transition-colors"

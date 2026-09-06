@@ -91,7 +91,7 @@ export default function Hero() {
             </button>
 
             <a
-              href={BRAND_CONFIG.contact.whatsAppUrl}
+              href={BRAND_CONFIG.contact.getWhatsAppUrl(lang)}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex h-12 sm:h-13 items-center justify-center gap-2 rounded-xl bg-accent-whatsapp px-5 text-sm sm:text-base font-bold text-brand-slate-deep shadow-md transition-all hover:bg-accent-whatsapp-hover active:scale-[0.99] cursor-pointer"

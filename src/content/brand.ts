@@ -104,7 +104,14 @@ export const BRAND_CONFIG = {
     email: "heavenfurnituremart@gmail.com",
     whatsAppNumber: "8801960481983",
     whatsAppPreFillBn: "আসসালামু আলাইকুম, হেভেন ফার্নিচার মার্টে ফার্নিচার সম্পর্কে জানতে চাই।",
+    whatsAppPreFillEn: "Hello Heaven Furniture Mart, I would like to inquire about your solid wood furniture collections.",
     whatsAppUrl: "https://wa.me/8801960481983?text=" + encodeURIComponent("আসসালামু আলাইকুম, হেভেন ফার্নিচার মার্টে ফার্নিচার সম্পর্কে জানতে চাই।"),
+    getWhatsAppUrl: (lang: "bn" | "en" = "bn") =>
+      `https://wa.me/8801960481983?text=${encodeURIComponent(
+        lang === "en"
+          ? "Hello Heaven Furniture Mart, I would like to inquire about your solid wood furniture collections."
+          : "আসসালামু আলাইকুম, হেভেন ফার্নিচার মার্টে ফার্নিচার সম্পর্কে জানতে চাই।"
+      )}`,
     phoneUrl: "tel:+8801960481983",
     secondaryPhoneUrl: "tel:+8801900481898",
   },

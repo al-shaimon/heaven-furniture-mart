@@ -83,7 +83,7 @@ export default function Footer() {
               ))}
               <li>
                 <a
-                  href={contact.whatsAppUrl}
+                  href={contact.getWhatsAppUrl(lang)}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-accent-whatsapp hover:underline font-semibold"

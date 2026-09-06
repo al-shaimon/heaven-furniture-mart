@@ -105,20 +105,37 @@ export default function RequestQuoteModal() {
       tq.woods[woodType as keyof typeof tq.woods]?.en || woodType
     );
 
-    const message = [
-      `*হেভেন ফার্নিচার মার্ট — কোটেশন রিকোয়েস্ট*`,
-      `রেফারেন্স: #${quoteRefId}`,
-      `---------------------------------`,
-      `👤 গ্রাহকের নাম: ${customerName.trim()}`,
-      `📞 ফোন: ${customerPhone.trim()}`,
-      `📍 ডেলিভারি এলাকা: ${customerCity || "চট্টগ্রাম"}`,
-      `🪑 ফার্নিচারের ধরন: ${catName}`,
-      specificItem ? `✨ মডেল / পছন্দ: ${specificItem}` : "",
-      `🪵 কাঠ / ম্যাটেরিয়াল: ${woodName}`,
-      dimensionsNotes ? `📐 মাপ / বিশেষ চাহিদা: ${dimensionsNotes}` : "",
-      `---------------------------------`,
-      `আসসালামু আলাইকুম, আমি এই ফার্নিচারের আনুমানিক বাজেট ও ডেলিভারি সময় জানতে চাই।`,
-    ]
+    const message = (
+      lang === "en"
+        ? [
+            `*Heaven Furniture Mart — Custom Quote Request*`,
+            `Reference: #${quoteRefId}`,
+            `---------------------------------`,
+            `👤 Customer Name: ${customerName.trim()}`,
+            `📞 Phone: ${customerPhone.trim()}`,
+            `📍 Delivery Area: ${customerCity || "Chattogram"}`,
+            `🪑 Furniture Category: ${catName}`,
+            specificItem ? `✨ Model / Selection: ${specificItem}` : "",
+            `🪵 Timber / Material: ${woodName}`,
+            dimensionsNotes ? `📐 Dimensions / Special Requirements: ${dimensionsNotes}` : "",
+            `---------------------------------`,
+            `Hello, I would like to receive an estimated quote and delivery timeframe for this furniture.`,
+          ]
+        : [
+            `*হেভেন ফার্নিচার মার্ট — কোটেশন রিকোয়েস্ট*`,
+            `রেফারেন্স: #${quoteRefId}`,
+            `---------------------------------`,
+            `👤 গ্রাহকের নাম: ${customerName.trim()}`,
+            `📞 ফোন: ${customerPhone.trim()}`,
+            `📍 ডেলিভারি এলাকা: ${customerCity || "চট্টগ্রাম"}`,
+            `🪑 ফার্নিচারের ধরন: ${catName}`,
+            specificItem ? `✨ মডেল / পছন্দ: ${specificItem}` : "",
+            `🪵 কাঠ / ম্যাটেরিয়াল: ${woodName}`,
+            dimensionsNotes ? `📐 মাপ / বিশেষ চাহিদা: ${dimensionsNotes}` : "",
+            `---------------------------------`,
+            `আসসালামু আলাইকুম, আমি এই ফার্নিচারের আনুমানিক বাজেট ও ডেলিভারি সময় জানতে চাই।`,
+          ]
+    )
       .filter(Boolean)
       .join("\n");
 

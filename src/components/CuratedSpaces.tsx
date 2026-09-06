@@ -169,12 +169,12 @@ function ProductPreviewModal({ product, onClose }: ProductPreviewModalProps) {
           </button>
 
           <div
-            className="flex flex-col lg:grid lg:grid-cols-12 w-full min-h-full lg:h-[620px] lg:overflow-hidden"
+            className="flex flex-col lg:grid lg:grid-cols-12 w-full min-h-full lg:h-[650px] xl:h-[680px] lg:overflow-hidden"
           >
             {/* Left Column: Visual Swiper */}
-            <div className="lg:col-span-7 flex flex-col justify-between bg-neutral-900 p-2.5 sm:p-4 lg:p-4 xl:p-5 relative select-none shrink-0 h-[380px] xs:h-[420px] sm:h-[460px] lg:h-full min-h-0">
+            <div className="lg:col-span-7 flex flex-col justify-between bg-neutral-900 p-2.5 sm:p-4 lg:p-4 xl:p-5 relative select-none shrink-0 h-[58dvh] xs:h-[62dvh] sm:h-[66dvh] lg:h-full min-h-[450px] xs:min-h-[490px] sm:min-h-[530px] lg:min-h-0">
               {/* Embla Viewport Container with consistent height and backdrop */}
-              <div className="relative w-full flex-1 min-h-[280px] xs:min-h-[320px] sm:min-h-[350px] lg:min-h-0 flex items-center justify-center overflow-hidden rounded-lg sm:rounded-xl bg-neutral-950 border border-neutral-800">
+              <div className="relative w-full flex-1 min-h-[350px] xs:min-h-[390px] sm:min-h-[430px] lg:min-h-0 flex items-center justify-center overflow-hidden rounded-lg sm:rounded-xl bg-neutral-950 border border-neutral-800">
                 <div className="overflow-hidden w-full h-full" ref={emblaRef}>
                   <div className="flex h-full touch-pan-y">
                     {images.map((src, idx) => (
@@ -197,7 +197,7 @@ function ProductPreviewModal({ product, onClose }: ProductPreviewModalProps) {
                         </div>
 
                         {/* Foreground Sharp Image */}
-                        <div className="relative w-full h-full p-2.5 sm:p-4 flex items-center justify-center z-10">
+                        <div className="relative w-full h-full p-1.5 sm:p-3.5 flex items-center justify-center z-10">
                           <Image
                             src={src}
                             alt={`${productTitle} - ${idx + 1}`}
@@ -245,13 +245,13 @@ function ProductPreviewModal({ product, onClose }: ProductPreviewModalProps) {
 
               {/* Thumbnail Strip */}
               {hasMultipleImages && (
-                <div className="mt-2 flex gap-1.5 sm:gap-2 overflow-x-auto pb-0.5 pt-0.5 scrollbar-thin-brass justify-start sm:justify-center items-center shrink-0">
+                <div className="mt-2.5 flex gap-2 sm:gap-2.5 overflow-x-auto pb-0.5 pt-0.5 scrollbar-thin-brass justify-start sm:justify-center items-center shrink-0">
                   {images.map((src, idx) => (
                     <button
                       key={idx}
                       type="button"
                       onClick={() => scrollTo(idx)}
-                      className={`relative h-9 w-12 xs:h-10 xs:w-14 sm:h-12 sm:w-16 shrink-0 overflow-hidden rounded-xs border-2 transition-all cursor-pointer bg-neutral-950 ${
+                      className={`relative h-10 w-14 xs:h-11 xs:w-16 sm:h-12 sm:w-18 shrink-0 overflow-hidden rounded-xs border-2 transition-all cursor-pointer bg-neutral-950 ${
                         selectedIndex === idx
                           ? "border-accent-brass shadow-sm scale-105 ring-1 ring-accent-brass/50"
                           : "border-white/15 opacity-60 hover:opacity-100 hover:border-white/40"

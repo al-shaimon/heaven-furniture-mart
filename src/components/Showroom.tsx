@@ -37,15 +37,15 @@ export default function Showroom() {
           {/* Left Column: Interactive Tabbed Visual (Building Photo VS Live Google Map) */}
           <div className="flex flex-col rounded-sm border border-neutral-200 bg-white shadow-xs lg:col-span-7 reveal-on-scroll delay-100 overflow-hidden">
             {/* Tab Controls */}
-            <div className="flex items-center justify-between border-b border-neutral-200 bg-surface-ecru-light px-3 py-2 sm:px-4">
-              <div className="flex gap-2">
+            <div className="flex items-center justify-between gap-3 border-b border-neutral-200 bg-surface-ecru-light p-2 sm:px-4 sm:py-2.5">
+              <div className="flex gap-1.5 sm:gap-2 w-full sm:w-auto">
                 <button
                   type="button"
                   onClick={() => setActiveTab("photo")}
-                  className={`inline-flex items-center gap-1.5 rounded-md px-3 py-1.5 text-xs sm:text-sm font-bold transition-all cursor-pointer ${
+                  className={`flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 rounded-md px-3 py-2 text-xs sm:text-sm font-bold transition-all cursor-pointer ${
                     activeTab === "photo"
                       ? "bg-brand-slate-deep text-white shadow-xs"
-                      : "bg-white text-text-secondary-dark hover:bg-neutral-100"
+                      : "bg-white text-text-secondary-dark hover:bg-neutral-100 hover:text-text-primary-dark"
                   }`}
                 >
                   <span>{t(ts.tabPhoto.bn, ts.tabPhoto.en)}</span>
@@ -54,10 +54,10 @@ export default function Showroom() {
                 <button
                   type="button"
                   onClick={() => setActiveTab("map")}
-                  className={`inline-flex items-center gap-1.5 rounded-md px-3 py-1.5 text-xs sm:text-sm font-bold transition-all cursor-pointer ${
+                  className={`flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 rounded-md px-3 py-2 text-xs sm:text-sm font-bold transition-all cursor-pointer ${
                     activeTab === "map"
                       ? "bg-brand-slate-deep text-white shadow-xs"
-                      : "bg-white text-text-secondary-dark hover:bg-neutral-100"
+                      : "bg-white text-text-secondary-dark hover:bg-neutral-100 hover:text-text-primary-dark"
                   }`}
                 >
                   <span>{t(ts.tabMap.bn, ts.tabMap.en)}</span>
@@ -69,7 +69,7 @@ export default function Showroom() {
                   href={loc.googleMapsUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-[11px] font-bold text-accent-brass-dark hover:underline flex items-center gap-1"
+                  className="hidden sm:inline-flex text-xs font-bold text-accent-brass-dark hover:underline items-center gap-1 shrink-0 ml-2"
                 >
                   <span>{t("গুগল ম্যাপে বড় করে দেখুন ↗", "Open in Google Maps ↗")}</span>
                 </a>
@@ -104,6 +104,14 @@ export default function Showroom() {
                     loading="lazy"
                     referrerPolicy="no-referrer-when-downgrade"
                   />
+                  <a
+                    href={loc.googleMapsUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="sm:hidden absolute top-3 right-3 z-10 inline-flex items-center gap-1 rounded-full bg-brand-slate-deep/90 px-2.5 py-1 text-[11px] font-bold text-accent-brass backdrop-blur-xs shadow-md border border-white/20 hover:bg-brand-slate-deep active:scale-95 transition-all"
+                  >
+                    <span>📍 {t("গুগল ম্যাপস ↗", "Google Maps ↗")}</span>
+                  </a>
                 </div>
               )}
             </div>
@@ -187,13 +195,15 @@ export default function Showroom() {
 
             {/* Action Buttons */}
             <div className="mt-8 flex flex-col gap-3 sm:flex-row lg:flex-col pt-4 border-t border-neutral-100">
-              <button
-                type="button"
+              <a
+                href={loc.googleMapsUrl}
+                target="_blank"
+                rel="noopener noreferrer"
                 onClick={() => setActiveTab("map")}
-                className="inline-flex h-[50px] items-center justify-center gap-2 rounded-xl bg-brand-slate-deep px-5 text-sm sm:text-base font-semibold text-white transition-colors hover:bg-brand-slate-surface focus-visible:ring-2 focus-visible:ring-brand-slate-deep cursor-pointer"
+                className="inline-flex h-[50px] items-center justify-center gap-2 rounded-xl bg-brand-slate-deep px-5 text-sm sm:text-base font-semibold text-white transition-colors hover:bg-brand-slate-surface focus-visible:ring-2 focus-visible:ring-brand-slate-deep cursor-pointer shadow-xs"
               >
-                <span>🗺️ {t(ts.btnMap.bn, ts.btnMap.en)}</span>
-              </button>
+                <span>🗺️ {t(ts.btnMap.bn, ts.btnMap.en)} ↗</span>
+              </a>
               <a
                 href={contact.phoneUrl}
                 className="inline-flex h-[50px] items-center justify-center gap-2 rounded-xl border border-neutral-300 bg-surface-ecru-light px-5 text-sm sm:text-base font-bold text-brand-slate-deep transition-colors hover:bg-neutral-100 shadow-2xs"
