@@ -78,15 +78,19 @@ export const metadata: Metadata = {
     index: true,
     follow: true,
   },
+  other: {
+    google: "notranslate",
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html
       lang="bn"
-      className={`${playfair.variable} ${jakarta.variable} ${bengali.variable} h-full antialiased`}
+      translate="no"
+      className={`${playfair.variable} ${jakarta.variable} ${bengali.variable} antialiased notranslate`}
     >
-      <body className="min-h-full flex flex-col bg-surface-ecru-light text-text-primary-dark">
+      <body className="min-h-screen flex flex-col bg-surface-ecru-light text-text-primary-dark">
         <JsonLd />
         <a
           href="#main-content"

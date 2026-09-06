@@ -6,8 +6,8 @@ export default function BespokeProcess() {
   const steps = BRAND_CONFIG.customSteps;
 
   return (
-    <section id="custom" className="bg-surface-ecru-light py-14 sm:py-20 lg:py-24">
-      <div className="mx-auto max-w-7xl px-4 sm:px-8 lg:px-12">
+    <section id="custom" className="bg-surface-ecru-light py-12 sm:py-16 lg:py-20">
+      <div className="mx-auto w-full max-w-[1560px] px-4 sm:px-8 lg:px-12 2xl:px-16">
         {/* Section Header */}
         <div className="max-w-2xl">
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-text-primary-dark">

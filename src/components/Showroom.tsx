@@ -8,8 +8,8 @@ export default function Showroom() {
   const contact = BRAND_CONFIG.contact;
 
   return (
-    <section id="showroom" className="bg-surface-ecru-paper py-14 sm:py-20 lg:py-24 border-t border-neutral-200">
-      <div className="mx-auto max-w-7xl px-4 sm:px-8 lg:px-12">
+    <section id="showroom" className="bg-surface-ecru-paper py-12 sm:py-16 lg:py-20 border-t border-neutral-200">
+      <div className="mx-auto w-full max-w-[1560px] px-4 sm:px-8 lg:px-12 2xl:px-16">
         {/* Section Header */}
         <div className="max-w-2xl">
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-text-primary-dark">

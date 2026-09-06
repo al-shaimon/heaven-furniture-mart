@@ -35,7 +35,7 @@ export default function Navbar() {
         }`}
       >
         <nav
-          className="mx-auto flex max-w-7xl items-center justify-between px-4 sm:px-8 lg:px-12"
+          className="mx-auto flex w-full max-w-[1560px] items-center justify-between px-4 sm:px-8 lg:px-12 2xl:px-16"
           aria-label="প্রধান নেভিগেশন"
         >
           {/* ================= DESKTOP VIEW ================= */}
@@ -99,11 +99,11 @@ export default function Navbar() {
             </a>
 
             {/* Call icon + Hamburger on Right */}
-            <div className="flex items-center gap-1">
+            <div className="flex items-center gap-1.5">
               {/* Call icon */}
               <a
                 href={BRAND_CONFIG.contact.phoneUrl}
-                className="flex h-10 w-10 items-center justify-center rounded-sm text-neutral-200 hover:text-white hover:bg-brand-slate-surface focus-visible:ring-2 focus-visible:ring-accent-whatsapp"
+                className="flex h-11 w-11 items-center justify-center rounded-sm text-neutral-200 hover:text-white hover:bg-brand-slate-surface active:scale-95 transition-transform focus-visible:ring-2 focus-visible:ring-accent-whatsapp cursor-pointer"
                 aria-label="সরাসরি কল করুন"
               >
                 <PhoneIcon />
@@ -111,8 +111,9 @@ export default function Navbar() {
 
               {/* Hamburger button */}
               <button
+                type="button"
                 onClick={() => setMobileOpen(true)}
-                className="flex h-10 w-10 flex-col items-center justify-center gap-1.5 rounded-sm text-neutral-200 hover:text-white hover:bg-brand-slate-surface focus-visible:ring-2 focus-visible:ring-accent-whatsapp cursor-pointer"
+                className="flex h-11 w-11 flex-col items-center justify-center gap-1.5 rounded-sm text-neutral-200 hover:text-white hover:bg-brand-slate-surface active:scale-95 transition-transform focus-visible:ring-2 focus-visible:ring-accent-whatsapp cursor-pointer"
                 aria-label="মেনু খুলুন"
                 aria-expanded={mobileOpen}
               >
@@ -161,8 +162,9 @@ export default function Navbar() {
               </a>
 
               <button
+                type="button"
                 onClick={() => setMobileOpen(false)}
-                className="flex h-10 w-10 items-center justify-center rounded-sm text-neutral-200 hover:text-white hover:bg-brand-slate-surface focus-visible:ring-2 focus-visible:ring-accent-whatsapp cursor-pointer"
+                className="flex h-11 w-11 items-center justify-center rounded-sm text-neutral-200 hover:text-white hover:bg-brand-slate-surface active:scale-95 transition-transform focus-visible:ring-2 focus-visible:ring-accent-whatsapp cursor-pointer"
                 aria-label="মেনু বন্ধ করুন"
               >
                 <svg

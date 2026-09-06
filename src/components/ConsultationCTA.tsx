@@ -21,8 +21,8 @@ export default function ConsultationCTA() {
   )}`;
 
   return (
-    <section id="contact" className="relative bg-brand-slate-deep py-14 text-white sm:py-20 lg:py-24">
-      <div className="mx-auto max-w-7xl px-4 sm:px-8 lg:px-12">
+    <section id="contact" className="relative bg-brand-slate-deep py-12 text-white sm:py-16 lg:py-20">
+      <div className="mx-auto w-full max-w-[1560px] px-4 sm:px-8 lg:px-12 2xl:px-16">
         <div className="grid gap-10 lg:grid-cols-12 lg:items-center lg:gap-12">
           {/* Left Column: Direct Contact Details */}
           <div className="lg:col-span-6">

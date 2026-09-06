@@ -1,7 +1,8 @@
 /**
  * Heaven Furniture Mart - Single Authoritative Brand Content Layer
- * Sourced strictly from Section 35 of docs/PLAN.md, company deck, brochure, and official channels.
+ * Sourced strictly from docs/company-deck-notes.txt, brochure, and official channels.
  * Pure, natural Bangladeshi Bangla throughout.
+ * ponytail: Lean, zero-abstraction content dictionary.
  */
 
 export interface NavItem {
@@ -12,13 +13,13 @@ export interface NavItem {
 
 export interface GalleryItem {
   id: string;
-  category: "living" | "dining" | "bedroom" | "office" | "custom";
+  category: "living" | "bedroom" | "dining" | "office" | "custom";
   categoryLabelBn: string;
   titleBn: string;
-  titleEn: string;
   descriptionBn: string;
   imageSrc: string;
   imageAlt: string;
+  additionalImages: string[];
   badge?: string;
 }
 
@@ -26,6 +27,24 @@ export interface CustomStep {
   stepNumber: string;
   titleBn: string;
   descriptionBn: string;
+}
+
+export interface TimelineMilestone {
+  year: string;
+  titleBn: string;
+  descriptionBn: string;
+  imageSrc: string;
+  imageAlt: string;
+  captionBn: string;
+}
+
+export interface CraftVideoItem {
+  id: string;
+  titleBn: string;
+  descriptionBn: string;
+  posterSrc: string;
+  localVideoSrc: string;
+  badgeBn: string;
 }
 
 export const BRAND_CONFIG = {
@@ -65,7 +84,7 @@ export const BRAND_CONFIG = {
     email: "heavenfurnituremart@gmail.com",
     whatsAppNumber: "8801960481983",
     whatsAppPreFillBn: "আসসালামু আলাইকুম, হেভেন ফার্নিচার মার্টে ফার্নিচার সম্পর্কে জানতে চাই।",
-    whatsAppUrl: "https://wa.me/8801960481983?text=%E0%A6%86%E0%A6%B8%E0%A6%B8%E0%A6%BE%E0%A6%B2%E0%A6%BE%E0%A6%AE%E0%A7%81%20%E0%A6%86%E0%A6%B2%E0%A6%BE%E0%A6%87%E0%A6%95%E0%A7%81%E0%A6%AE%2C%20%E0%A6%B9%E0%A7%87%E0%A6%AD%E0%A7%87%E0%A6%A8%20%E0%A6%AB%E0%A6%BE%E0%A6%B0%E0%A7%8D%E0%A6%A8%E0%A6%BF%E0%A6%9 displacement%8B%E0%A6%BE%E0%A6%B0%20%E0%A6%AE%E0%A6%BE%E0%A6%B0%E0%A7%8D%E0%A6%9F%E0%A7%87%20%E0%A6%AB%E0%A6%BE%E0%A6%B0%E0%A7%8D%E0%A6%A8%E0%A6%BF%E0%A6%9 displacement%8B%E0%A6%BE%E0%A6%B0%20%E0%A6%B8%E0%A6%AE%E0%A7%8D%E0%A6%AA%E0%A6%B0%E0%A7%8D%E0%A6%95%E0%A7%87%20%E0%A6%9C%E0%A6%BE%E0%A6%A8%E0%A6%A4%E0%A7%87%20%E0%A6%9A%E0%A6%BE%E0%A6%87%E0%A7%84",
+    whatsAppUrl: "https://wa.me/8801960481983?text=" + encodeURIComponent("আসসালামু আলাইকুম, হেভেন ফার্নিচার মার্টে ফার্নিচার সম্পর্কে জানতে চাই।"),
     phoneUrl: "tel:+8801960481983",
     secondaryPhoneUrl: "tel:+8801900481898",
   },
@@ -83,6 +102,7 @@ export const BRAND_CONFIG = {
       tourVideoId: "qEwoJWbXSTs",
       tourVideoTitle: "Heaven Furniture Mart Chattogram – Virtual Showroom Tour",
       tourThumbnail: "/assets/showroom/heaven-virtual-showroom-tour.webp",
+      tourLocalVideoSrc: "/videos/showroom/heaven-virtual-showroom-tour.mp4",
     },
     instagram: {
       url: "https://www.instagram.com/heaven_furniture_ltd",
@@ -96,6 +116,7 @@ export const BRAND_CONFIG = {
     { label: "কাস্টম তৈরি", labelEn: "Custom Furniture", href: "#custom" },
     { label: "শোরুম ভিডিও", labelEn: "Showroom Tour", href: "#showroom-tour" },
     { label: "শোরুম", labelEn: "Showroom", href: "#showroom" },
+    { label: "স্বীকৃতি", labelEn: "Milestones", href: "#trust" },
     { label: "যোগাযোগ", labelEn: "Contact", href: "#contact" },
   ] as NavItem[],
 
@@ -117,11 +138,11 @@ export const BRAND_CONFIG = {
     },
     {
       titleBn: "চেম্বার অব কমার্স সদস্য",
-      descriptionBn: "চট্টগ্রাম চেম্বার অব কমার্সের অনুমোদিত সদস্য।",
+      descriptionBn: "চট্টগ্রাম চেম্বার অব কমার্স অ্যান্ড ইন্ডাস্ট্রিজ-এর সদস্য।",
     },
     {
       titleBn: "ফার্নিচার মেলায় অংশগ্রহণ",
-      descriptionBn: "চট্টগ্রামের আন্তর্জাতিক ফার্নিচার মেলায় নিজস্ব প্যাভিলিয়নে অংশগ্রহণ।",
+      descriptionBn: "চট্টগ্রাম আন্তর্জাতিক ফার্নিচার মেলায় নিজস্ব প্যাভিলিয়নে অংশগ্রহণ।",
     },
   ],
 
@@ -148,160 +169,391 @@ export const BRAND_CONFIG = {
     },
   ] as CustomStep[],
 
-  // Full authentic photography gallery spanning Living, Bedroom, Dining, Office, and Custom
+  // Curated, 100% verified real photography from Heaven Furniture Mart
   gallery: [
-    // Living
+    // --- LIVING ROOM ---
     {
-      id: "living-hero",
+      id: "living-sectional",
       category: "living",
       categoryLabelBn: "লিভিং ও ড্রয়িং",
-      titleBn: "ড্রয়িং রুম সোফা ও সেন্টার টেবিল সেট",
-      titleEn: "Living Room Sofa & Center Table Set",
-      descriptionBn: "আরামদায়ক কুশন ও ম্যাচিং সেন্টার টেবিল সহ সম্পূর্ণ ড্রয়িং রুম সোফা সেট।",
-      imageSrc: "/assets/hero/heaven-classic-living-hero.webp",
-      imageAlt: "হেভেন ফার্নিচার মার্ট ড্রয়িং রুম সোফা ও সেন্টার টেবিল সেট",
+      titleBn: "সেকশনাল ড্রয়িং সোফা সেট",
+      descriptionBn: "আরামদায়ক কুশন ও আধুনিক লিভিং রুমের জন্য সোফা সেট।",
+      imageSrc: "/furniture/living/living-sectional-sofa-01.webp",
+      imageAlt: "হেভেন ফার্নিচার মার্ট সেকশনাল ড্রয়িং সোফা সেট",
+      additionalImages: [
+        "/furniture/living/living-sectional-sofa-01.webp",
+        "/furniture/living/living-modern-beige-sofa-03.webp",
+        "/furniture/living/living-glass-center-table-09.webp",
+      ],
       badge: "জনপ্রিয়",
     },
     {
-      id: "living-embroidery",
+      id: "living-royal-blue",
       category: "living",
       categoryLabelBn: "লিভিং ও ড্রয়িং",
-      titleBn: "লাক্সারি এমব্রয়ডারি সোফা সেট",
-      titleEn: "Luxury Embroidery Sofa Set",
-      descriptionBn: "সুন্দর কারুকাজ ও প্রিমিয়াম ফ্যাব্রিক ফিনিশের লাক্সারি সোফা।",
-      imageSrc: "/assets/gallery/luxury-embroidery-sofa-set-jpeg.webp",
-      imageAlt: "হেভেন ফার্নিচার মার্ট লাক্সারি এমব্রয়ডারি সোফা সেট",
+      titleBn: "খোদাই করা রয়্যাল ব্লু সোফা",
+      descriptionBn: "কাঠের ক্লাসিক কারুকাজ ও সফট ব্লু কুশন বিশিষ্ট সোফা।",
+      imageSrc: "/furniture/living/living-royal-blue-sofa-02.webp",
+      imageAlt: "হেভেন ফার্নিচার মার্ট খোদাই করা রয়্যাল ব্লু সোফা",
+      additionalImages: [
+        "/furniture/living/living-royal-blue-sofa-02.webp",
+        "/furniture/living/living-classic-carved-sofa-07.webp",
+        "/furniture/living/living-gold-trim-armchair-08.webp",
+      ],
+      badge: "ক্লাসিক",
     },
     {
-      id: "living-classic",
+      id: "living-modern-beige",
       category: "living",
       categoryLabelBn: "লিভিং ও ড্রয়িং",
-      titleBn: "ক্লাসিক সোফা সেট",
-      titleEn: "Classic Furniture Sofa Set",
-      descriptionBn: "মজবুত কাঠের ফ্রেমের ক্লাসিক ড্রয়িং রুম সোফা সেট।",
-      imageSrc: "/assets/gallery/classic-furniture-sofa-set-jpeg.webp",
-      imageAlt: "হেভেন ফার্নিচার মার্ট ক্লাসিক সোফা সেট",
+      titleBn: "বেইজ কালার কুশন সোফা",
+      descriptionBn: "ড্রয়িং রুমের জন্য সিম্পল ও আরামদায়ক সোফা সেট।",
+      imageSrc: "/furniture/living/living-modern-beige-sofa-03.webp",
+      imageAlt: "হেভেন ফার্নিচার মার্ট বেইজ কালার কুশন সোফা",
+      additionalImages: [
+        "/furniture/living/living-modern-beige-sofa-03.webp",
+        "/furniture/living/living-l-shape-sofa-04.webp",
+      ],
+    },
+    {
+      id: "living-l-shape",
+      category: "living",
+      categoryLabelBn: "লিভিং ও ড্রয়িং",
+      titleBn: "এল-শেপ ফ্যামিলি সোফা সেট",
+      descriptionBn: "পরিবারের সবার একসাথে বসার উপযোগী কর্নার সোফা।",
+      imageSrc: "/furniture/living/living-l-shape-sofa-04.webp",
+      imageAlt: "হেভেন ফার্নিচার মার্ট এল-শেপ ফ্যামিলি সোফা সেট",
+      additionalImages: [
+        "/furniture/living/living-l-shape-sofa-04.webp",
+        "/furniture/living/living-blue-l-shape-06.webp",
+        "/furniture/living/living-yellow-sectional-05.webp",
+      ],
+      badge: "বেস্ট সেলার",
+    },
+    {
+      id: "living-classic-carved",
+      category: "living",
+      categoryLabelBn: "লিভিং ও ড্রয়িং",
+      titleBn: "কাঠের ক্লাসিক নকশার সোফা সেট",
+      descriptionBn: "মজবুত কাঠের ফ্রেম ও ঐতিহ্যবাহী খোদাই নকশার সোফা।",
+      imageSrc: "/furniture/living/living-classic-carved-sofa-07.webp",
+      imageAlt: "হেভেন ফার্নিচার মার্ট কাঠের ক্লাসিক নকশার সোফা সেট",
+      additionalImages: [
+        "/furniture/living/living-classic-carved-sofa-07.webp",
+        "/furniture/living/living-white-gold-carved-10.webp",
+      ],
+    },
+    {
+      id: "living-glass-center",
+      category: "living",
+      categoryLabelBn: "লিভিং ও ড্রয়িং",
+      titleBn: "কাঠ ও গ্লাসের সেন্টার টেবিল",
+      descriptionBn: "সোফা সেটের সাথে মানানসই সেন্টার টেবিল।",
+      imageSrc: "/furniture/living/living-glass-center-table-09.webp",
+      imageAlt: "হেভেন ফার্নিচার মার্ট কাঠ ও গ্লাসের সেন্টার টেবিল",
+      additionalImages: [
+        "/furniture/living/living-glass-center-table-09.webp",
+        "/furniture/living/living-gold-trim-armchair-08.webp",
+      ],
     },
 
-    // Dining
-    {
-      id: "dining-marble",
-      category: "dining",
-      categoryLabelBn: "ডাইনিং রুম",
-      titleBn: "মার্বেল টপ ডাইনিং টেবিল ও চেয়ার সেট",
-      titleEn: "Marble Top Dining Table & Chairs",
-      descriptionBn: "মার্বেল টপ ডাইনিং টেবিল ও আরামদায়ক কুশন চেয়ার সেট। পরিবারের প্রয়োজন অনুযায়ী যেকোনো সিটে তৈরি করা যায়।",
-      imageSrc: "/assets/collections/heaven-dining-marble-luxury.webp",
-      imageAlt: "হেভেন ফার্নিচার মার্ট মার্বেল টপ ডাইনিং টেবিল ও চেয়ার সেট",
-      badge: "শোরুম ডিসপ্লে",
-    },
-    {
-      id: "dining-luxury",
-      category: "dining",
-      categoryLabelBn: "ডাইনিং রুম",
-      titleBn: "লাক্সারি ডাইনিং সেট",
-      titleEn: "Luxury Dining Table Suite",
-      descriptionBn: "আধুনিক অ্যাপার্টমেন্টের জন্য মানানসই মার্জিত ডিজাইনের ডাইনিং সেট।",
-      imageSrc: "/assets/gallery/luxury-dining-set-jpeg.webp",
-      imageAlt: "হেভেন ফার্নিচার মার্ট লাক্সারি ডাইনিং সেট",
-    },
-    {
-      id: "dining-table",
-      category: "dining",
-      categoryLabelBn: "ডাইনিং রুম",
-      titleBn: "ডাইনিং টেবিল সেট",
-      titleEn: "Luxury Dining Table Set",
-      descriptionBn: "মজবুত ফিনিশিং ও প্রিমিয়াম ডিজাইনের ডাইনিং সেট।",
-      imageSrc: "/assets/gallery/luxury-dining-table-set-png.webp",
-      imageAlt: "হেভেন ফার্নিচার মার্ট ডাইনিং টেবিল সেট",
-    },
-
-    // Bedroom
+    // --- BEDROOM ---
     {
       id: "bedroom-carved",
       category: "bedroom",
       categoryLabelBn: "বেডরুম",
-      titleBn: "খোদাই করা ক্লাসিক বেড সেট",
-      titleEn: "Hand-Carved Bedroom Suite",
-      descriptionBn: "খোদাই নকশার খাট, ম্যাচিং আলমারি ও ড্রেসিং টেবিল সহ বেডরুম সেট।",
-      imageSrc: "/assets/collections/heaven-bedroom-royal-carved.webp",
-      imageAlt: "হেভেন ফার্নিচার মার্ট খোদাই করা ক্লাসিক কাঠের খাট",
+      titleBn: "খোদাই করা কাঠের খাট",
+      descriptionBn: "নিপুণ হাতে খোদাই করা মজবুত কাঠের ক্লাসিক খাট।",
+      imageSrc: "/furniture/bedroom/bedroom-carved-wooden-bed-01.webp",
+      imageAlt: "হেভেন ফার্নিচার মার্ট খোদাই করা কাঠের খাট",
+      additionalImages: [
+        "/furniture/bedroom/bedroom-carved-wooden-bed-01.webp",
+        "/furniture/bedroom/bedroom-classic-double-bed-02.webp",
+        "/furniture/bedroom/bedroom-traditional-carved-08.webp",
+      ],
       badge: "ক্লাসিক",
     },
     {
-      id: "bedroom-modern",
+      id: "bedroom-upholstered",
       category: "bedroom",
       categoryLabelBn: "বেডরুম",
-      titleBn: "কুশনযুক্ত মডার্ন বেড সেট",
-      titleEn: "Modern Upholstered Bed",
-      descriptionBn: "আধুনিক ফ্ল্যাটের জন্য আরামদায়ক কুশন হেডবোর্ড বিশিষ্ট বেড সেট।",
-      imageSrc: "/assets/collections/heaven-bedroom-emerald-modern.webp",
-      imageAlt: "হেভেন ফার্নিচার মার্ট আধুনিক কুশনযুক্ত বেড",
+      titleBn: "কুশন হেডবোর্ড আধুনিক খাট",
+      descriptionBn: "আধুনিক ফ্ল্যাটের জন্য আরামদায়ক কুশন হেডবোর্ড খাট।",
+      imageSrc: "/furniture/bedroom/bedroom-upholstered-modern-bed-03.webp",
+      imageAlt: "হেভেন ফার্নিচার মার্ট কুশন হেডবোর্ড আধুনিক খাট",
+      additionalImages: [
+        "/furniture/bedroom/bedroom-upholstered-modern-bed-03.webp",
+        "/furniture/bedroom/bedroom-teal-upholstered-bed-06.webp",
+        "/furniture/bedroom/bedroom-tufted-fabric-bed-04.webp",
+      ],
+      badge: "আধুনিক",
     },
     {
-      id: "bedroom-luxury",
+      id: "bedroom-classic-double",
       category: "bedroom",
       categoryLabelBn: "বেডরুম",
-      titleBn: "লাক্সারি বেড সেট",
-      titleEn: "Luxury Bed Set",
-      descriptionBn: "অভিজাত বেডরুমের জন্য প্রিমিয়াম ডিজাইনের খাট।",
-      imageSrc: "/assets/gallery/luxury-bed-png.webp",
-      imageAlt: "হেভেন ফার্নিচার মার্ট লাক্সারি বেড সেট",
+      titleBn: "ক্লাসিক কাঠের ডাবল বেড",
+      descriptionBn: "সহজ ও পরিচ্ছন্ন ডিজাইনের মজবুত কাঠের খাট।",
+      imageSrc: "/furniture/bedroom/bedroom-classic-double-bed-02.webp",
+      imageAlt: "হেভেন ফার্নিচার মার্ট ক্লাসিক কাঠের ডাবল বেড",
+      additionalImages: [
+        "/furniture/bedroom/bedroom-classic-double-bed-02.webp",
+        "/furniture/bedroom/bedroom-storage-bed-05.webp",
+      ],
     },
     {
-      id: "bedroom-minimalist",
+      id: "bedroom-wardrobe",
       category: "bedroom",
       categoryLabelBn: "বেডরুম",
-      titleBn: "মিনিমালিস্ট বেড সেট",
-      titleEn: "Minimalist Bed Set",
-      descriptionBn: "সিম্পল ও রুচিশীল আধুনিক বেড সেট।",
-      imageSrc: "/assets/gallery/minimalist-bed-set-jpeg.webp",
-      imageAlt: "হেভেন ফার্নিচার মার্ট মিনিমালিস্ট বেড সেট",
+      titleBn: "কাঠের খোদাই করা আলমারি",
+      descriptionBn: "কাপড় ও প্রয়োজনীয় জিনিস গোছানোর জন্য মজবুত আলমারি।",
+      imageSrc: "/furniture/bedroom/bedroom-carved-wardrobe-07.webp",
+      imageAlt: "হেভেন ফার্নিচার মার্ট কাঠের খোদাই করা আলমারি",
+      additionalImages: [
+        "/furniture/bedroom/bedroom-carved-wardrobe-07.webp",
+      ],
+    },
+    {
+      id: "bedroom-storage",
+      category: "bedroom",
+      categoryLabelBn: "বেডরুম",
+      titleBn: "স্টোরেজ ড্রয়ারযুক্ত খাট",
+      descriptionBn: "নিচে প্রয়োজনীয় জিনিস রাখার সুবিধাসহ স্টোরেজ খাট।",
+      imageSrc: "/furniture/bedroom/bedroom-storage-bed-05.webp",
+      imageAlt: "হেভেন ফার্নিচার মার্ট স্টোরেজ ড্রয়ারযুক্ত খাট",
+      additionalImages: [
+        "/furniture/bedroom/bedroom-storage-bed-05.webp",
+        "/furniture/bedroom/bedroom-tufted-fabric-bed-04.webp",
+      ],
     },
 
-    // Office & Storage
+    // --- DINING ---
     {
-      id: "office-modular",
+      id: "dining-solid-wood",
+      category: "dining",
+      categoryLabelBn: "ডাইনিং",
+      titleBn: "কাঠের ডাইনিং টেবিল ও চেয়ার সেট",
+      descriptionBn: "মজবুত কাঠের তৈরি সম্পূর্ণ পরিবারের ডাইনিং সেট।",
+      imageSrc: "/furniture/dining/dining-solid-wood-table-set-01.webp",
+      imageAlt: "হেভেন ফার্নিচার মার্ট কাঠের ডাইনিং টেবিল ও চেয়ার সেট",
+      additionalImages: [
+        "/furniture/dining/dining-solid-wood-table-set-01.webp",
+        "/furniture/dining/dining-six-seater-wood-table-02.webp",
+        "/furniture/dining/dining-dark-wood-dining-set-03.webp",
+      ],
+      badge: "জনপ্রিয়",
+    },
+    {
+      id: "dining-six-seater",
+      category: "dining",
+      categoryLabelBn: "ডাইনিং",
+      titleBn: "৬ সিটের কাঠের ডাইনিং টেবিল",
+      descriptionBn: "পরিবারের জন্য ৬ সিটের আরামদায়ক ডাইনিং সেট।",
+      imageSrc: "/furniture/dining/dining-six-seater-wood-table-02.webp",
+      imageAlt: "হেভেন ফার্নিচার মার্ট ৬ সিটের কাঠের ডাইনিং টেবিল",
+      additionalImages: [
+        "/furniture/dining/dining-six-seater-wood-table-02.webp",
+        "/furniture/dining/dining-cushion-chair-table-04.webp",
+      ],
+    },
+    {
+      id: "dining-cushion",
+      category: "dining",
+      categoryLabelBn: "ডাইনিং",
+      titleBn: "কুশন চেয়ার ডাইনিং সেট",
+      descriptionBn: "আরামদায়ক কুশন সিটের মার্জিত ডাইনিং টেবিল ও চেয়ার।",
+      imageSrc: "/furniture/dining/dining-cushion-chair-table-04.webp",
+      imageAlt: "হেভেন ফার্নিচার মার্ট কুশন চেয়ার ডাইনিং সেট",
+      additionalImages: [
+        "/furniture/dining/dining-cushion-chair-table-04.webp",
+        "/furniture/dining/dining-round-rotating-table-05.webp",
+      ],
+    },
+    {
+      id: "dining-round",
+      category: "dining",
+      categoryLabelBn: "ডাইনিং",
+      titleBn: "গোল ডাইনিং টেবিল সেট",
+      descriptionBn: "ঘরোয়া আড্ডা ও খাবারের জন্য রাউন্ড ডাইনিং সেট।",
+      imageSrc: "/furniture/dining/dining-round-rotating-table-05.webp",
+      imageAlt: "হেভেন ফার্নিচার মার্ট গোল ডাইনিং টেবিল সেট",
+      additionalImages: [
+        "/furniture/dining/dining-round-rotating-table-05.webp",
+        "/furniture/dining/dining-oval-polished-set-06.webp",
+      ],
+    },
+    {
+      id: "dining-marble",
+      category: "dining",
+      categoryLabelBn: "ডাইনিং",
+      titleBn: "মার্বেল টপ ডাইনিং টেবিল",
+      descriptionBn: "মার্বেল টপের আধুনিক ও দৃষ্টিনন্দন ডাইনিং টেবিল।",
+      imageSrc: "/furniture/dining/dining-marble-top-table-07.webp",
+      imageAlt: "হেভেন ফার্নিচার মার্ট মার্বেল টপ ডাইনিং টেবিল",
+      additionalImages: [
+        "/furniture/dining/dining-marble-top-table-07.webp",
+        "/furniture/dining/dining-solid-wood-table-set-01.webp",
+      ],
+      badge: "শোরুম ডিসপ্লে",
+    },
+    // --- OFFICE ---
+    {
+      id: "office-desk",
       category: "office",
-      categoryLabelBn: "অফিস ও স্টোরেজ",
-      titleBn: "অফিস স্টোরেজ ও ফাইল কেবিনেট",
-      titleEn: "Office Modular Storage Cabinet",
-      descriptionBn: "অফিস ও স্টাডি রুমের জন্য কার্যকরী স্টোরেজ ও কেবিনেট।",
-      imageSrc: "/assets/bespoke/heaven-bespoke-modular-cabinet.webp",
-      imageAlt: "হেভেন ফার্নিচার মার্ট অফিস স্টোরেজ কেবিনেট",
+      categoryLabelBn: "অফিস",
+      titleBn: "এক্সিকিউটিভ অফিস টেবিল",
+      descriptionBn: "অফিস ও স্টাডি রুমের জন্য মানানসই এক্সিকিউটিভ ডেস্ক।",
+      imageSrc: "/furniture/office/office-executive-desk-01.webp",
+      imageAlt: "হেভেন ফার্নিচার মার্ট এক্সিকিউটিভ অফিস টেবিল",
+      additionalImages: [
+        "/furniture/office/office-executive-desk-01.webp",
+        "/furniture/office/office-storage-cabinet-03.webp",
+      ],
     },
     {
-      id: "storage-shoe-box",
+      id: "office-meeting",
       category: "office",
-      categoryLabelBn: "অফিস ও স্টোরেজ",
-      titleBn: "মিনিমালিস্ট শু বক্স ও কেবিনেট",
-      titleEn: "Minimalist Storage & Shoe Cabinet",
-      descriptionBn: "ঘরের এন্ট্রিওয়ের জন্য প্রয়োজনীয় মাল্টি-পারপাস স্টোরেজ কেবিনেট।",
-      imageSrc: "/assets/gallery/minimal-shoe-box-jpeg.webp",
-      imageAlt: "হেভেন ফার্নিচার মার্ট মিনিমালিস্ট শু বক্স ও কেবিনেট",
+      categoryLabelBn: "অফিস",
+      titleBn: "অফিস কনফারেন্স ও মিটিং টেবিল",
+      descriptionBn: "টিম মিটিং ও কনফারেন্সের জন্য বড় সাইজের অফিস টেবিল।",
+      imageSrc: "/furniture/office/office-meeting-table-02.webp",
+      imageAlt: "হেভেন ফার্নিচার মার্ট অফিস কনফারেন্স ও মিটিং টেবিল",
+      additionalImages: [
+        "/furniture/office/office-meeting-table-02.webp",
+      ],
     },
-
-    // Custom
     {
-      id: "custom-vitrine",
-      category: "custom",
-      categoryLabelBn: "কাস্টম ফার্নিচার",
-      titleBn: "গ্লাস শোকেস ও ডিসপ্লে কেবিনেট",
-      titleEn: "Glass Vitrine Showcase",
-      descriptionBn: "আপনার দেয়ালের নির্দিষ্ট মাপে তৈরি গ্লাস ডিসপ্লে শোকেস।",
-      imageSrc: "/assets/bespoke/heaven-bespoke-vitrine-showcase.webp",
-      imageAlt: "হেভেন ফার্নিচার মার্ট গ্লাস শোকেস",
-      badge: "কাস্টম সাইজ",
+      id: "office-cabinet",
+      category: "office",
+      categoryLabelBn: "অফিস",
+      titleBn: "ফাইল ও অফিস স্টোরেজ কেবিনেট",
+      descriptionBn: "অফিসের প্রয়োজনীয় ফাইল ও ডকুমেন্টস রাখার কেবিনেট।",
+      imageSrc: "/furniture/office/office-storage-cabinet-03.webp",
+      imageAlt: "হেভেন ফার্নিচার মার্ট ফাইল ও অফিস স্টোরেজ কেবিনেট",
+      additionalImages: [
+        "/furniture/office/office-storage-cabinet-03.webp",
+        "/furniture/office/office-executive-desk-01.webp",
+      ],
     },
+    // --- CUSTOM ---
     {
       id: "custom-showcase",
       category: "custom",
-      categoryLabelBn: "কাস্টম ফার্নিচার",
-      titleBn: "লাক্সারি ওয়াল শোকেস",
-      titleEn: "Luxury Showcase Cabinet",
-      descriptionBn: "ড্রয়িং রুমের জন্য দৃষ্টিনন্দন ওয়াল শোকেস কেবিনেট।",
-      imageSrc: "/assets/gallery/luxury-showcase-jpeg.webp",
-      imageAlt: "হেভেন ফার্নিচার মার্ট লাক্সারি শোকেস",
+      categoryLabelBn: "কাস্টম",
+      titleBn: "ওয়াল ডিসপ্লে শোকেস",
+      descriptionBn: "আপনার ড্রয়িং রুমের মাপ অনুযায়ী কাস্টম ওয়াল শোকেস।",
+      imageSrc: "/furniture/custom/custom-wall-showcase-01.webp",
+      imageAlt: "হেভেন ফার্নিচার মার্ট ওয়াল ডিসপ্লে শোকেস",
+      additionalImages: [
+        "/furniture/custom/custom-wall-showcase-01.webp",
+        "/furniture/custom/custom-glass-showcase-03.webp",
+      ],
+      badge: "কাস্টম মাপ",
+    },
+    {
+      id: "custom-wall-unit",
+      category: "custom",
+      categoryLabelBn: "কাস্টম",
+      titleBn: "কাস্টম ওয়াল ইউনিট কেবিনেট",
+      descriptionBn: "নির্দিষ্ট দেয়ালের মাপে তৈরি টিভি ও স্টোরেজ ইউনিট।",
+      imageSrc: "/furniture/custom/custom-cabinet-wall-unit-02.webp",
+      imageAlt: "হেভেন ফার্নিচার মার্ট কাস্টম ওয়াল ইউনিট কেবিনেট",
+      additionalImages: [
+        "/furniture/custom/custom-cabinet-wall-unit-02.webp",
+        "/furniture/custom/custom-modular-cabinet-04.webp",
+      ],
+    },
+    {
+      id: "custom-glass",
+      category: "custom",
+      categoryLabelBn: "কাস্টম",
+      titleBn: "গ্লাস ডোর ডিসপ্লে শোকেস",
+      descriptionBn: "শোপিস ও কাঁচের জিনিসপত্র সাজিয়ে রাখার গ্লাস শোকেস।",
+      imageSrc: "/furniture/custom/custom-glass-showcase-03.webp",
+      imageAlt: "হেভেন ফার্নিচার মার্ট গ্লাস ডোর ডিসপ্লে শোকেস",
+      additionalImages: [
+        "/furniture/custom/custom-glass-showcase-03.webp",
+      ],
     },
   ] as GalleryItem[],
 } as const;
+
+// Verified Milestones from Company Deck (Page 6 Highlights)
+export const TIMELINE_MILESTONES: TimelineMilestone[] = [
+  {
+    year: "২০২০",
+    titleBn: "হেভেন ফার্নিচার মার্টের সূচনা",
+    descriptionBn: "ব্যবস্থাপনা পরিচালক আবুল কালাম ভূঁইয়ার উদ্যোগে চট্টগ্রামে যাত্রা শুরু।",
+    imageSrc: "/assets/craftsmanship/heaven-handcrafted-sofa-process.webp",
+    imageAlt: "হেভেন ফার্নিচার মার্ট কারিগরদের কাজের দৃশ্য",
+    captionBn: "দক্ষ কারিগরের হাতে তৈরি কাঠের ফ্রেম",
+  },
+  {
+    year: "২০২১",
+    titleBn: "আগ্রাবাদ শোরুম উদ্বোধন",
+    descriptionBn: "চট্টগ্রামের আগ্রাবাদ এক্সেস রোডে আমাদের নিজস্ব শোরুমের শুভ সূচনা ও নিবন্ধন।",
+    imageSrc: "/assets/showroom/heaven-agrabad-flagship-building.webp",
+    imageAlt: "হেভেন ফার্নিচার মার্ট আগ্রাবাদ শোরুম ভবন",
+    captionBn: "আগ্রাবাদ এক্সেস রোডে আমাদের শোরুম ভবন",
+  },
+  {
+    year: "২০২৪ ও ২০২৫",
+    titleBn: "আন্তর্জাতিক ফার্নিচার মেলায় অংশগ্রহণ",
+    descriptionBn: "চট্টগ্রাম আন্তর্জাতিক ফার্নিচার মেলায় নিজস্ব প্যাভিলিয়ন নিয়ে সরাসরি অংশগ্রহণ।",
+    imageSrc: "/assets/trust/fairs/heaven-fair-pavilion-team-standing.webp",
+    imageAlt: "চট্টগ্রাম ফার্নিচার মেলায় হেভেন ফার্নিচার মার্টের প্যাভিলিয়ন ও টিম",
+    captionBn: "মেলায় হেভেন প্যাভিলিয়নের সামনে আমাদের টিম",
+  },
+  {
+    year: "২০২৫",
+    titleBn: "চেম্বার অব কমার্স সদস্যভুক্ত",
+    descriptionBn: "চট্টগ্রাম চেম্বার অব কমার্স অ্যান্ড ইন্ডাস্ট্রিজ-এর সম্মানিত সদস্যপদ লাভ।",
+    imageSrc: "/assets/trust/fairs/heaven-fair-booth-team-seated.webp",
+    imageAlt: "চট্টগ্রাম ফার্নিচার মেলা স্টলে আমাদের টিম",
+    captionBn: "মেলা প্রাঙ্গণে হেভেন স্টলে আমাদের টিম",
+  },
+  {
+    year: "২০২৬",
+    titleBn: "BFIOA স্বীকৃতি ও সম্মাননা",
+    descriptionBn: "বাংলাদেশ ফার্নিচার শিল্প মালিক সমিতি (BFIOA) থেকে দেশব্যাপী সম্মাননা স্মারক গ্রহণ।",
+    imageSrc: "/assets/trust/recognition/heaven-md-receiving-fair-crest.webp",
+    imageAlt: "মঞ্চে সম্মাননা স্মারক গ্রহণ করছেন ব্যবস্থাপনা পরিচালক আবুল কালাম ভূঁইয়া",
+    captionBn: "মঞ্চে ক্রেস্ট গ্রহণকালে ব্যবস্থাপনা পরিচালক আবুল কালাম ভূঁইয়া",
+  },
+];
+
+// Curated Real Craftsmanship & Showroom Local Videos (Local MP4, No Iframes)
+export const CRAFT_VIDEOS: CraftVideoItem[] = [
+  {
+    id: "dining-craft",
+    titleBn: "ডাইনিং টেবিল কাস্টমাইজেশন ও নিখুঁত ফিনিশিং",
+    descriptionBn: "আমাদের দক্ষ কারিগরের হাতে তৈরি কাস্টমাইজড ডাইনিং টেবিল সেট।",
+    posterSrc: "/furniture/dining/dining-solid-wood-table-set-01.webp",
+    localVideoSrc: "/videos/craftsmanship/heaven-dining-craftsmanship.mp4",
+    badgeBn: "ডাইনিং কারিগরি",
+  },
+  {
+    id: "sofa-detailing",
+    titleBn: "সোফা সেলাই ও নিখুঁত ডিটেইলিং",
+    descriptionBn: "প্রতিটি কুশন পিন ও নিখুঁত স্টিচিংয়ের বাস্তব দৃশ্য।",
+    posterSrc: "/assets/craftsmanship/heaven-handcrafted-sofa-process.webp",
+    localVideoSrc: "/videos/craftsmanship/heaven-sofa-detailing.mp4",
+    badgeBn: "সোফা ফিনিশিং",
+  },
+  {
+    id: "woodworking",
+    titleBn: "কাঠের সূক্ষ্ম কার্ভ ও কাঠামো তৈরি",
+    descriptionBn: "দক্ষ কারিগরদের হাতে কাঠের মসৃণ বাঁক ও খোদাই কাজ।",
+    posterSrc: "/furniture/custom/custom-wall-showcase-01.webp",
+    localVideoSrc: "/videos/craftsmanship/heaven-woodworking-process.mp4",
+    badgeBn: "কাঠের কাজ",
+  },
+  {
+    id: "bedroom-showroom",
+    titleBn: "আগ্রাবাদ শোরুমে বেডরুম ডিসপ্লে",
+    descriptionBn: "আগ্রাবাদ শোরুমে সরাসরি সাজানো মাস্টার বেডরুম সেটের ভিডিও।",
+    posterSrc: "/furniture/bedroom/bedroom-classic-double-bed-02.webp",
+    localVideoSrc: "/videos/showroom/heaven-bedroom-showroom.mp4",
+    badgeBn: "শোরুম ডিসপ্লে",
+  },
+];
