@@ -27,6 +27,9 @@ export default function SmoothScrollProvider() {
       autoResize: true,
     });
     lenisRef.current = lenis;
+    if (typeof window !== "undefined") {
+      (window as unknown as { __lenis?: Lenis }).__lenis = lenis;
+    }
 
     function raf(time: number) {
       lenis.raf(time);
@@ -87,6 +90,9 @@ export default function SmoothScrollProvider() {
       document.removeEventListener("click", handleAnchorClick);
       lenis.destroy();
       lenisRef.current = null;
+      if (typeof window !== "undefined") {
+        delete (window as unknown as { __lenis?: Lenis }).__lenis;
+      }
     };
   }, []);
 

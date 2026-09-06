@@ -334,12 +334,12 @@ export const TRANSLATIONS = {
       en: "🚀 Milestones & Recognition",
     },
     title: {
-      bn: "আমাদের পথচলার সময়রেখা",
+      bn: "আমাদের পথচলা",
       en: "Our Journey Through the Years",
     },
     subtitle: {
-      bn: "২০২০ থেকে আজ পর্যন্ত হেভেন ফার্নিচার মার্টের কিছু বাস্তব মাইলফলক ও মেলার স্মৃতি। স্ক্রল করার সাথে সাথে পুরো পথচলাটি দেখুন।",
-      en: "Documented milestones, international furniture fair pavilions, and moments of pride from 2020 to today. Scroll through our story.",
+      bn: "২০২০ থেকে আজ পর্যন্ত হেভেন ফার্নিচার মার্টের কিছু বাস্তব মাইলফলক ও মেলার স্মৃতি।",
+      en: "Documented milestones, international furniture fair pavilions, and moments of pride from 2020 to today.",
     },
     mdHonour: {
       title: {

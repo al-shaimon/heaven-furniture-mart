@@ -61,36 +61,44 @@ export default function ProvenanceTrust() {
       const endTrigger = wh * 0.35;
       const scrollOffset = startTrigger - rect.top;
       const raw = scrollOffset / (rect.height + (startTrigger - endTrigger));
-      targetProgress.current = Math.min(Math.max(raw, 0), 1);
+      const progress = Math.min(Math.max(raw, 0), 1);
+      targetProgress.current = progress;
 
-      // Active milestone detection
-      const focalLine = wh * 0.5;
-      let closestIdx = 0;
-      let minDist = Infinity;
+      // Pick the correct set of nodes based on viewport (lg = 1024px)
+      const isMobile = window.innerWidth < 1024;
+      const prefix = isMobile ? "mobile-milestone-node-" : "milestone-node-";
+
+      // Active milestone = highest-index node whose fractional position
+      // the spine has already reached or passed.
+      // nodeFraction = (node top - container top) / container height
+      let newActiveIdx = 0;
 
       TIMELINE_MILESTONES.forEach((_, idx) => {
-        const el = document.getElementById(`milestone-node-${idx}`);
-        if (el) {
-          const elRect = el.getBoundingClientRect();
-          const dist = Math.abs(elRect.top - focalLine);
-          if (dist < minDist) {
-            minDist = dist;
-            closestIdx = idx;
-          }
+        const el = document.getElementById(`${prefix}${idx}`);
+        if (!el) return;
 
-          // Reveal when approaching viewport (threshold: 92% of window height for stagger)
-          if (elRect.top < wh * 0.92) {
-            setRevealedSet((prev) => {
-              if (prev.has(idx)) return prev;
-              const next = new Set(prev);
-              next.add(idx);
-              return next;
-            });
-          }
+        const elRect = el.getBoundingClientRect();
+
+        // Position of this node as a fraction of the container height
+        const nodeFraction = (elRect.top - rect.top) / rect.height;
+
+        // Spine reaches this node when progress >= nodeFraction (with small tolerance)
+        if (progress >= nodeFraction - 0.015) {
+          newActiveIdx = idx;
+        }
+
+        // Reveal when approaching viewport
+        if (elRect.top < wh * 0.92) {
+          setRevealedSet((prev) => {
+            if (prev.has(idx)) return prev;
+            const next = new Set(prev);
+            next.add(idx);
+            return next;
+          });
         }
       });
 
-      setActiveMilestoneIdx(closestIdx);
+      setActiveMilestoneIdx(newActiveIdx);
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
@@ -263,6 +271,7 @@ export default function ProvenanceTrust() {
                     id={`milestone-node-${idx}`}
                     key={item.year}
                     className="relative grid grid-cols-12 gap-8 items-center scroll-mt-32"
+                    data-milestone-idx={idx}
                   >
                     {/* Central Year Glowing Node */}
                     <div
@@ -401,92 +410,92 @@ export default function ProvenanceTrust() {
           </div>
 
           {/* ================= MOBILE TIMELINE (lg:hidden) ================= */}
-          <div className="lg:hidden relative py-4 pl-2 sm:pl-4">
-            {/* Left Vertical Track Line */}
-            <div className="absolute left-4 sm:left-6 top-3 bottom-3 w-0.5 bg-neutral-200 rounded-full" />
+          <div className="lg:hidden py-4 space-y-1">
+            {TIMELINE_MILESTONES.map((item: TimelineMilestone, idx: number) => {
+              const isHighlighted = activeMilestoneIdx === idx;
+              const isPastOrCurrent = idx <= activeMilestoneIdx;
+              const isRevealed = revealedSet.has(idx);
 
-            {/* Dynamic Progress Fill Line on Mobile — animated via ref */}
-            <div
-              ref={spineMobileRef}
-              className="absolute left-4 sm:left-6 top-3 w-0.5 bg-gradient-to-b from-accent-brass via-amber-400 to-accent-brass-dark rounded-full shadow-[0_0_6px_rgba(197,168,105,0.6)]"
-              style={{ height: "4%", willChange: "height" }}
-            />
+              const itemYear = lang === "en" && item.yearEn ? item.yearEn : item.year;
+              const itemTitle = lang === "en" && item.titleEn ? item.titleEn : item.titleBn;
+              const itemDesc = lang === "en" && item.descriptionEn ? item.descriptionEn : item.descriptionBn;
+              const itemCaption = lang === "en" && item.captionEn ? item.captionEn : item.captionBn;
 
-            <div className="space-y-8">
-              {TIMELINE_MILESTONES.map((item: TimelineMilestone, idx: number) => {
-                const isHighlighted = activeMilestoneIdx === idx;
-                const isPastOrCurrent = idx <= activeMilestoneIdx;
-                const isRevealed = revealedSet.has(idx);
-
-                const itemYear = lang === "en" && item.yearEn ? item.yearEn : item.year;
-                const itemTitle = lang === "en" && item.titleEn ? item.titleEn : item.titleBn;
-                const itemDesc = lang === "en" && item.descriptionEn ? item.descriptionEn : item.descriptionBn;
-                const itemCaption = lang === "en" && item.captionEn ? item.captionEn : item.captionBn;
-
-                return (
+              return (
+                <div key={item.year}>
+                  {/* Horizontal Year Separator — acts as the "spine" for mobile */}
                   <div
-                    key={item.year}
-                    className="relative pl-10 sm:pl-14"
+                    id={`mobile-milestone-node-${idx}`}
+                    className="flex items-center gap-2.5 py-3"
+                    data-milestone-idx={idx}
                   >
-                    {/* Left Node Badge */}
+                    {/* Left line — turns gold when this milestone is reached */}
                     <div
-                      className={`absolute left-4 sm:left-6 -translate-x-1/2 top-3 z-10 flex h-7 px-2.5 items-center justify-center rounded-full border-2 text-[11px] font-bold shadow-xs transition-all duration-500 ease-out ${
+                      className={`flex-1 h-px rounded-full transition-colors duration-700 ${
+                        isPastOrCurrent
+                          ? "bg-gradient-to-r from-accent-brass/80 to-accent-brass"
+                          : "bg-neutral-200"
+                      }`}
+                    />
+
+                    {/* Year Badge */}
+                    <div
+                      className={`flex-none flex items-center px-3 py-1 rounded-full border-2 text-[11px] font-bold whitespace-nowrap transition-all duration-500 ease-out ${
                         isHighlighted
-                          ? "border-accent-brass bg-brand-slate-deep text-accent-brass scale-110 ring-2 ring-accent-brass/30"
+                          ? "border-accent-brass bg-brand-slate-deep text-accent-brass scale-105 shadow-[0_0_12px_rgba(197,168,105,0.5)] ring-2 ring-accent-brass/25"
                           : isPastOrCurrent
-                          ? "border-accent-brass/70 bg-brand-slate-surface text-accent-brass"
-                          : "border-neutral-300 bg-white text-neutral-400"
+                          ? "border-accent-brass/60 bg-brand-slate-surface text-accent-brass"
+                          : "border-neutral-300 bg-white text-neutral-400 opacity-70"
                       }`}
                     >
-                      <span>{itemYear}</span>
+                      {itemYear}
                     </div>
 
-                    {/* Milestone Card */}
-                    <div
-                      className={`overflow-hidden rounded-xl border bg-white p-4 shadow-2xs transition-all duration-[900ms] ease-[cubic-bezier(0.16,1,0.3,1)] ${
-                        isRevealed
-                          ? "opacity-100 translate-y-0"
-                          : "opacity-0 translate-y-8"
-                      } ${
-                        isHighlighted
-                          ? "border-accent-brass-dark/40 shadow-sm ring-1 ring-accent-brass/15"
-                          : "border-neutral-200"
-                      }`}
-                      style={{ transitionDelay: isRevealed ? "0ms" : `${idx * 60}ms` }}
-                    >
-                      <div className="mb-2">
-                        <span className="text-xs font-bold text-text-primary-dark">
-                          {itemTitle}
-                        </span>
-                      </div>
+                    {/* Right line — always neutral */}
+                    <div className="flex-1 h-px rounded-full bg-neutral-200" />
+                  </div>
 
-                      {/* Photo */}
-                      <div className="relative aspect-[16/10] w-full overflow-hidden rounded-lg bg-neutral-100">
-                        <Image
-                          src={item.imageSrc}
-                          alt={item.imageAlt}
-                          fill
-                          sizes="(max-width: 768px) 100vw, 600px"
-                          className="object-cover"
-                        />
-                      </div>
+                  {/* Full-width Milestone Card */}
+                  <div
+                    className={`overflow-hidden rounded-xl border bg-white transition-all duration-[900ms] ease-[cubic-bezier(0.16,1,0.3,1)] ${
+                      isRevealed ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
+                    } ${
+                      isHighlighted
+                        ? "border-accent-brass/40 shadow-sm ring-1 ring-accent-brass/15"
+                        : "border-neutral-200 shadow-2xs"
+                    }`}
+                    style={{ transitionDelay: isRevealed ? "0ms" : `${idx * 60}ms` }}
+                  >
+                    {/* Photo — full width, prominent */}
+                    <div className="relative aspect-[16/10] w-full overflow-hidden bg-neutral-100">
+                      <Image
+                        src={item.imageSrc}
+                        alt={item.imageAlt}
+                        fill
+                        sizes="(max-width: 768px) 100vw, 600px"
+                        className="object-cover"
+                      />
+                    </div>
 
-                      {/* Description & Caption */}
-                      <div className="mt-3">
-                        <p className="text-xs sm:text-sm text-text-secondary-dark leading-relaxed">
-                          {itemDesc}
-                        </p>
-                        <p className="mt-1.5 text-[11px] text-accent-brass-dark font-medium">
-                          📷 {itemCaption}
-                        </p>
-                      </div>
+                    {/* Content */}
+                    <div className="p-4">
+                      <h4 className="text-sm font-bold text-text-primary-dark leading-snug">
+                        {itemTitle}
+                      </h4>
+                      <p className="mt-1.5 text-xs text-text-secondary-dark leading-relaxed">
+                        {itemDesc}
+                      </p>
+                      <p className="mt-2 text-[11px] text-accent-brass-dark font-medium">
+                        📷 {itemCaption}
+                      </p>
                     </div>
                   </div>
-                );
-              })}
-            </div>
+                </div>
+              );
+            })}
           </div>
         </div>
+
 
         {/* Customer-Centric Trust Callout & Social Links */}
         <div className="mt-14 sm:mt-18 rounded-2xl border border-neutral-200 bg-white p-6 sm:p-8 text-center shadow-xs max-w-3xl mx-auto reveal-on-scroll">

@@ -28,6 +28,8 @@ export default function RequestQuoteModal() {
 
   // Sync initialData when modal opens
   useEffect(() => {
+    const win = typeof window !== "undefined" ? (window as unknown as { __lenis?: { stop: () => void; start: () => void } }) : null;
+
     if (isOpen) {
       if (initialData.defaultCategory) {
         setCategory(initialData.defaultCategory);
@@ -41,12 +43,24 @@ export default function RequestQuoteModal() {
       setIsSubmitted(false);
       setQuoteRefId(`HFM-${Math.floor(100000 + Math.random() * 900000)}`);
       document.body.style.overflow = "hidden";
+      document.documentElement.style.overflow = "hidden";
+      if (win?.__lenis) {
+        win.__lenis.stop();
+      }
     } else {
       document.body.style.overflow = "";
+      document.documentElement.style.overflow = "";
+      if (win?.__lenis) {
+        win.__lenis.start();
+      }
     }
 
     return () => {
       document.body.style.overflow = "";
+      document.documentElement.style.overflow = "";
+      if (win?.__lenis) {
+        win.__lenis.start();
+      }
     };
   }, [isOpen, initialData]);
 

@@ -87,12 +87,25 @@ function ProductPreviewModal({ product, onClose }: ProductPreviewModalProps) {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [onClose, emblaApi, hasMultipleImages]);
 
-  // Lock background body scroll
+  // Lock background body scroll and pause Lenis
   useEffect(() => {
-    const originalStyle = window.getComputedStyle(document.body).overflow;
+    const originalBodyOverflow = document.body.style.overflow;
+    const originalHtmlOverflow = document.documentElement.style.overflow;
     document.body.style.overflow = "hidden";
+    document.documentElement.style.overflow = "hidden";
+
+    // Pause Lenis smooth scrolling for page while modal is open
+    const win = window as unknown as { __lenis?: { stop: () => void; start: () => void } };
+    if (win.__lenis) {
+      win.__lenis.stop();
+    }
+
     return () => {
-      document.body.style.overflow = originalStyle;
+      document.body.style.overflow = originalBodyOverflow;
+      document.documentElement.style.overflow = originalHtmlOverflow;
+      if (win.__lenis) {
+        win.__lenis.start();
+      }
     };
   }, []);
 
@@ -106,11 +119,13 @@ function ProductPreviewModal({ product, onClose }: ProductPreviewModalProps) {
       role="dialog"
       aria-modal="true"
       aria-labelledby="modal-product-title"
-      className="fixed inset-0 z-[100] flex items-stretch sm:items-center justify-center bg-black/80 p-0 sm:p-4 lg:p-6 backdrop-blur-xs animate-fade-in"
+      data-lenis-prevent
+      className="fixed inset-0 z-[100] flex items-stretch sm:items-center justify-center bg-black/80 p-0 sm:p-4 lg:p-6 backdrop-blur-xs animate-fade-in overscroll-contain"
       onClick={onClose}
     >
       <div
-        className="relative flex h-[100dvh] sm:h-auto w-full max-w-5xl max-h-[100dvh] sm:max-h-[90vh] lg:max-h-[88vh] flex-col overflow-hidden rounded-none sm:rounded-2xl bg-white shadow-2xl transition-all"
+        data-lenis-prevent
+        className="relative flex h-[100dvh] sm:h-auto w-full max-w-5xl max-h-[100dvh] sm:max-h-[90vh] lg:max-h-[88vh] flex-col overflow-hidden rounded-none sm:rounded-2xl bg-white shadow-2xl transition-all overscroll-contain"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Floating Close Button */}
@@ -123,7 +138,10 @@ function ProductPreviewModal({ product, onClose }: ProductPreviewModalProps) {
           ✕
         </button>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 overflow-y-auto lg:overflow-hidden h-full sm:h-auto max-h-[100dvh] sm:max-h-[90vh] lg:max-h-[88vh] lg:h-[620px] scrollbar-thin-brass flex-1">
+        <div
+          data-lenis-prevent
+          className="grid grid-cols-1 lg:grid-cols-12 overflow-y-auto lg:overflow-hidden h-full sm:h-auto max-h-[100dvh] sm:max-h-[90vh] lg:max-h-[88vh] lg:h-[620px] scrollbar-thin-brass flex-1 overscroll-contain"
+        >
           {/* Left Column: Visual Swiper (7 cols on desktop) */}
           <div className="lg:col-span-7 flex flex-col justify-between bg-neutral-900 p-3 sm:p-5 lg:p-4 xl:p-5 relative select-none shrink-0">
             {/* Embla Viewport */}
@@ -209,7 +227,10 @@ function ProductPreviewModal({ product, onClose }: ProductPreviewModalProps) {
           </div>
 
           {/* Right Column: Product Story, Specs & CTAs (5 cols on desktop) */}
-          <div className="lg:col-span-5 p-4 sm:p-5 lg:p-5 xl:p-6 flex flex-col justify-between bg-white overflow-y-auto scrollbar-thin-brass space-y-3 pb-8 sm:pb-5 safe-bottom">
+          <div
+            data-lenis-prevent
+            className="lg:col-span-5 p-4 sm:p-5 lg:p-5 xl:p-6 flex flex-col justify-between bg-white overflow-y-auto scrollbar-thin-brass space-y-3 pb-8 sm:pb-5 safe-bottom overscroll-contain"
+          >
             <div className="space-y-3">
               {/* Category & Showroom Status */}
               <div className="flex items-center justify-between gap-2 border-b border-neutral-100 pb-2">
