@@ -23,37 +23,56 @@ function LocalAutoVideo({
   isPrimary = false,
 }: AutoPlayVideoProps) {
   const { t } = useLanguage();
+  const containerRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
+  const [activeSrc, setActiveSrc] = useState<string | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(true);
 
-  useEffect(() => {
-    const video = videoRef.current;
-    if (!video) return;
+  // Optimize poster URL using Next.js image optimizer so we don't load 500KB+ raw files
+  const optimizedPoster = poster
+    ? `/_next/image?url=${encodeURIComponent(poster)}&w=640&q=75`
+    : undefined;
 
-    // Viewport Autoplay / Pause Observer
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    // Viewport Autoplay / Pause Observer - only loads video data when actually visible
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          video
-            .play()
-            .then(() => setIsPlaying(true))
-            .catch(() => {
-              // Autoplay might be blocked if unmuted; handled safely
-            });
+          // Lazy attach video src on first viewport entry
+          setActiveSrc((prev) => prev || src);
+          const video = videoRef.current;
+          if (video) {
+            video
+              .play()
+              .then(() => setIsPlaying(true))
+              .catch(() => {
+                // Autoplay might be blocked if unmuted; handled safely
+              });
+          }
         } else {
-          video.pause();
-          setIsPlaying(false);
+          const video = videoRef.current;
+          if (video) {
+            video.pause();
+            setIsPlaying(false);
+          }
         }
       },
-      { threshold: isPrimary ? 0.3 : 0.4 }
+      { threshold: isPrimary ? 0.2 : 0.3 }
     );
 
-    observer.observe(video);
+    observer.observe(container);
     return () => observer.disconnect();
-  }, [isPrimary]);
+  }, [isPrimary, src]);
 
   const togglePlay = () => {
+    // If not loaded yet, load it now on user click
+    if (!activeSrc) {
+      setActiveSrc(src);
+    }
     const video = videoRef.current;
     if (!video) return;
     if (video.paused) {
@@ -76,6 +95,7 @@ function LocalAutoVideo({
 
   return (
     <div
+      ref={containerRef}
       className={`group relative overflow-hidden rounded-xl border border-neutral-700/80 bg-brand-slate-surface shadow-xl flex flex-col ${
         isPrimary ? "w-full" : "h-full"
       }`}
@@ -92,10 +112,9 @@ function LocalAutoVideo({
       >
         <video
           ref={videoRef}
-          src={src}
-          poster={poster}
+          src={activeSrc || undefined}
+          poster={optimizedPoster}
           muted={isMuted}
-          autoPlay
           playsInline
           loop
           preload="none"
@@ -200,7 +219,7 @@ export default function ShowroomMedia() {
             <h3 className="text-lg sm:text-xl font-bold text-white">
               {t("কারিগরদের কাজ ও শোরুমের আরও কিছু ভিডিও", "Craftsmanship & Showroom Floor Highlights")}
             </h3>
-            <span className="text-xs text-neutral-400">
+            <span className="text-xs text-neutral-300">
               {t("স্ক্রোল করলে স্বয়ংক্রিয়ভাবে প্লে হবে", "Autoplays on viewport scroll")}
             </span>
           </div>

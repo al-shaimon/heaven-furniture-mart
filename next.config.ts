@@ -14,7 +14,7 @@ const nextConfig: NextConfig = {
     "*.ngrok.io",
   ],
   images: {
-    formats: ["image/webp", "image/avif"],
+    formats: ["image/avif", "image/webp"],
     deviceSizes: [390, 640, 750, 828, 1080, 1200, 1440, 1920],
     imageSizes: [16, 32, 64, 128, 256, 384],
     minimumCacheTTL: 2592000, // 30 days

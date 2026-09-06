@@ -79,7 +79,7 @@ export default function ConsultationCTA() {
                   <PhoneIcon />
                 </span>
                 <div>
-                  <p className="text-xs text-neutral-400">{t(tc.callCard.label.bn, tc.callCard.label.en)}</p>
+                  <p className="text-xs text-neutral-300">{t(tc.callCard.label.bn, tc.callCard.label.en)}</p>
                   <p className="text-base font-bold text-white group-hover:text-accent-brass transition-colors">
                     {BRAND_CONFIG.contact.primaryPhoneDisplay}
                   </p>
@@ -96,7 +96,7 @@ export default function ConsultationCTA() {
                   <WhatsAppIcon size={20} />
                 </span>
                 <div>
-                  <p className="text-xs text-neutral-400">{t(tc.whatsAppCard.label.bn, tc.whatsAppCard.label.en)}</p>
+                  <p className="text-xs text-neutral-300">{t(tc.whatsAppCard.label.bn, tc.whatsAppCard.label.en)}</p>
                   <p className="text-base font-bold text-accent-whatsapp group-hover:underline">
                     {BRAND_CONFIG.contact.primaryPhoneDisplay}
                   </p>
@@ -108,7 +108,7 @@ export default function ConsultationCTA() {
                   📍
                 </span>
                 <div>
-                  <p className="text-xs text-neutral-400">{t(tc.addressCard.label.bn, tc.addressCard.label.en)}</p>
+                  <p className="text-xs text-neutral-300">{t(tc.addressCard.label.bn, tc.addressCard.label.en)}</p>
                   <p className="text-sm font-medium text-white">
                     {t(BRAND_CONFIG.location.fullAddressBn, BRAND_CONFIG.location.fullAddressEn)}
                   </p>
@@ -127,7 +127,7 @@ export default function ConsultationCTA() {
                       <h3 className="text-xl sm:text-2xl font-bold text-white">
                         {t(tc.formTitle.bn, tc.formTitle.en)}
                       </h3>
-                      <p className="mt-1 text-xs sm:text-sm text-neutral-400">
+                      <p className="mt-1 text-xs sm:text-sm text-neutral-300">
                         {t(tc.formSubtitle.bn, tc.formSubtitle.en)}
                       </p>
                     </div>

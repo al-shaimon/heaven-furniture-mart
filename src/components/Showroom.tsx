@@ -122,7 +122,7 @@ export default function Showroom() {
                   fill
                   sizes="(max-width: 1024px) 100vw, 55vw"
                   className="object-cover"
-                  priority
+                  loading="lazy"
                 />
                 <div className="absolute top-3 left-3 rounded-xs bg-brand-slate-deep/90 px-3 py-1.5 text-xs font-semibold text-accent-brass backdrop-blur-xs shadow-xs">
                   {t(ts.buildingBadge.bn, ts.buildingBadge.en)}

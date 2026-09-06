@@ -203,7 +203,6 @@ function ProductPreviewModal({ product, onClose }: ProductPreviewModalProps) {
                             alt={`${productTitle} - ${idx + 1}`}
                             fill
                             sizes="(max-width: 1024px) 100vw, 650px"
-                            priority={idx === 0}
                             className="object-contain drop-shadow-md transition-transform duration-300 group-hover:scale-[1.02]"
                           />
                         </div>

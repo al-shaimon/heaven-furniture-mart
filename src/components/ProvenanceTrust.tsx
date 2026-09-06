@@ -280,7 +280,7 @@ export default function ProvenanceTrust() {
                           ? "border-accent-brass bg-brand-slate-deep text-accent-brass scale-110 ring-4 ring-accent-brass/25 shadow-[0_0_15px_rgba(197,168,105,0.5)]"
                           : isPastOrCurrent
                           ? "border-accent-brass/70 bg-brand-slate-surface text-accent-brass scale-100"
-                          : "border-neutral-300 bg-white text-neutral-400 scale-95 opacity-70"
+                          : "border-neutral-300 bg-white text-neutral-700 font-bold scale-95"
                       } text-xs font-bold`}
                     >
                       <span>{itemYear}</span>
@@ -445,7 +445,7 @@ export default function ProvenanceTrust() {
                           ? "border-accent-brass bg-brand-slate-deep text-accent-brass scale-105 shadow-[0_0_12px_rgba(197,168,105,0.5)] ring-2 ring-accent-brass/25"
                           : isPastOrCurrent
                           ? "border-accent-brass/60 bg-brand-slate-surface text-accent-brass"
-                          : "border-neutral-300 bg-white text-neutral-400 opacity-70"
+                          : "border-neutral-300 bg-white text-neutral-700 font-bold"
                       }`}
                     >
                       {itemYear}

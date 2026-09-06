@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { TRANSLATIONS } from "@/content/translations";
 import { useLanguage } from "@/context/LanguageContext";
 import { useQuoteModal } from "@/context/QuoteModalContext";
@@ -9,13 +9,48 @@ import { WhatsAppIcon } from "@/components/icons";
 export default function BespokeProcess() {
   const { lang, t } = useLanguage();
   const { openQuoteModal } = useQuoteModal();
-  const [isPlaying, setIsPlaying] = useState(true);
+  const [isPlaying, setIsPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(true);
+  const [videoSrc, setVideoSrc] = useState<string | null>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
 
   const tb = TRANSLATIONS.bespoke;
 
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setVideoSrc((prev) => prev || "/videos/craftsmanship/heaven-sofa-detailing.mp4");
+          const video = videoRef.current;
+          if (video) {
+            video
+              .play()
+              .then(() => setIsPlaying(true))
+              .catch(() => {});
+          }
+        } else {
+          const video = videoRef.current;
+          if (video) {
+            video.pause();
+            setIsPlaying(false);
+          }
+        }
+      },
+      { threshold: 0.25 }
+    );
+
+    observer.observe(container);
+    return () => observer.disconnect();
+  }, []);
+
   const togglePlay = () => {
+    if (!videoSrc) {
+      setVideoSrc("/videos/craftsmanship/heaven-sofa-detailing.mp4");
+    }
     if (!videoRef.current) return;
     if (isPlaying) {
       videoRef.current.pause();
@@ -108,7 +143,7 @@ export default function BespokeProcess() {
           </div>
 
           {/* Authentic Craftsmanship Video Showcase */}
-          <div className="lg:col-span-5">
+          <div ref={containerRef} className="lg:col-span-5">
             <div className="overflow-hidden rounded-2xl border border-neutral-200 bg-white shadow-xs">
               <div
                 className="group relative aspect-[4/3] sm:aspect-[16/11] w-full overflow-hidden bg-neutral-950 cursor-pointer select-none"
@@ -125,10 +160,9 @@ export default function BespokeProcess() {
               >
                 <video
                   ref={videoRef}
-                  src="/videos/craftsmanship/heaven-sofa-detailing.mp4"
-                  poster="/assets/craftsmanship/heaven-handcrafted-sofa-process.webp"
+                  src={videoSrc || undefined}
+                  poster="/_next/image?url=%2Fassets%2Fcraftsmanship%2Fheaven-handcrafted-sofa-process.webp&w=640&q=75"
                   muted={isMuted}
-                  autoPlay
                   playsInline
                   loop
                   preload="none"
