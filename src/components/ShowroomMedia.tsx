@@ -309,6 +309,15 @@ export default function ShowroomMedia() {
             >
               YouTube ↗
             </a>
+
+            <a
+              href={BRAND_CONFIG.social.instagram.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex h-11 items-center justify-center rounded-xl border border-neutral-600 bg-brand-slate-deep px-4 text-xs font-semibold text-neutral-200 hover:text-white hover:border-neutral-400 transition-colors"
+            >
+              Instagram ↗
+            </a>
           </div>
         </div>
       </div>
