@@ -512,50 +512,57 @@ export default function ProvenanceTrust() {
             )}
           </p>
 
-          <div className="mt-5 flex flex-wrap items-center justify-center gap-3">
-            <a
-              href={BRAND_CONFIG.contact.getWhatsAppUrl(lang)}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded-xl bg-accent-whatsapp px-4 py-2.5 text-xs sm:text-sm font-bold text-brand-slate-deep shadow-xs hover:bg-accent-whatsapp-hover transition-colors"
-            >
-              <WhatsAppIcon size={18} />
-              <span>{t("WhatsApp এ যোগাযোগ", "Contact on WhatsApp")}</span>
-            </a>
+          {/* Action & Social Rows */}
+          <div className="mt-5 flex flex-col items-center gap-3 w-full">
+            {/* Row 1: Direct Inquiries (WhatsApp + Call) */}
+            <div className="flex flex-wrap items-center justify-center gap-3">
+              <a
+                href={BRAND_CONFIG.contact.getWhatsAppUrl(lang)}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 rounded-xl bg-accent-whatsapp px-5 py-2.5 text-xs sm:text-sm font-bold text-brand-slate-deep shadow-xs hover:bg-accent-whatsapp-hover transition-colors"
+              >
+                <WhatsAppIcon size={18} />
+                <span>{t("WhatsApp এ যোগাযোগ", "Contact on WhatsApp")}</span>
+              </a>
 
-            <a
-              href={BRAND_CONFIG.contact.phoneUrl}
-              className="inline-flex items-center gap-2 rounded-xl border border-neutral-300 bg-white px-4 py-2.5 text-xs sm:text-sm font-bold text-text-primary-dark shadow-2xs hover:bg-neutral-50 transition-colors"
-            >
-              <PhoneIcon className="h-4 w-4 text-accent-brass-dark" />
-              <span>{t("সরাসরি কল:", "Call Directly:")} {BRAND_CONFIG.contact.primaryPhoneDisplay}</span>
-            </a>
+              <a
+                href={BRAND_CONFIG.contact.phoneUrl}
+                className="inline-flex items-center gap-2 rounded-xl border border-neutral-300 bg-white px-5 py-2.5 text-xs sm:text-sm font-bold text-text-primary-dark shadow-2xs hover:bg-neutral-50 transition-colors"
+              >
+                <PhoneIcon className="h-4 w-4 text-accent-brass-dark" />
+                <span>{t("সরাসরি কল:", "Call Directly:")} {BRAND_CONFIG.contact.primaryPhoneDisplay}</span>
+              </a>
+            </div>
 
-            <a
-              href={social.facebook.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded-xl bg-[#1877F2] px-4 py-2.5 text-xs sm:text-sm font-semibold text-white shadow-2xs hover:bg-[#166fe5] transition-colors"
-            >
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
-              </svg>
-              <span>Facebook</span>
-            </a>
+            {/* Row 2: Official Social Channels (Facebook + Instagram) */}
+            <div className="flex flex-wrap items-center justify-center gap-3">
+              <a
+                href={social.facebook.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 rounded-xl bg-[#1877F2] px-4 py-2 text-xs sm:text-sm font-semibold text-white shadow-2xs hover:bg-[#166fe5] transition-colors"
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                  <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
+                </svg>
+                <span>Facebook</span>
+              </a>
 
-            <a
-              href={social.instagram.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-[#833AB4] via-[#FD1D1D] to-[#F77737] px-4 py-2.5 text-xs sm:text-sm font-semibold text-white shadow-2xs hover:opacity-95 transition-opacity"
-            >
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
-                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
-                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
-              </svg>
-              <span>Instagram</span>
-            </a>
+              <a
+                href={social.instagram.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-[#833AB4] via-[#FD1D1D] to-[#F77737] px-4 py-2 text-xs sm:text-sm font-semibold text-white shadow-2xs hover:opacity-95 transition-opacity"
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+                  <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+                  <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+                </svg>
+                <span>Instagram</span>
+              </a>
+            </div>
           </div>
         </div>
       </div>
