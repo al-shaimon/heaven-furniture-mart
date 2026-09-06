@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import { BRAND_CONFIG } from "@/content/brand";
 import { TRANSLATIONS } from "@/content/translations";
@@ -10,14 +10,44 @@ import { PhoneIcon } from "@/components/icons";
 export default function Showroom() {
   const { lang, t } = useLanguage();
   const [activeTab, setActiveTab] = useState<"photo" | "map">("photo");
+  const [shouldLoadMap, setShouldLoadMap] = useState(false);
+  const sectionRef = useRef<HTMLElement>(null);
 
   const loc = BRAND_CONFIG.location;
   const hours = BRAND_CONFIG.operatingHours;
   const contact = BRAND_CONFIG.contact;
   const ts = TRANSLATIONS.showroom;
 
+  // Auto-capture & pre-warm Google Map when user scrolls near the Showroom section
+  useEffect(() => {
+    if (activeTab === "map") {
+      setShouldLoadMap(true);
+      return;
+    }
+
+    const el = sectionRef.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setShouldLoadMap(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: "450px 0px" }
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [activeTab]);
+
   return (
-    <section id="showroom" className="bg-surface-ecru-paper py-12 sm:py-16 lg:py-20 border-t border-neutral-200">
+    <section
+      ref={sectionRef}
+      id="showroom"
+      className="bg-surface-ecru-paper py-12 sm:py-16 lg:py-20 border-t border-neutral-200"
+    >
       <div className="mx-auto w-full max-w-[1560px] px-4 sm:px-8 lg:px-12 2xl:px-16">
         {/* Section Header */}
         <div className="max-w-2xl reveal-on-scroll">
@@ -76,44 +106,60 @@ export default function Showroom() {
               )}
             </div>
 
-            {/* Visual Container */}
-            <div className="relative w-full h-[360px] sm:h-[420px] lg:h-full lg:min-h-[460px] bg-neutral-100">
-              {activeTab === "photo" ? (
-                <>
-                  <Image
-                    src="/assets/showroom/heaven-agrabad-flagship-building.webp"
-                    alt="হেভেন ফার্নিচার মার্ট শোরুম ভবন · আগ্রাবাদ, চট্টগ্রাম"
-                    fill
-                    sizes="(max-width: 1024px) 100vw, 55vw"
-                    className="object-cover"
-                  />
-                  <div className="absolute top-3 left-3 rounded-xs bg-brand-slate-deep/90 px-3 py-1.5 text-xs font-semibold text-accent-brass backdrop-blur-xs shadow-xs">
-                    {t(ts.buildingBadge.bn, ts.buildingBadge.en)}
-                  </div>
-                  <div className="absolute bottom-3 right-3 rounded-md bg-black/75 px-3 py-1 text-[11px] font-medium text-white backdrop-blur-xs">
-                    📷 {t("আগ্রাবাদ এক্সেস রোড, চট্টগ্রাম", "Agrabad Access Road, Chattogram")}
-                  </div>
-                </>
-              ) : (
-                /* Interactive Google Map Preview */
-                <div className="relative w-full h-full">
-                  <iframe
-                    title="Heaven Furniture Mart Google Maps Location"
-                    src="https://maps.google.com/maps?q=Heaven%20Furniture%20Mart%20Agrabad%20Access%20Road%20Chattogram&t=&z=16&ie=UTF8&iwloc=&output=embed"
-                    className="w-full h-full border-0"
-                    loading="lazy"
-                    referrerPolicy="no-referrer-when-downgrade"
-                  />
-                  <a
-                    href={loc.googleMapsUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="sm:hidden absolute top-3 right-3 z-10 inline-flex items-center gap-1 rounded-full bg-brand-slate-deep/90 px-2.5 py-1 text-[11px] font-bold text-accent-brass backdrop-blur-xs shadow-md border border-white/20 hover:bg-brand-slate-deep active:scale-95 transition-all"
-                  >
-                    <span>📍 {t("গুগল ম্যাপস ↗", "Google Maps ↗")}</span>
-                  </a>
+            {/* Visual Container (Both Photo & Map layers remain mounted in DOM to persist state and prevent reloading) */}
+            <div className="relative w-full h-[360px] sm:h-[420px] lg:h-full lg:min-h-[460px] bg-neutral-100 overflow-hidden">
+              {/* Showroom Photo Layer */}
+              <div
+                className={`absolute inset-0 transition-opacity duration-300 ${
+                  activeTab === "photo"
+                    ? "opacity-100 z-10 pointer-events-auto"
+                    : "opacity-0 z-0 pointer-events-none"
+                }`}
+              >
+                <Image
+                  src="/assets/showroom/heaven-agrabad-flagship-building.webp"
+                  alt="হেভেন ফার্নিচার মার্ট শোরুম ভবন · আগ্রাবাদ, চট্টগ্রাম"
+                  fill
+                  sizes="(max-width: 1024px) 100vw, 55vw"
+                  className="object-cover"
+                  priority
+                />
+                <div className="absolute top-3 left-3 rounded-xs bg-brand-slate-deep/90 px-3 py-1.5 text-xs font-semibold text-accent-brass backdrop-blur-xs shadow-xs">
+                  {t(ts.buildingBadge.bn, ts.buildingBadge.en)}
                 </div>
-              )}
+                <div className="absolute bottom-3 right-3 rounded-md bg-black/75 px-3 py-1 text-[11px] font-medium text-white backdrop-blur-xs">
+                  📷 {t("আগ্রাবাদ এক্সেস রোড, চট্টগ্রাম", "Agrabad Access Road, Chattogram")}
+                </div>
+              </div>
+
+              {/* Interactive Google Map Layer (Pre-warmed on scroll, persistent on tab switches) */}
+              <div
+                className={`absolute inset-0 transition-opacity duration-300 ${
+                  activeTab === "map"
+                    ? "opacity-100 z-10 pointer-events-auto"
+                    : "opacity-0 z-0 pointer-events-none"
+                }`}
+              >
+                {(shouldLoadMap || activeTab === "map") && (
+                  <div className="relative w-full h-full">
+                    <iframe
+                      title="Heaven Furniture Mart Google Maps Location"
+                      src="https://maps.google.com/maps?q=Heaven%20Furniture%20Mart%20Agrabad%20Access%20Road%20Chattogram&t=&z=16&ie=UTF8&iwloc=&output=embed"
+                      className="w-full h-full border-0"
+                      loading="eager"
+                      referrerPolicy="no-referrer-when-downgrade"
+                    />
+                    <a
+                      href={loc.googleMapsUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="sm:hidden absolute top-3 right-3 z-10 inline-flex items-center gap-1 rounded-full bg-brand-slate-deep/90 px-2.5 py-1 text-[11px] font-bold text-accent-brass backdrop-blur-xs shadow-md border border-white/20 hover:bg-brand-slate-deep active:scale-95 transition-all"
+                    >
+                      <span>📍 {t("গুগল ম্যাপস ↗", "Google Maps ↗")}</span>
+                    </a>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
 
