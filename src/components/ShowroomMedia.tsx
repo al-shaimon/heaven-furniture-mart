@@ -275,8 +275,8 @@ export default function ShowroomMedia() {
         </div>
 
         {/* Bottom Showroom Action & Official Social Links */}
-        <div className="mt-10 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 rounded-xl border border-brand-slate-border bg-brand-slate-surface p-4 sm:p-6">
-          <div>
+        <div className="mt-10 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5 rounded-xl border border-brand-slate-border bg-brand-slate-surface p-5 sm:p-6">
+          <div className="max-w-xl">
             <h3 className="text-base sm:text-lg font-bold text-white">
               {t("ভালো লাগলে সরাসরি আগ্রাবাদ শোরুমে এসে দেখে যান", "Experience It Firsthand at Our Agrabad Showroom")}
             </h3>
@@ -285,11 +285,11 @@ export default function ShowroomMedia() {
             </p>
           </div>
 
-          <div className="flex flex-col sm:flex-row sm:items-center gap-3 shrink-0 w-full sm:w-auto">
+          <div className="flex flex-col sm:flex-row sm:flex-wrap sm:items-center gap-3 shrink-0 w-full lg:w-auto">
             {/* Primary Action Button */}
             <a
               href="#showroom"
-              className="inline-flex h-11 items-center justify-center rounded-xl bg-accent-brass px-4 sm:px-5 text-xs sm:text-sm font-bold text-brand-slate-deep hover:bg-accent-brass-hover transition-colors w-full sm:w-auto text-center shadow-xs"
+              className="inline-flex h-11 items-center justify-center rounded-xl bg-accent-brass px-4 sm:px-5 text-xs sm:text-sm font-bold text-brand-slate-deep hover:bg-accent-brass-hover transition-colors w-full sm:w-auto text-center shadow-xs shrink-0"
             >
               📍 {t("শোরুমের ঠিকানা ও ম্যাপ", "Showroom Address & Map")}
             </a>
