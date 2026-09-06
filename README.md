@@ -1,64 +1,208 @@
 # Heaven Furniture Mart
 
 > **Furniture, Crafted Around You.**  
-> Chattogram's premier bespoke furniture atelier and interior styling studio. Handcrafting custom residential living suites, marble dining collections, and tailored bedroom sanctuaries from authentic seasoned Chittagong Teak since 2003.
+> Chattogram's premier bespoke furniture atelier and interior styling studio. Handcrafting custom residential living suites, dining collections, and tailored bedroom sanctuaries from authentic seasoned timber on Agrabad Access Road since 2003.
+
+[![Next.js](https://img.shields.io/badge/Next.js-16.3.4-black?style=flat-square&logo=next.js)](https://nextjs.org/)
+[![React](https://img.shields.io/badge/React-19.2.8-blue?style=flat-square&logo=react)](https://react.dev/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.0+-3178C6?style=flat-square&logo=typescript)](https://www.typescriptlang.org/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-v4-38B2AC?style=flat-square&logo=tailwind-css)](https://tailwindcss.com/)
+[![PageSpeed](https://img.shields.io/badge/PageSpeed_Mobile-90+-success?style=flat-square&logo=lighthouse)](https://pagespeed.web.dev/)
+[![License](https://img.shields.io/badge/License-MIT-green?style=flat-square)](LICENSE)
+
+🌐 **Live Production Website:** [https://hfm.alshaimon.com](https://hfm.alshaimon.com)  
+📁 **GitHub Repository:** [https://github.com/al-shaimon/heaven-furniture-mart](https://github.com/al-shaimon/heaven-furniture-mart)
+
+---
+
+## ✦ Table of Contents
+1. [Project Overview](#-project-overview)
+2. [Key Features & User Experience](#-key-features--user-experience)
+3. [Engineering & Performance Highlights](#-engineering--performance-highlights)
+4. [Tech Stack & Architecture](#-tech-stack--architecture)
+5. [Directory Structure](#-directory-structure)
+6. [Core Components Overview](#-core-components-overview)
+7. [Content & Brand Source of Truth](#-content--brand-source-of-truth)
+8. [Installation & Local Setup](#-installation--local-setup)
+9. [CLI Commands](#-cli-commands)
+10. [Performance & Lighthouse Benchmarks](#-performance--lighthouse-benchmarks)
+11. [Maintenance Guides](#-maintenance-guides)
+12. [Deployment](#-deployment)
 
 ---
 
 ## ✦ Project Overview
 
-This repository houses the official flagship landing page for **Heaven Furniture Mart**. Designed and engineered to eliminate the generic look of synthetic AI landing pages, the application acts as an editorial, conversion-focused digital showroom for discerning homeowners in Chattogram. 
+This repository houses the official digital showroom and bespoke consultation platform for **Heaven Furniture Mart** (হেভেন ফার্নিচার মার্ট), located on Agrabad Access Road in Chattogram, Bangladesh.
 
-Within 30 seconds of landing on the page, any first-time visitor immediately understands:
-1. **Who they are:** An established (Est. 2003) custom furniture atelier on Agrabad Access Road, Chattogram.
-2. **What they offer:** 100% bespoke furniture built to exact floor plans, room measurements, and material preferences.
-3. **Why trust them:** 20+ years of verified craftsmanship, official CCCI membership, Bangladesh Furniture Manufacturers Association (BFMA) 2024 Award winner, and real physical showroom presence.
-4. **How to take action:** Seamless booking for a free design consultation or instant WhatsApp consultation.
+Unlike generic e-commerce templates or synthetic landing pages, this platform acts as an editorial, high-performance digital atelier. It solves the critical disconnect in the bespoke furniture market:
+- **The Challenge:** Bespoke carpenters and custom furniture ateliers often lose digital shoppers because static social media pages lack transparent workflows, sizing guidance, or immediate quote mechanisms, while heavy web pages load too slowly on mobile devices.
+- **The Solution:** A sub-second, mobile-first web app that communicates brand heritage within 5 seconds, provides interactive sizing and cost estimation, showcases real craftsmanship via high-speed video streaming, and converts visitors directly into WhatsApp showroom appointments.
 
 ---
 
-## ✦ Brand & Project Purpose
+## ✦ Key Features & User Experience
 
-- **Atelier Positioning:** Elevate Heaven Furniture Mart above flat-pack, mass-produced factory retail by emphasizing genuine Chittagong Teak (*Tectona grandis*), solid structural joinery, Italian marble surfaces, and hand-carved artistry.
-- **Blueprint-First Service:** Address the primary homeowner anxiety—furniture that doesn't fit room proportions or clashes with interior architecture.
-- **Conversion Clarity:** Direct visitor attention toward a zero-obligation, free design consultation without aggressive popups, synthetic timer countdowns, or dark UX patterns.
+### 1. Dual-Language Architecture (বাংলা / English)
+- **Seamless Language Switcher:** Instant, client-side toggle in the header navigation (`বাং / EN`).
+- **Persistent Preferences:** Automatically remembers the visitor's preferred language via localStorage.
+- **Authentic Local Tone:** Uses natural, everyday Bangladeshi conversational phrasing (*"আপনার জায়গার মাপ অনুযায়ী ফার্নিচার"*, *"শোরুমে এসে নিজের চোখে দেখে পছন্দ করুন"*) alongside refined English copy.
 
----
+### 2. Interactive Bespoke Cost Estimator & Quote Flow
+- **Real-Time Client-Side Calculation:** Dynamic pricing model based on room type, dimensions, wood selection (Chittagong Teak, Mehogany, Segun), upholstery grade, and finish.
+- **WhatsApp Quote Handoff:** Formats customized specifications, dimensions, and estimated price into a ready-to-send structured message for 1-tap WhatsApp consultation.
+- **Interactive Product Modals:** Detailed specification drawer for each catalog collection with material breakdowns and direct hotline inquiries.
 
-## ✦ Core Concept: "Crafted Around You"
+### 3. Cloudinary Video Craftsmanship & Showroom Showcase
+- **Real Atelier Footage:** High-definition video streams showing real wood-carving, sofa tailoring, dining set joinery, and showroom walkthroughs.
+- **Audio & Autoplay Controls:** Intuitive sound-toggle controls (`সাউন্ড অন / অফ`) with ambient muted autoplay.
+- **Adaptive Breakpoints:** Responsive layouts specially engineered for mobile devices, tablets (768px+), and high-resolution desktops without text cramping.
 
-Mass-market retail forces homeowners to compromise their room layouts to fit generic factory dimensions. Heaven Furniture Mart works in reverse:
-* Blueprint & room measurement analysis.
-* Material and timber curation tailored to coastal Chattogram's humidity.
-* Atelier crafting blending high-precision CNC joinery with master hand-carving.
-* Transparent itemized pricing with zero middleman retail markups.
-* White-glove residential setup and leveling.
-
----
-
-## ✦ Tech Stack
-
-- **Framework:** [Next.js 16.3.4](https://nextjs.org/) (App Router, Turbopack, Server Components)
-- **Library:** [React 19.2.8](https://react.dev/) & React DOM 19.2.8
-- **Styling:** [Tailwind CSS v4](https://tailwindcss.com/) (`@tailwindcss/postcss`) with custom luxury CSS design tokens
-- **Language:** [TypeScript 5.0+](https://www.typescriptlang.org/) (Strict type checking enabled)
-- **Image Optimization:** Native Next.js Image with [sharp](https://sharp.pixelplumbing.com/) ^0.35.4 (automatic AVIF & WebP delivery)
-- **Typography:** `next/font/google` (*Playfair Display* editorial serif + *Plus Jakarta Sans* geometric sans)
-- **Structured Data:** Schema.org `FurnitureStore` JSON-LD for rich local business indexing
-- **Icons:** Centralized inline SVG primitives (`src/components/icons.tsx`) with zero external font-icon dependencies
+### 4. Direct Multi-Channel Conversion
+- **Persistent Mobile Action Bar:** 1-tap thumb navigation for phone call (`01960-481983`), WhatsApp messaging, and Google Maps showroom routing.
+- **Verified Physical Landmark Presence:** Prominent display of showroom address opposite RAK Ceramics on Agrabad Access Road with integrated navigation links.
+- **Social Media Verification:** Direct links to official Facebook (12k+ followers), YouTube, and Instagram accounts.
 
 ---
 
-## ✦ Requirements
+## ✦ Engineering & Performance Highlights
 
+### 🚀 90+ Mobile PageSpeed Optimization
+Achieving a 90+ Mobile PageSpeed score while streaming video and displaying dozens of high-definition furniture photos required strict architectural discipline:
+
+1. **Non-Blocking Cloudinary Video Delivery:**
+   - Instead of embedding heavy third-party iframes (e.g. YouTube iframes that load 1.2MB of JavaScript and degrade performance), videos are hosted on Cloudinary CDN and delivered via native HTML5 `<video>` tags.
+   - **Smart IntersectionObserver Pre-buffering:** Videos use a custom IntersectionObserver with a `450px` root margin. Buffering starts only when the user scrolls near the section, completely freeing the main thread during initial page load.
+
+2. **Zero Layout Shift (`CLS = 0`):**
+   - Every image and video element uses strict aspect-ratio containers (`4:3` or `16:9`) with intrinsic layout reservations, preventing visual jumps as media loads.
+
+3. **Optimized WebP Image Pipeline:**
+   - Switched from CPU-intensive AVIF decoding to highly optimized WebP format with fine-tuned quality parameters (`quality={85-90}`), delivering crisp wood-grain details at a fraction of the bandwidth.
+
+4. **Zero Heavy Client Dependencies:**
+   - Lightweight custom SVG primitives (`src/components/icons.tsx`) eliminate bulky external font-icon packages.
+   - Built on native CSS animations and clean React state management without heavy animation runtimes.
+
+---
+
+## ✦ Tech Stack & Architecture
+
+| Layer | Technology | Purpose |
+| :--- | :--- | :--- |
+| **Framework** | [Next.js 16.3.4](https://nextjs.org/) (App Router, Turbopack) | Server Components, static prerendering, and optimized bundle delivery |
+| **Runtime** | [React 19.2.8](https://react.dev/) | High-performance concurrent UI primitives |
+| **Language** | [TypeScript 5.0+](https://www.typescriptlang.org/) | Strict type safety across content models and UI props |
+| **Styling** | [Tailwind CSS v4](https://tailwindcss.com/) (`@tailwindcss/postcss`) | Modern CSS-in-utility styling with custom luxury color tokens |
+| **Media Delivery** | [Cloudinary Video CDN](https://cloudinary.com/) + Next.js Image | Edge-accelerated MP4 streaming and WebP responsive images |
+| **State & Context** | React Context (`LanguageContext`, `QuoteModalContext`) | Global state for language selection and quote modal drawers |
+| **SEO & Schema** | Schema.org `FurnitureStore` JSON-LD | Rich Google search snippets, local store indexing, and geocoding |
+
+---
+
+## ✦ Directory Structure
+
+```
+heaven-furniture-mart/
+├── .browserslistrc                # Browser compatibility configuration
+├── README.md                      # Primary project documentation
+├── package.json                   # Project scripts and dependencies
+├── tsconfig.json                  # TypeScript compiler settings
+├── next.config.ts                 # Image domain rules, security headers & caching
+├── docs/                          # Architectural and brand intelligence documentation
+│   ├── PLAN.md                    # Full master plan, execution logs & phase QA audits
+│   ├── brand-research.md          # Verified business evidence & leadership profiles
+│   ├── content-strategy.md        # Tone of voice, bilingual copy, & conversion architecture
+│   ├── information-architecture.md# UX blueprints & landmark hierarchy
+│   └── visual-design-system.md    # Color palette tokens, contrast ratios & typography specs
+├── public/
+│   ├── apple-icon.png             # iOS home screen webclip icon
+│   ├── icon.png                   # Standard web app icon
+│   ├── favicon.ico                # Desktop browser tab favicon
+│   └── assets/                    # Optimized authentic photography
+│       ├── brand/                 # Official Heaven white brandmark logo
+│       ├── hero/                  # High-resolution handcrafted living room suite
+│       ├── collections/           # Living, dining, bedroom, and storage photos
+│       ├── craftsmanship/         # Authentic workshop carving and upholstery
+│       ├── showroom/              # Agrabad flagship 2-story building
+│       └── trust/                 # BFMA 2024 Award presentation and expo booth
+└── src/
+    ├── app/                       # Next.js App Router
+    │   ├── layout.tsx             # Root layout with font injection, JSON-LD, and Providers
+    │   ├── page.tsx               # Main landing page assembling all feature sections
+    │   ├── globals.css            # Custom CSS variables, Tailwind tokens & responsive utilities
+    │   ├── robots.ts              # Automated robots.txt generator
+    │   └── sitemap.ts             # Dynamic XML sitemap generator
+    ├── components/                # Modular React UI components
+    │   ├── BespokeProcess.tsx     # 4-step custom furniture roadmap with interactive estimator
+    │   ├── ConsultationCTA.tsx    # Consultation booking form & direct WhatsApp desk
+    │   ├── CuratedSpaces.tsx      # Curated collections with category filters & modal triggers
+    │   ├── FloatingActionBar.tsx  # Mobile-persistent thumb bar (Call, WhatsApp, Showroom)
+    │   ├── Footer.tsx             # Showroom hours, address, hotlines, social channels
+    │   ├── Hero.tsx               # High-impact image-led hero with dual CTAs & trust badges
+    │   ├── JsonLd.tsx             # Schema.org structured data component
+    │   ├── Navbar.tsx             # Responsive header with language toggle & mobile navigation
+    │   ├── ProductPreviewModal.tsx# Deep-dive product specification & inquiry modal
+    │   ├── ProvenanceTrust.tsx    # Brand heritage, Managing Director statement, & credentials
+    │   ├── RequestQuoteModal.tsx  # Interactive bespoke quote request modal
+    │   ├── Showroom.tsx           # Physical showroom showcase, map guide & visiting hours
+    │   ├── ShowroomMedia.tsx      # Cloudinary video showcase & official social links
+    │   ├── SmoothScrollProvider.tsx# Scroll handling and anchor navigation orchestration
+    │   └── icons.tsx              # Clean SVG icons (Facebook, YouTube, Instagram, WhatsApp, etc.)
+    ├── content/
+    │   └── brand.ts               # Single Source of Truth for all brand data, products & media
+    └── context/
+        ├── LanguageContext.tsx    # Bilingual language state management (বাংলা / EN)
+        └── QuoteModalContext.tsx  # Global modal trigger state for bespoke quotation
+```
+
+---
+
+## ✦ Core Components Overview
+
+| Component | Key Capabilities |
+| :--- | :--- |
+| **`Navbar.tsx`** | Responsive sticky header, brand lockup, language switcher toggle (`বাং / EN`), hotline badge, and accessible slide-out mobile drawer. |
+| **`Hero.tsx`** | Image-led conversion hero featuring authentic handcrafted living room suite, dual 1-tap CTAs, and quick category shortcuts. |
+| **`CuratedSpaces.tsx`** | Filterable catalog (Living, Bedroom, Dining, Office, Custom) with high-definition product cards and instant modal triggers. |
+| **`BespokeProcess.tsx`** | 4-step visual roadmap explaining the custom order journey with an integrated interactive pricing & sizing calculator. |
+| **`ShowroomMedia.tsx`** | Cloudinary video streaming gallery showing artisans in action, complete with sound toggles and official social channel links. |
+| **`ProvenanceTrust.tsx`** | Verifiable brand trust: Managing Director Abul Kalam Bhuiyan statement, BFMA 2024 Award recognition, and customer testimonials. |
+| **`Showroom.tsx`** | Highlighting the physical 2-story showroom on Agrabad Access Road with visiting hours and 1-tap Google Maps directions. |
+| **`ConsultationCTA.tsx`** | Zero-friction lead capture form with instant WhatsApp handoff. |
+| **`FloatingActionBar.tsx`** | Mobile-only bottom persistent bar for quick hotline calls, WhatsApp messages, and showroom location. |
+| **`ProductPreviewModal.tsx`** | Spec sheet drawer detailing wood options, dimensions, warranty, and inquiry buttons for individual furniture pieces. |
+| **`RequestQuoteModal.tsx`** | Step-by-step interactive quote builder that compiles user specs into pre-formatted WhatsApp text. |
+
+---
+
+## ✦ Content & Brand Source of Truth
+
+All factual business information, phone numbers, addresses, social channels, product catalog data, and Cloudinary video URLs are centralized in:
+
+```
+src/content/brand.ts
+```
+
+### Highlights of `BRAND_CONFIG`:
+- **Showroom Address:** Agrabad Access Road (Opposite RAK Ceramics), Double Mooring, Chattogram.
+- **Primary Hotline & WhatsApp:** `+880 1960-481983` (Direct consultation desk).
+- **Secondary Telephone:** `+880 1900-481898`.
+- **Email:** `heavenfurnituremart@gmail.com`.
+- **Social Media:**
+  - Facebook: `https://www.facebook.com/HeavenFurnitureMart` (12,000+ followers)
+  - YouTube: `https://www.youtube.com/@HeavenFurnitureMart`
+  - Instagram: `https://www.instagram.com/heaven_furniture_ltd`
+
+---
+
+## ✦ Installation & Local Setup
+
+### Prerequisites
 - **Node.js:** `v20.9.0` or higher (Active LTS recommended)
-- **npm:** `v10.0.0` or higher (compatible with `pnpm` and `yarn`)
-- **Browser Support:** Evergreen modern browsers (Chrome, Edge, Firefox, Safari iOS 15+, Chrome Android)
+- **npm:** `v10.0.0` or higher (or compatible `pnpm`/`yarn`)
 
----
-
-## ✦ Installation & Setup
-
+### Steps
 1. **Clone the repository:**
    ```bash
    git clone https://github.com/al-shaimon/heaven-furniture-mart.git
@@ -70,172 +214,91 @@ Mass-market retail forces homeowners to compromise their room layouts to fit gen
    npm install
    ```
 
+3. **Start development server:**
+   ```bash
+   npm run dev
+   ```
+   Open [http://localhost:3000](http://localhost:3000) in your browser.
+
 ---
 
 ## ✦ CLI Commands
 
 | Action | Command | Description |
 | :--- | :--- | :--- |
-| **Development** | `npm run dev` | Starts local Turbopack dev server on `http://localhost:3000` |
-| **Type Check** | `npx tsc --noEmit` | Performs strict TypeScript type validation |
-| **Lint** | `npm run lint` | Runs ESLint with Next.js Core Web Vitals rules |
-| **Production Build** | `npm run build` | Compiles optimized static/server bundles with static prerendering |
+| **Development** | `npm run dev` | Starts local Turbopack dev server on `localhost:3000` |
+| **Type Check** | `npx tsc --noEmit` | Strict type verification without building |
+| **Lint** | `npm run lint` | Runs ESLint with Next.js Core Web Vitals configuration |
+| **Production Build** | `npm run build` | Compiles optimized static assets & server routes |
 | **Production Server** | `npm run start` | Runs the compiled production build locally on port 3000 |
-
----
-
-## ✦ Project Structure
-
-```
-heaven-furniture-mart/
-├── .gitignore                     # Git exclusion rules (node_modules, .next, test dumps)
-├── README.md                      # Comprehensive project documentation
-├── package.json                   # Project metadata & lean dependencies
-├── tsconfig.json                  # Strict TypeScript compiler options
-├── next.config.ts                 # Security headers, image optimization & cache TTL
-├── eslint.config.mjs              # Modern flat ESLint configuration
-├── docs/                          # Verified brand intelligence & progress documentation
-│   ├── PLAN.md                    # Complete phase progress & QA audit logs
-│   ├── brand-research.md          # Official public information & leadership details
-│   ├── content-strategy.md        # Voice, tone, & conversion copy architecture
-│   ├── information-architecture.md# Landmark hierarchy & UX blueprint
-│   └── visual-design-system.md    # Color system, contrast ratios & typography specs
-├── public/
-│   ├── Landing Page Content/      # Original source documents archive (PDFs, brief)
-│   └── assets/                    # Optimized authentic Heaven Furniture Mart assets
-│       ├── bespoke/               # Display vitrines & custom credenzas
-│       ├── brand/                 # Official white logo
-│       ├── collections/           # Living, dining, & master bedroom suites
-│       ├── craftsmanship/         # Workshop upholstery & carving in progress
-│       ├── hero/                  # Solid teak living suite LCP hero asset
-│       ├── showroom/              # Agrabad flagship 2-story building photo
-│       └── trust/                 # BFMA 2024 Award presentation & expo booth
-└── src/
-    ├── app/                       # Next.js App Router root
-    │   ├── layout.tsx             # Root layout with font injection, JSON-LD, skip-link
-    │   ├── page.tsx               # Main page layout & section sequencing
-    │   ├── globals.css            # Design tokens, color system, reduced-motion rules
-    │   ├── robots.ts              # Native robots.txt generator
-    │   └── sitemap.ts             # Native sitemap.xml generator
-    ├── components/                # Modular React components
-    │   ├── BespokeProcess.tsx     # 4-step transparent roadmap
-    │   ├── BrandIntro.tsx         # The Atelier Difference comparison ledger
-    │   ├── ConsultationCTA.tsx    # Interactive consultation booking & WhatsApp desk
-    │   ├── CuratedSpaces.tsx      # Curated collections with interactive category filtering
-    │   ├── FloatingActionBar.tsx  # Persistent mobile bottom action bar
-    │   ├── Footer.tsx             # Showroom hours, address, hotlines, & social
-    │   ├── Hero.tsx               # Above-the-fold brand identity & CTAs
-    │   ├── icons.tsx              # Centralized SVG icon primitives
-    │   ├── JsonLd.tsx             # Schema.org structured data component
-    │   ├── Navbar.tsx             # Accessible responsive header & mobile navigation drawer
-    │   ├── ProvenanceTrust.tsx    # 20-year timeline & MD statement
-    │   ├── ScrollRevealProvider.tsx # Accessible scroll observer with reduced-motion support
-    │   └── Showroom.tsx           # Showroom gallery details & Google Maps link
-    └── content/
-        └── brand.ts               # Single Source of Truth for all brand data
-```
-
----
-
-## ✦ Content Architecture & Source of Truth
-
-All business information, addresses, phone numbers, operating hours, team data, product collections, and milestones are centralized in a single file:
-
-```
-src/content/brand.ts
-```
-
-Components never hardcode business data; they import typed properties from `BRAND_CONFIG`. Updating this single file automatically synchronizes the entire website, including metadata and Schema.org structured data.
-
----
-
-## ✦ Asset Organization
-
-Assets reside in `public/assets/` under semantic categories:
-
-| Directory | Content Description | Dimensions / Format |
-| :--- | :--- | :--- |
-| `hero/` | Flagship handcrafted living room suite | 1448×1086 (WebP, optimized) |
-| `collections/` | Living suites, marble dining sets, master beds | 1200×900 (WebP, 4:3 aspect ratio) |
-| `bespoke/` | Vitrines, credenzas, custom cabinetry | 1200×900 (WebP, 4:3 aspect ratio) |
-| `craftsmanship/`| Wood carving and upholstery atelier photos | 1200×900 (WebP, 4:3 aspect ratio) |
-| `showroom/` | Flagship showroom building on Agrabad Access Rd | 1200×900 (WebP, 4:3 aspect ratio) |
-| `trust/` | BFMA 2024 Award presentation and team expo | 1200×900 (WebP, 4:3 aspect ratio) |
-| `brand/` | Official white mark logo | Transparent PNG |
-
----
-
-## ✦ Maintenance Guides
-
-### 1. How to Update Business Information
-Open `src/content/brand.ts` and modify the `contact`, `location`, or `hours` objects:
-```typescript
-contact: {
-  primaryPhone: "+880 1960-481983",          // International dialing format
-  primaryPhoneFormatted: "+880 1960-481983", // Display format
-  hotlinePhone: "+880 1900-481898",          // Secondary telephone line
-  hotlineFormatted: "+880 1900-481898",
-  email: "heavenfurnituremart@gmail.com",
-  whatsAppNumber: "8801960481983",           // Digits only (country code + number)
-  whatsAppPreFill: "Hello Heaven Furniture Mart...",
-},
-location: {
-  fullAddress: "Agrabad Access Road (Opposite RAK Ceramics), Double Mooring, Chattogram",
-  googleMapsUrl: "https://maps.google.com/?q=...",
-}
-```
-
-### 2. How to Update Social Links
-In `src/content/brand.ts`, update the `social` object:
-```typescript
-social: {
-  facebook: { url: "https://www.facebook.com/HeavenFurnitureMart", label: "Facebook" },
-  youtube: { url: "https://www.youtube.com/@HeavenFurnitureMart", label: "YouTube" },
-  instagram: { url: "https://www.instagram.com/heaven_furniture_ltd", label: "Instagram" },
-}
-```
-
-### 3. How to Replace Images
-1. Prepare your authentic image in a **4:3 aspect ratio** (recommended: 1200×900px or 1600×1200px).
-2. Compress and save as modern **WebP** format.
-3. Place the file in the appropriate `public/assets/<category>/` directory.
-4. Update the path string in `src/content/brand.ts` or the referencing component.
-5. Provide rich, descriptive `alt` text detailing the wood, finish, and setting for SEO and screen-reader accessibility.
-
----
-
-## ✦ Deployment Notes
-
-- **Vercel (Recommended):** Connect the GitHub repository directly to Vercel. Next.js 16 defaults will automatically build and deploy with zero configuration required.
-- **Node.js VPS / Standalone Server:**
-  ```bash
-  npm run build
-  npm run start
-  ```
-- **Security Headers:** Pre-configured in `next.config.ts`:
-  - `X-Frame-Options: SAMEORIGIN` (mitigates clickjacking)
-  - `X-Content-Type-Options: nosniff` (prevents MIME sniffing)
-  - `Referrer-Policy: strict-origin-when-cross-origin`
-  - `Permissions-Policy: camera=(), microphone=(), geolocation=()`
-  - `Cross-Origin-Opener-Policy: same-origin` (COOP isolation)
-  - `poweredByHeader: false` (removes Next.js identification header)
 
 ---
 
 ## ✦ Performance & Lighthouse Benchmarks
 
-Audited directly against the production server (`npm run build` && `next start` on port 3000):
+Audited on production builds via Google PageSpeed Insights:
 
-| Audit Category | Desktop Score | Mobile Score (4x CPU / 1.6 Mbps Slow 4G) | Audit Status |
+| Audit Category | Desktop Score | Mobile Score (4G Emulation) | Notes |
 | :--- | :---: | :---: | :--- |
-| **Performance** | **100 / 100** | **94 / 100** | FCP 0.9s · Speed Index 0.9s · CLS 0 · TBT 30ms |
-| **Accessibility** | **100 / 100** | **100 / 100** | 0 failed audits · WCAG 2.1 AA/AAA compliance |
-| **Best Practices** | **100 / 100** | **100 / 100** | 0 failed audits · Strict CSP/COOP security headers |
-| **SEO** | **100 / 100** | **100 / 100** | 0 failed audits · Native App Router sitemap & metadata |
-| **Agentic Browsing** | **100 / 100** | **100 / 100** | Structured Schema.org JSON-LD |
+| **Performance** | **100 / 100** | **90+ / 100** | Sub-second FCP, zero CLS, pre-buffered non-blocking video |
+| **Accessibility** | **100 / 100** | **100 / 100** | Full WCAG 2.1 AA contrast, clear focus rings, semantic landmarks |
+| **Best Practices** | **100 / 100** | **100 / 100** | Strict security headers, HTTPS, clean modern JavaScript |
+| **SEO** | **100 / 100** | **100 / 100** | Native App Router metadata, sitemap.xml, robots.txt, Schema.org |
 
-### Key Architectural Performance Highlights:
-- **Zero Layout Shift (`CLS = 0`):** Next.js intrinsic image aspect ratios reserve exact layout space before images load.
-- **Sub-Second First Paint (`FCP = 0.9s`):** Immediate static rendering of above-the-fold hero typography without CSS animation delays.
-- **Lightweight Blocking Time (`TBT = 30ms`):** Elimination of unnecessary compositor layers (`will-change`) and client-side hydration overhead.
-- **Next-Gen Image Transcoding:** Automatic AVIF and WebP delivery with 30-day client caching.
+---
+
+## ✦ Maintenance Guides
+
+### 1. Updating Product Catalog or Media
+Open `src/content/brand.ts` and add or edit items in `COLLECTION_CATEGORIES`:
+```typescript
+{
+  id: "living-classic-sofa",
+  nameBn: "রয়েল ক্লাসিক সোফা সেট",
+  nameEn: "Royal Classic Living Suite",
+  category: "living",
+  image: "/assets/collections/heaven-living-suite.webp",
+  descriptionBn: "হাতে খোদাই করা কাঠের ফিনিশ এবং প্রিমিয়াম ফেব্রিক কুশন।",
+  descriptionEn: "Hand-carved solid timber accents with high-resilience upholstered seating.",
+  dimensions: "3-Seater: 84\"W × 36\"D · 2-Seater: 62\"W",
+  woodTypeBn: "চিটাগাং সেগুন / মেহগনি",
+  woodTypeEn: "Chittagong Teak / Seasoned Mahogany",
+}
+```
+
+### 2. Updating Cloudinary Video Links
+In `src/content/brand.ts`, update `SHOWROOM_VIDEOS` with new Cloudinary CDN URLs:
+```typescript
+{
+  id: "woodworking-process",
+  localVideoSrc: "https://res.cloudinary.com/dr4guscnl/video/upload/v1788693928/heaven-woodworking-process_jqkrer.mp4",
+  posterSrc: "/assets/craftsmanship/craftsmanship-woodcarving.webp",
+  titleBn: "কাঠের সূক্ষ্ম কার্ভ ও কাঠামো তৈরি",
+  titleEn: "Precision Woodcarving & Framing",
+  descriptionBn: "দক্ষ কারিগরদের হাতে কাঠের মসৃণ বাঁক ও খোদাই কাজ।",
+  descriptionEn: "Master artisans shaping solid timber frames with traditional hand tools.",
+  badgeBn: "কারিগরদের কাজ",
+  badgeEn: "Artisan Craft",
+}
+```
+
+---
+
+## ✦ Deployment
+
+### Vercel (Recommended)
+Connect the repository to Vercel. Next.js 16 will automatically detect settings, compile the Turbopack production bundle, and deploy to edge networks with zero configuration.
+
+### Self-Hosted VPS (Docker / Node.js)
+```bash
+npm run build
+NODE_ENV=production npm run start -p 8080
+```
+
+---
+
+## ✦ License & Credits
+
+- **Client:** Heaven Furniture Mart, Agrabad, Chattogram.
+- **Design & Engineering:** Developed for the Racdox Web Development Hackathon.
+- **Copyright:** © 2003–2026 Heaven Furniture Mart. All rights reserved.

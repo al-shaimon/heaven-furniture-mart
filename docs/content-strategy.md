@@ -204,3 +204,34 @@ Within 5 seconds, a first-time visitor must see and understand:
 | **12 – 18s** | *"How good does their work look?"* | Browses curated Living, Dining, and Bedroom spaces with real ultra-HD photographs. | Visually convinced of design quality, craftsmanship, and luxury aesthetic. |
 | **18 – 24s** | *"Can I trust them with my money?"* | Reads 2003 heritage, MD quote, sees photo of MD receiving 2024 BFMA recognition and team at expo. | Trust established: Over 20 years in business, award-winning, Chamber of Commerce member. |
 | **24 – 30s** | *"Where are they and what do I do next?"* | Sees real 2-story showroom building photo on Agrabad Access Road (opposite RAK Ceramics). Clicks *"Book a Free Design Consultation"* or WhatsApp. | Converted: Clear, frictionless next step taken. |
+
+---
+
+## 10. Bilingual Content Strategy & WhatsApp Conversion Architecture
+
+### 1. The Dual-Tone Philosophy
+Rather than relying on literal machine translation, the platform employs a dual-tone strategy tailored to two key audience segments:
+* **Natural Conversational Bengali (Primary for Local Homeowners):**
+  - Uses everyday Bangladeshi showroom phrases that resonate with local families visiting Agrabad.
+  - Examples:
+    - *"আপনার জায়গার মাপ অনুযায়ী ফার্নিচার"* (Bespoke furniture sized to your floor plan).
+    - *"শোরুমে এসে নিজের চোখে দেখে পছন্দ করুন"* (Visit the showroom to touch and inspect in person).
+    - *"দাম আর সাইজ জানতে আমাদের মেসেজ করুন"* (Direct WhatsApp inquiry).
+    - *"দক্ষ কারিগরের যত্নে তৈরি"* (Crafted with master artisan care).
+* **Refined Editorial English (For Diaspora, Corporate & Architectural Clients):**
+  - Tailored for Chittagong diaspora planning home setup, corporate office commissions, and interior architects.
+  - Uses authoritative architectural terminology (*"Architectural Joinery"*, *"Custom Spatial Dimensions"*, *"Seasoned Hardwood Atelier"*).
+
+### 2. Interactive Estimation & WhatsApp Structured Quote Handoff
+- The bespoke customizer (`BespokeCostEstimator.tsx` / `RequestQuoteModal.tsx`) bridges the gap between digital curiosity and physical consultation.
+- When a user selects a room type, wood selection, and dimensions, the engine generates an estimate and composes an automated, pre-formatted WhatsApp message:
+  ```
+  আসসালামু আলাইকুম হেভেন ফার্নিচার মার্ট,
+  আমি আপনাদের ওয়েবসাইট থেকে একটি কাস্টম ফার্নিচারের কোটেশন জানতে চাই:
+  • ফার্নিচার ক্যাটাগরি: লিভিং রুম / সোফা সেট
+  • কাঠের পছন্দ: চিটাগাং সেগুন
+  • আনুমানিক বাজেট: ৳৮০,০০০ - ৳১,২০,০০০
+  অনুগ্রহ করে বিস্তারিত ও শোরুম ভিজিটের সময় জানাবেন।
+  ```
+- This completely removes customer friction: no typing required on mobile, immediately opening WhatsApp with the exact specs ready to send.
+

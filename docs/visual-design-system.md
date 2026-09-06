@@ -174,3 +174,19 @@ Instead of jarring horizontal color blocks, sections transition with intentional
 * Typography: Fluid typography using standard Tailwind responsive steps (`text-3xl sm:text-5xl`) to prevent awkward hyphenation or 1-word wrapped lines.
 * Touch Targets: Every interactive link, phone number, and button has a minimum hit target of `48px × 48px`.
 * Persistent Floating Action: Subtle, non-intrusive bottom utility bar on mobile with 1-tap WhatsApp consultation.
+
+---
+
+## 11. Media Architecture & Responsive Breakpoint Standards
+
+### Video Streaming & Craftsmanship Playback
+* **Cloudinary CDN Integration:** High-definition craftsman video clips are hosted on Cloudinary global CDN and served as lightweight MP4 streams rather than heavy external iframe embeds.
+* **IntersectionObserver Pre-Buffering:** Videos utilize a `450px` root margin to trigger preloading and buffering when the user approaches the section, ensuring instantaneous playback on scroll without penalizing initial page load or First Contentful Paint.
+* **Ambient Muted Autoplay with Sound Control:** Videos loop softly in muted state to respect user context, with an accessible high-contrast sound toggle (`সাউন্ড অন / সাউন্ড অফ`) on every video container.
+
+### Responsive Breakpoint Matrix & Text Protection
+* **Extra-Small Mobile (`< 380px`):** Social action buttons display logo-only (`min-[380px]:inline` for labels) to prevent horizontal overflow on compact viewports.
+* **Mobile (`380px – 639px`):** Clean single-column vertical flow with full-width primary touch targets.
+* **Tablet (`640px – 1023px` / 768px):** Side-by-side flex layouts are strictly reserved for `lg:` (`≥ 1024px`) on wide action cards to prevent long Bengali headlines from collapsing into single-word vertical lines. Action button clusters sit comfortably below headlines in a wrapped horizontal row.
+* **Desktop (`≥ 1024px`):** Generous side-by-side flex rows with ample breathing room, asymmetric column pairings, and high-resolution media presentations.
+

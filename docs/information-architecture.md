@@ -67,35 +67,39 @@ Every single section answers a specific question in the customer's mind within t
 ## 4. Section Order & Narrative Architecture
 
 ```
-1. Persistent Header (Brandmark + Nav + Direct Call + CTA)
+1. Persistent Header (Brandmark + Nav + Language Switcher [বাং/EN] + Direct Call + CTA)
    ↓
-2. Hero Section (Immediate 5-Second Brand & Category Understanding)
+2. Hero Section (Immediate 5-Second Brand & Category Understanding + Dual CTAs)
    ↓
 3. The Atelier Difference: "Why Bespoke?" (Pain Point vs. Value Proposition)
    ↓
-4. Curated Spaces: The Living Portfolio (Living, Dining, Bedroom, Storage)
+4. Curated Spaces: The Living Portfolio (Filterable Categories + Product Preview Modal)
    ↓
-5. The 4-Step Bespoke Journey (Demystifying Custom Ordering)
+5. The 4-Step Bespoke Journey (Demystifying Custom Ordering + Interactive Cost Estimator)
    ↓
-6. Provenance & Trust (Founder Quote, Milestones, BFMA 2024 Award & Team)
+6. Showroom Media & Craftsmanship (Cloudinary Video Showcase + Social Channels)
    ↓
-7. The Flagship Showroom (Physical Building Photo, Agrabad Landmark, Hours)
+7. Provenance & Trust (Founder Quote, Milestones, BFMA 2024 Award & Client Reviews)
    ↓
-8. Free Design Consultation & Lead Capture (Form + 1-Click WhatsApp)
+8. The Flagship Showroom (Physical Building Photo, Agrabad Landmark, Hours & Maps)
    ↓
-9. Footer (NAP, Social Channels, Local Heritage Notice)
+9. Free Design Consultation & Lead Capture (Form + 1-Click Structured WhatsApp)
+   ↓
+10. Footer (Showroom NAP, Social Media Matrix, Operating Hours & Copyright)
 ```
 
 ---
 
 ## 5. CTA Placement & Conversion Paths
 
-1. **Persistent Header:** Always visible on scroll with high-contrast `Book Consultation` button.
-2. **Hero Action Row:** High-prominence dual buttons (`Book a Free Design Consultation` + `Chat on WhatsApp`).
-3. **Curated Spaces Section Footer:** In-context secondary prompt: *"Have a unique floor plan? Let our designers review your room dimensions."*
-4. **The Bespoke Process Footer:** Direct action: *"Start Step 01: Schedule Your Consultation."*
-5. **Flagship Showroom Card:** In-person action: `Get Directions on Google Maps` + `Call Showroom Desk`.
-6. **Dedicated Final Consultation Sanctuary:** Clean 3-field form (Name, WhatsApp/Phone, Space Type) + 1-click pre-filled WhatsApp link.
+1. **Persistent Header:** Always visible on scroll with high-contrast language toggle (`বাং / EN`), hotline badge, and `Book Consultation` button.
+2. **Hero Action Row:** High-prominence dual buttons (`Chat on WhatsApp` + `Call Hotline Desk`).
+3. **Curated Spaces Section:** Category filters with instant `Request Quote / View Details` modal triggers.
+4. **The Bespoke Process Footer:** Interactive customizer with dynamic price estimation and structured WhatsApp order generator.
+5. **Showroom Media Action Card:** Quick navigation: `Showroom Address & Map` + direct links to Facebook, YouTube, and Instagram.
+6. **Flagship Showroom Card:** In-person action: `Get Directions on Google Maps` + `Call Showroom Desk`.
+7. **Dedicated Final Consultation Sanctuary:** Clean 2-field callback form + 1-click pre-filled WhatsApp link.
+8. **Persistent Mobile Thumb Bar:** Fixed 3-button touch bar on mobile: `Call Hotline`, `WhatsApp Chat`, and `Showroom Location`.
 
 ---
 
