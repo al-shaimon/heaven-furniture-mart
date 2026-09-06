@@ -6,7 +6,6 @@ import JsonLd from "@/components/JsonLd";
 import SmoothScrollProvider from "@/components/SmoothScrollProvider";
 import { LanguageProvider } from "@/context/LanguageContext";
 import { QuoteModalProvider } from "@/context/QuoteModalContext";
-import RequestQuoteModal from "@/components/RequestQuoteModal";
 import { Analytics } from "@vercel/analytics/next";
 
 const playfair = Playfair_Display({
@@ -121,7 +120,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               মূল কন্টেন্টে যান (Skip to main content)
             </a>
             {children}
-            <RequestQuoteModal />
           </QuoteModalProvider>
         </LanguageProvider>
         <Analytics />

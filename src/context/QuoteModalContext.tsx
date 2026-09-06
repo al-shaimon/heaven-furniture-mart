@@ -1,6 +1,9 @@
 "use client";
 
 import React, { createContext, useContext, useState } from "react";
+import dynamic from "next/dynamic";
+
+const RequestQuoteModal = dynamic(() => import("@/components/RequestQuoteModal"), { ssr: false });
 
 export interface QuoteModalInitialData {
   defaultCategory?: string;
@@ -40,6 +43,7 @@ export function QuoteModalProvider({ children }: { children: React.ReactNode }) 
       value={{ isOpen, initialData, openQuoteModal, closeQuoteModal }}
     >
       {children}
+      {isOpen && <RequestQuoteModal />}
     </QuoteModalContext.Provider>
   );
 }

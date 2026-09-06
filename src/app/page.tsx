@@ -1,13 +1,15 @@
+import dynamic from "next/dynamic";
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
-import CuratedSpaces from "@/components/CuratedSpaces";
-import BespokeProcess from "@/components/BespokeProcess";
-import ShowroomMedia from "@/components/ShowroomMedia";
-import Showroom from "@/components/Showroom";
-import ProvenanceTrust from "@/components/ProvenanceTrust";
-import ConsultationCTA from "@/components/ConsultationCTA";
-import Footer from "@/components/Footer";
-import FloatingActionBar from "@/components/FloatingActionBar";
+
+const CuratedSpaces = dynamic(() => import("@/components/CuratedSpaces"));
+const BespokeProcess = dynamic(() => import("@/components/BespokeProcess"));
+const ShowroomMedia = dynamic(() => import("@/components/ShowroomMedia"));
+const Showroom = dynamic(() => import("@/components/Showroom"));
+const ProvenanceTrust = dynamic(() => import("@/components/ProvenanceTrust"));
+const ConsultationCTA = dynamic(() => import("@/components/ConsultationCTA"));
+const Footer = dynamic(() => import("@/components/Footer"));
+const FloatingActionBar = dynamic(() => import("@/components/FloatingActionBar"));
 
 export default function Home() {
   return (

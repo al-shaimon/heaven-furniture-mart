@@ -1,24 +1,22 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import Lenis from "lenis";
 
 export default function SmoothScrollProvider() {
-  const lenisRef = useRef<Lenis | null>(null);
+  const lenisRef = useRef<{ scrollTo: (target: HTMLElement, options?: any) => void; destroy: () => void } | null>(null);
 
   useEffect(() => {
     // Check user preference for reduced motion
     const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
     if (prefersReducedMotion) {
-      // Instantly reveal all scroll-animated elements
       document
         .querySelectorAll(".reveal-on-scroll, .reveal-fade, .reveal-slide-left, .reveal-slide-right")
         .forEach((el) => el.classList.add("is-visible"));
       return;
     }
 
-    // Detect if device is touch-only (mobile phones & tablets without mouse/trackpad)
+    // Detect if device is touch-only (mobile phones & tablets)
     const isTouchOnly =
       window.matchMedia("(pointer: coarse)").matches &&
       !window.matchMedia("(pointer: fine)").matches;
@@ -53,44 +51,43 @@ export default function SmoothScrollProvider() {
 
     document.addEventListener("click", handleAnchorClick);
 
-    // --- Desktop Smooth Scrolling ---
-    // On pure touch devices (smartphones/tablets), we NEVER hijack touch gestures.
-    // Mobile OS (iOS Safari, Android Chrome) provides hardware-accelerated 60/120Hz
-    // compositor momentum scrolling with zero input lag.
-    let lenis: Lenis | null = null;
+    // --- Desktop Smooth Scrolling ONLY ---
+    // Dynamic import Lenis only on non-touch devices to save mobile JS bundle size
     let rafId: number | null = null;
 
     if (!isTouchOnly) {
-      lenis = new Lenis({
-        duration: 1.0,
-        easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-        smoothWheel: true,
-        syncTouch: false, // NEVER hijack mobile touch events!
-        autoResize: true,
-        prevent: (node) => {
-          return (
-            node instanceof HTMLElement &&
-            (node.hasAttribute("data-lenis-prevent") ||
-              Boolean(node.closest("[data-lenis-prevent]")) ||
-              Boolean(node.closest("[role='dialog']")))
-          );
-        },
-      });
-      lenisRef.current = lenis;
-      if (typeof window !== "undefined") {
-        (window as unknown as { __lenis?: Lenis }).__lenis = lenis;
-      }
+      import("lenis").then(({ default: Lenis }) => {
+        const lenis = new Lenis({
+          duration: 1.0,
+          easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+          smoothWheel: true,
+          syncTouch: false,
+          autoResize: true,
+          prevent: (node) => {
+            return (
+              node instanceof HTMLElement &&
+              (node.hasAttribute("data-lenis-prevent") ||
+                Boolean(node.closest("[data-lenis-prevent]")) ||
+                Boolean(node.closest("[role='dialog']")))
+            );
+          },
+        });
+        lenisRef.current = lenis;
+        if (typeof window !== "undefined") {
+          (window as unknown as { __lenis?: any }).__lenis = lenis;
+        }
 
-      const raf = (time: number) => {
-        lenis?.raf(time);
+        const raf = (time: number) => {
+          lenis?.raf(time);
+          rafId = requestAnimationFrame(raf);
+        };
         rafId = requestAnimationFrame(raf);
-      };
-      rafId = requestAnimationFrame(raf);
+      });
     } else {
       document.documentElement.style.scrollBehavior = "smooth";
     }
 
-    // --- IntersectionObserver for scroll reveal ---
+    // --- Lightweight Scroll Reveal Observer (No DOM MutationObserver thrashing) ---
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -104,35 +101,28 @@ export default function SmoothScrollProvider() {
     );
 
     const observeElements = () => {
-      const elements = document.querySelectorAll(
-        ".reveal-on-scroll:not(.is-visible), .reveal-fade:not(.is-visible), .reveal-slide-left:not(.is-visible), .reveal-slide-right:not(.is-visible)"
-      );
-      elements.forEach((el) => observer.observe(el));
+      document
+        .querySelectorAll(
+          ".reveal-on-scroll:not(.is-visible), .reveal-fade:not(.is-visible), .reveal-slide-left:not(.is-visible), .reveal-slide-right:not(.is-visible)"
+        )
+        .forEach((el) => observer.observe(el));
     };
 
-    observeElements();
-
-    // Debounced observer for dynamic DOM changes (avoids thrashing main thread during scroll)
-    let debounceTimer: ReturnType<typeof setTimeout> | null = null;
-    const mutationObserver = new MutationObserver(() => {
-      if (debounceTimer) clearTimeout(debounceTimer);
-      debounceTimer = setTimeout(() => {
-        observeElements();
-      }, 250);
-    });
-    mutationObserver.observe(document.body, { childList: true, subtree: true });
+    if (typeof window !== "undefined" && "requestIdleCallback" in window) {
+      (window as any).requestIdleCallback(() => observeElements());
+    } else {
+      setTimeout(observeElements, 250);
+    }
 
     return () => {
       observer.disconnect();
-      mutationObserver.disconnect();
-      if (debounceTimer) clearTimeout(debounceTimer);
       document.removeEventListener("click", handleAnchorClick);
       if (rafId) cancelAnimationFrame(rafId);
-      if (lenis) {
-        lenis.destroy();
+      if (lenisRef.current) {
+        lenisRef.current.destroy();
         lenisRef.current = null;
         if (typeof window !== "undefined") {
-          delete (window as unknown as { __lenis?: Lenis }).__lenis;
+          delete (window as unknown as { __lenis?: any }).__lenis;
         }
       }
     };
@@ -140,4 +130,3 @@ export default function SmoothScrollProvider() {
 
   return null;
 }
-
