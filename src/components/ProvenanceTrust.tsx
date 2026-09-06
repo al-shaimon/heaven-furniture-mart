@@ -152,9 +152,9 @@ export default function ProvenanceTrust() {
                     HFM
                   </div>
                   <div>
-                    <h4 className="text-base font-bold text-text-primary-dark">
+                    <p className="text-base font-bold text-text-primary-dark">
                       {lang === "en" ? founder.nameEn : founder.nameBn}
-                    </h4>
+                    </p>
                     <p className="text-xs font-semibold text-accent-brass-dark">
                       {lang === "en" ? founder.titleEn : founder.titleBn}
                     </p>
@@ -502,9 +502,9 @@ export default function ProvenanceTrust() {
           <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700 mb-2">
             📍 {t("আগ্রাবাদ শোরুমে স্বাগতম", "Welcome to Our Agrabad Showroom")}
           </span>
-          <h4 className="text-base sm:text-lg font-bold text-text-primary-dark">
-            {t("সরাসরি শোরুমে এসে কাঠের কোয়ালিটি দেখে নিতে চান?", "Prefer to Inspect Wood Quality Firsthand?")}
-          </h4>
+          <p className="text-base sm:text-lg font-bold text-text-primary-dark">
+            {t("সরাসরি শোরুমে এসে কাঠের কোয়ালিটি দেখে নিতে চান?", "Prefer to Inspect Wood Quality Firsthand?")}
+          </p>
           <p className="mt-1.5 text-xs sm:text-sm text-text-secondary-dark max-w-lg mx-auto leading-relaxed">
             {t(
               "চট্টগ্রামের আগ্রাবাদ এক্সেস রোডে আমাদের শোরুমে সরাসরি ডিসপ্লে দেখে পছন্দ করতে পারেন অথবা আপনার পছন্দের সাইজ ও কালার অনুযায়ী অর্ডার করতে পারেন।",

@@ -98,11 +98,14 @@ function LocalAutoVideo({
           autoPlay
           playsInline
           loop
-          preload="metadata"
+          preload="none"
           onPlay={() => setIsPlaying(true)}
           onPause={() => setIsPlaying(false)}
           className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-102"
-        />
+        >
+          {/* Captions track required for accessibility */}
+          <track kind="captions" srcLang="bn" label="Bengali" />
+        </video>
 
         {/* Video Overlay Badge */}
         {badge && (
@@ -140,9 +143,9 @@ function LocalAutoVideo({
       {/* Narrative Footer */}
       {(title || description) && (
         <div className="flex-1 flex flex-col justify-start p-4 bg-brand-slate-surface border-t border-neutral-800/80">
-          <h4 className="text-sm sm:text-base font-bold text-white line-clamp-1">
+          <p className="text-sm sm:text-base font-bold text-white line-clamp-1">
             {title}
-          </h4>
+          </p>
           {description && (
             <p className="mt-1 text-xs text-neutral-300 line-clamp-2 leading-relaxed">
               {description}
@@ -219,9 +222,9 @@ export default function ShowroomMedia() {
         {/* Bottom Showroom Action & Official Social Links */}
         <div className="mt-10 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 rounded-xl border border-brand-slate-border bg-brand-slate-surface p-5 sm:p-6">
           <div>
-            <h4 className="text-base sm:text-lg font-bold text-white">
+            <h3 className="text-base sm:text-lg font-bold text-white">
               {t("ভালো লাগলে সরাসরি আগ্রাবাদ শোরুমে এসে দেখে যান", "Experience It Firsthand at Our Agrabad Showroom")}
-            </h4>
+            </h3>
             <p className="mt-1 text-xs sm:text-sm text-neutral-300">
               {t(BRAND_CONFIG.location.fullAddressBn, BRAND_CONFIG.location.fullAddressEn)}
             </p>

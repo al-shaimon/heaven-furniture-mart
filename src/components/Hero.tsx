@@ -71,7 +71,8 @@ export default function Hero() {
                 alt="হেভেন ফার্নিচার মার্ট ড্রয়িং রুম সোফা ও সেন্টার টেবিল সেট"
                 fill
                 priority
-                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 100vw, 62vw"
+                fetchPriority="high"
+                sizes="(max-width: 390px) 390px, (max-width: 640px) 640px, (max-width: 1024px) 100vw, 58vw"
                 className="object-cover transition-transform duration-700 group-hover:scale-[1.02]"
               />
 

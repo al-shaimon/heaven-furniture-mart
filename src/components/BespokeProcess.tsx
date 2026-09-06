@@ -131,11 +131,13 @@ export default function BespokeProcess() {
                   autoPlay
                   playsInline
                   loop
-                  preload="metadata"
+                  preload="none"
                   onPlay={() => setIsPlaying(true)}
                   onPause={() => setIsPlaying(false)}
                   className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-102"
-                />
+                >
+                  <track kind="captions" srcLang="bn" label="Bengali" />
+                </video>
 
                 {/* Video Overlay Badge */}
                 <div className="absolute top-3 left-3 z-10 flex items-center gap-1.5 rounded-md bg-brand-slate-deep/90 backdrop-blur-xs px-2.5 py-1 text-xs font-bold text-accent-brass shadow-xs">

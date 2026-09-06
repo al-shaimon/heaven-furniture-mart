@@ -173,10 +173,11 @@ export default function ConsultationCTA() {
                     </div>
 
                     <div>
-                      <label className="block text-xs font-semibold text-neutral-300 mb-1.5">
+                      <label htmlFor="furniture-category" className="block text-xs font-semibold text-neutral-300 mb-1.5">
                         {t("কোন ধরনের ফার্নিচার খুঁজছেন?", "What Furniture Are You Looking For?")}
                       </label>
                       <select
+                        id="furniture-category"
                         value={category}
                         onChange={(e) => setCategory(e.target.value)}
                         className="w-full rounded-xl border border-neutral-600 bg-brand-slate-deep px-4 py-3 text-sm text-white focus:border-accent-brass focus:outline-none focus:ring-1 focus:ring-accent-brass"

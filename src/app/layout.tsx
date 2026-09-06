@@ -100,6 +100,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       className={`${playfair.variable} ${jakarta.variable} ${bengali.variable} antialiased notranslate`}
     >
       <head>
+        {/* LCP image preload — eliminates element render delay */}
+        <link
+          rel="preload"
+          as="image"
+          href="/_next/image?url=%2Fassets%2Fhero%2Fheaven-classic-living-hero.webp&w=1080&q=85"
+          type="image/webp"
+        />
+        {/* Preconnect for Google Fonts (WOFF2 resources) */}
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <script
           id="hfm-lang-init"
           dangerouslySetInnerHTML={{

@@ -248,10 +248,11 @@ export default function RequestQuoteModal() {
 
               {/* Wood / Material Preference */}
               <div>
-                <label className="block text-xs sm:text-sm font-bold text-text-primary-dark mb-1.5">
+                <label htmlFor="quote-wood-type" className="block text-xs sm:text-sm font-bold text-text-primary-dark mb-1.5">
                   {t(tq.woodLabel.bn, tq.woodLabel.en)}
                 </label>
                 <select
+                  id="quote-wood-type"
                   value={woodType}
                   onChange={(e) => setWoodType(e.target.value)}
                   className="w-full rounded-lg border border-neutral-300 bg-white px-3.5 py-2.5 text-xs sm:text-sm text-text-primary-dark focus:border-accent-brass focus:outline-none focus:ring-1 focus:ring-accent-brass"

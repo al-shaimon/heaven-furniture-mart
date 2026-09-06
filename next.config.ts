@@ -2,6 +2,10 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   poweredByHeader: false,
+  compress: true,
+  experimental: {
+    optimizePackageImports: ["yet-another-react-lightbox", "embla-carousel-react"],
+  },
   allowedDevOrigins: [
     "192.168.1.231:3000",
     "192.168.1.231",
@@ -10,9 +14,9 @@ const nextConfig: NextConfig = {
     "*.ngrok.io",
   ],
   images: {
-    formats: ["image/avif", "image/webp"],
-    deviceSizes: [640, 750, 828, 1080, 1200, 1920],
-    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
+    formats: ["image/webp", "image/avif"],
+    deviceSizes: [390, 640, 750, 828, 1080, 1200, 1440, 1920],
+    imageSizes: [16, 32, 64, 128, 256, 384],
     minimumCacheTTL: 2592000, // 30 days
   },
   async headers() {
