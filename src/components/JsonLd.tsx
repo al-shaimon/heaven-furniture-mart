@@ -10,7 +10,7 @@ export default function JsonLd() {
     logo: "https://heavenfurnituremart.com/assets/brand/heaven-logo-white.png",
     image: "https://heavenfurnituremart.com/assets/hero/heaven-classic-living-hero.webp",
     description:
-      "Home, Office and Custom Furniture showroom on Agrabad Access Road, Chattogram, Bangladesh. Tailored furniture crafted for your space.",
+      "Home and Custom Furniture showroom on Agrabad Access Road, Chattogram, Bangladesh. Tailored furniture crafted for your space.",
     telephone: BRAND_CONFIG.contact.primaryPhone.replace(/[\s-]/g, ""),
     address: {
       "@type": "PostalAddress",

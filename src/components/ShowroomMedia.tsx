@@ -2,6 +2,8 @@
 
 import { useState, useRef, useEffect } from "react";
 import { BRAND_CONFIG, CRAFT_VIDEOS, CraftVideoItem } from "@/content/brand";
+import { TRANSLATIONS } from "@/content/translations";
+import { useLanguage } from "@/context/LanguageContext";
 
 interface AutoPlayVideoProps {
   src: string;
@@ -73,7 +75,7 @@ function LocalAutoVideo({
 
   return (
     <div
-      className={`group relative overflow-hidden rounded-sm border border-neutral-700/80 bg-neutral-950 shadow-xl ${
+      className={`group relative overflow-hidden rounded-xl border border-neutral-700/80 bg-neutral-950 shadow-xl ${
         isPrimary ? "w-full" : "flex flex-col"
       }`}
     >
@@ -85,7 +87,7 @@ function LocalAutoVideo({
         onClick={togglePlay}
         role="button"
         tabIndex={0}
-        aria-label={isPlaying ? "ভিডিও পজ করুন" : "ভিডিও প্লে করুন"}
+        aria-label={isPlaying ? "Pause video" : "Play video"}
       >
         <video
           ref={videoRef}
@@ -98,84 +100,53 @@ function LocalAutoVideo({
           preload="metadata"
           onPlay={() => setIsPlaying(true)}
           onPause={() => setIsPlaying(false)}
-          className="pointer-events-none h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.02]"
+          className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-102"
         />
 
-        {/* Play Button Overlay (Prominent, High z-index, Interactive) */}
-        {!isPlaying && (
-          <div className="absolute inset-0 z-20 flex items-center justify-center bg-black/40 transition-opacity">
-            <button
-              type="button"
-              onClick={(e) => {
-                e.stopPropagation();
-                togglePlay();
-              }}
-              className="flex h-16 w-16 sm:h-20 sm:w-20 items-center justify-center rounded-full bg-brand-slate-deep/95 text-accent-brass shadow-2xl border-2 border-accent-brass/80 backdrop-blur-xs transition-transform active:scale-95 hover:scale-105 cursor-pointer"
-              aria-label="ভিডিও প্লে করুন"
-            >
-              <svg
-                width="32"
-                height="32"
-                viewBox="0 0 24 24"
-                fill="currentColor"
-                className="ml-1"
-                aria-hidden="true"
-              >
-                <path d="M8 5v14l11-7z" />
-              </svg>
-            </button>
+        {/* Video Overlay Badge */}
+        {badge && (
+          <div className="absolute top-3 left-3 z-10 rounded-md bg-brand-slate-deep/85 backdrop-blur-xs px-2.5 py-1 text-xs font-bold text-accent-brass shadow-xs">
+            {badge}
           </div>
         )}
 
-        {/* Top Badges & Sound Toggle */}
-        <div className="absolute top-3 left-3 right-3 z-30 flex items-center justify-between pointer-events-none">
-          {badge && (
-            <span className="rounded-xs bg-brand-slate-deep/90 border border-neutral-700 px-2.5 py-1 text-[11px] font-semibold text-accent-brass backdrop-blur-xs">
-              {badge}
-            </span>
-          )}
-
-          {/* Sound Toggle Button (Interactive) */}
-          <button
-            type="button"
-            onClick={toggleMute}
-            className="pointer-events-auto flex h-9 w-9 items-center justify-center rounded-full bg-black/80 text-white hover:bg-black active:scale-95 transition-all backdrop-blur-xs text-sm cursor-pointer ml-auto border border-neutral-600 shadow-md"
-            aria-label={isMuted ? "সাউন্ড অন করুন" : "মিউট করুন"}
-            title={isMuted ? "সাউন্ড অন করুন" : "মিউট করুন"}
-          >
-            {isMuted ? "🔇" : "🔊"}
-          </button>
-        </div>
-
-        {/* Bottom Title Bar for Primary Video */}
-        {isPrimary && (
-          <div className="absolute bottom-3 left-3 sm:bottom-4 sm:left-4 right-4 z-10 pointer-events-none">
-            <span className="rounded-xs bg-brand-slate-deep/90 border border-neutral-700 px-3 py-1.5 text-xs sm:text-sm font-semibold text-white backdrop-blur-md">
-              📹 {title}
-            </span>
-          </div>
-        )}
-      </div>
-
-      {/* Info Card for Secondary Videos */}
-      {!isPrimary && (
-        <div className="p-4 bg-brand-slate-surface flex-1 flex flex-col justify-between border-t border-brand-slate-border">
-          <div>
-            <h4 className="text-sm font-bold text-white group-hover:text-accent-brass transition-colors">
-              {title}
-            </h4>
-            {description && (
-              <p className="mt-1 text-xs text-neutral-300 line-clamp-2 leading-relaxed">
-                {description}
-              </p>
+        {/* Play/Pause Center Indicator */}
+        <div
+          className={`absolute inset-0 flex items-center justify-center transition-opacity pointer-events-none ${
+            isPlaying ? "opacity-0 group-hover:opacity-100" : "opacity-100"
+          }`}
+        >
+          <div className="flex h-12 w-12 sm:h-14 sm:w-14 items-center justify-center rounded-full bg-black/60 text-white backdrop-blur-xs border border-white/20 shadow-lg">
+            {isPlaying ? (
+              <span className="text-sm font-bold">❚❚</span>
+            ) : (
+              <span className="text-base font-bold ml-0.5">▶</span>
             )}
           </div>
-          <div className="mt-3 pt-2 border-t border-neutral-700/60 flex items-center justify-between text-[11px] text-neutral-400">
-            <span>আসল ভিডিও ক্লিপ</span>
-            <span className="text-accent-whatsapp font-medium">
-              {isPlaying ? "চলছে..." : "প্লে করতে ট্যাপ করুন"}
-            </span>
-          </div>
+        </div>
+
+        {/* Bottom Audio Toggle Button */}
+        <button
+          type="button"
+          onClick={toggleMute}
+          className="absolute bottom-3 right-3 z-10 flex h-8 items-center gap-1.5 rounded-full bg-black/70 backdrop-blur-xs px-3 text-xs font-semibold text-white border border-white/10 hover:bg-black/90 transition-colors cursor-pointer"
+          aria-label={isMuted ? "Unmute audio" : "Mute audio"}
+        >
+          <span>{isMuted ? "🔇 সাউন্ড অন" : "🔊 সাউন্ড অফ"}</span>
+        </button>
+      </div>
+
+      {/* Narrative Footer */}
+      {(title || description) && (
+        <div className="p-4 bg-brand-slate-surface border-t border-neutral-800">
+          <h4 className="text-sm sm:text-base font-bold text-white line-clamp-1">
+            {title}
+          </h4>
+          {description && (
+            <p className="mt-1 text-xs text-neutral-300 line-clamp-2 leading-relaxed">
+              {description}
+            </p>
+          )}
         </div>
       )}
     </div>
@@ -183,6 +154,9 @@ function LocalAutoVideo({
 }
 
 export default function ShowroomMedia() {
+  const { lang, t } = useLanguage();
+  const tt = TRANSLATIONS.tour;
+
   const tourVideoSrc = "/videos/showroom/heaven-virtual-showroom-tour.mp4";
   const tourPoster = "/assets/showroom/heaven-virtual-showroom-tour.webp";
 
@@ -193,36 +167,38 @@ export default function ShowroomMedia() {
     >
       <div className="mx-auto w-full max-w-[1560px] px-4 sm:px-8 lg:px-12 2xl:px-16">
         {/* Section Header */}
-        <div className="max-w-3xl mb-8 sm:mb-12">
+        <div className="max-w-3xl mb-8 sm:mb-12 reveal-on-scroll">
           <span className="text-xs sm:text-sm font-semibold tracking-wider text-accent-brass uppercase">
-            বাস্তব ভিডিও ও ভার্চুয়াল ট্যুর
+            {t(tt.badge.bn, tt.badge.en)}
           </span>
           <h2 className="mt-1 text-2xl sm:text-3xl md:text-4xl font-bold text-white">
-            আমাদের শোরুম ও কারিগরির কিছু মুহূর্ত
+            {t(tt.title.bn, tt.title.en)}
           </h2>
           <p className="mt-2 text-sm sm:text-base text-neutral-300 leading-relaxed">
-            কোনো সোশ্যাল মিডিয়া এম্বেড নয়; সরাসরি দেখে নিন আমাদের আগ্রাবাদ শোরুম এবং দেখুন কীভাবে প্রতিটি কাঠের জোড়া, নকশা ও কুশন যত্নসহকারে তৈরি হয়।
+            {t(tt.subtitle.bn, tt.subtitle.en)}
           </p>
         </div>
 
-        {/* Visual Hierarchy: Grand Primary Virtual Tour Video */}
-        <div className="mb-8 sm:mb-12">
+        {/* Primary Virtual Tour Video */}
+        <div className="mb-8 sm:mb-12 reveal-on-scroll delay-100">
           <LocalAutoVideo
             src={tourVideoSrc}
             poster={tourPoster}
-            title="আগ্রাবাদ শোরুম — ভার্চুয়াল ট্যুর ভিডিও"
-            badge="ভার্চুয়াল শোরুম ট্যুর"
+            title={t("আগ্রাবাদ শোরুম — ভার্চুয়াল ট্যুর ভিডিও", "Agrabad Showroom — Virtual Tour Video")}
+            badge={t("ভার্চুয়াল শোরুম ট্যুর", "Virtual Showroom Tour")}
             isPrimary={true}
           />
         </div>
 
-        {/* Secondary Craftsmanship & Showroom Display Videos */}
-        <div>
+        {/* Secondary Videos */}
+        <div className="reveal-on-scroll delay-150">
           <div className="mb-4 flex items-center justify-between">
             <h3 className="text-lg sm:text-xl font-bold text-white">
-              কারিগরদের কাজ ও শোরুমের আরও কিছু ভিডিও
+              {t("কারিগরদের কাজ ও শোরুমের আরও কিছু ভিডিও", "Craftsmanship & Showroom Floor Highlights")}
             </h3>
-            <span className="text-xs text-neutral-400">স্ক্রোল করলে স্বয়ংক্রিয়ভাবে প্লে হবে</span>
+            <span className="text-xs text-neutral-400">
+              {t("স্ক্রোল করলে স্বয়ংক্রিয়ভাবে প্লে হবে", "Autoplays on viewport scroll")}
+            </span>
           </div>
 
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
@@ -231,49 +207,49 @@ export default function ShowroomMedia() {
                 key={video.id}
                 src={video.localVideoSrc}
                 poster={video.posterSrc}
-                title={video.titleBn}
-                description={video.descriptionBn}
-                badge={video.badgeBn}
+                title={lang === "en" && video.titleEn ? video.titleEn : video.titleBn}
+                description={lang === "en" && video.descriptionEn ? video.descriptionEn : video.descriptionBn}
+                badge={lang === "en" && video.badgeEn ? video.badgeEn : video.badgeBn}
               />
             ))}
           </div>
         </div>
 
         {/* Bottom Showroom Action & Official Social Links */}
-        <div className="mt-10 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 rounded-sm border border-brand-slate-border bg-brand-slate-surface p-5 sm:p-6">
+        <div className="mt-10 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 rounded-xl border border-brand-slate-border bg-brand-slate-surface p-5 sm:p-6">
           <div>
             <h4 className="text-base sm:text-lg font-bold text-white">
-              ভালো লাগলে সরাসরি আগ্রাবাদ শোরুমে এসে দেখে যান
+              {t("ভালো লাগলে সরাসরি আগ্রাবাদ শোরুমে এসে দেখে যান", "Experience It Firsthand at Our Agrabad Showroom")}
             </h4>
             <p className="mt-1 text-xs sm:text-sm text-neutral-300">
-              আগ্রাবাদ এক্সেস রোড (RAK সিরামিক্সের বিপরীতে), আগ্রাবাদ, চট্টগ্রাম
+              {t(BRAND_CONFIG.location.fullAddressBn, BRAND_CONFIG.location.fullAddressEn)}
             </p>
           </div>
 
           <div className="flex flex-wrap items-center gap-3 shrink-0">
             <a
               href="#showroom"
-              className="inline-flex h-11 items-center justify-center rounded-sm bg-accent-brass px-5 text-xs sm:text-sm font-bold text-brand-slate-deep hover:bg-accent-brass-hover transition-colors"
+              className="inline-flex h-11 items-center justify-center rounded-xl bg-accent-brass px-5 text-xs sm:text-sm font-bold text-brand-slate-deep hover:bg-accent-brass-hover transition-colors"
             >
-              📍 শোরুমের ঠিকানা ও সময়
+              📍 {t("শোরুমের ঠিকানা ও ম্যাপ", "Showroom Address & Map")}
             </a>
 
             <a
               href={BRAND_CONFIG.social.facebook.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex h-11 items-center justify-center rounded-sm border border-neutral-600 bg-brand-slate-deep px-4 text-xs font-semibold text-neutral-200 hover:text-white hover:border-neutral-400 transition-colors"
+              className="inline-flex h-11 items-center justify-center rounded-xl border border-neutral-600 bg-brand-slate-deep px-4 text-xs font-semibold text-neutral-200 hover:text-white hover:border-neutral-400 transition-colors"
             >
-              ফেসবুক পেজ ↗
+              Facebook ↗
             </a>
 
             <a
-              href={BRAND_CONFIG.social.instagram.url}
+              href={BRAND_CONFIG.social.youtube.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex h-11 items-center justify-center rounded-sm border border-neutral-600 bg-brand-slate-deep px-4 text-xs font-semibold text-neutral-200 hover:text-white hover:border-neutral-400 transition-colors"
+              className="inline-flex h-11 items-center justify-center rounded-xl border border-neutral-600 bg-brand-slate-deep px-4 text-xs font-semibold text-neutral-200 hover:text-white hover:border-neutral-400 transition-colors"
             >
-              ইনস্টাগ্রাম ↗
+              YouTube ↗
             </a>
           </div>
         </div>

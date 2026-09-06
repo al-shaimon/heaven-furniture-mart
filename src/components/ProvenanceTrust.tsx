@@ -1,272 +1,493 @@
+"use client";
+
+import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import { BRAND_CONFIG, TIMELINE_MILESTONES, TimelineMilestone } from "@/content/brand";
+import { TRANSLATIONS } from "@/content/translations";
+import { useLanguage } from "@/context/LanguageContext";
+import { WhatsAppIcon, PhoneIcon } from "@/components/icons";
 
 export default function ProvenanceTrust() {
+  const { lang, t } = useLanguage();
   const { founder, credentials, social } = BRAND_CONFIG;
+  const [activeMilestoneIdx, setActiveMilestoneIdx] = useState<number>(0);
+  const [timelineProgress, setTimelineProgress] = useState<number>(0);
+  const [revealedSet, setRevealedSet] = useState<Set<number>>(new Set([0]));
+
+  const timelineContainerRef = useRef<HTMLDivElement>(null);
+
+  // Smooth scroll listener to dynamically track timeline progress and active milestone
+  useEffect(() => {
+    const handleScroll = () => {
+      if (!timelineContainerRef.current) return;
+      const rect = timelineContainerRef.current.getBoundingClientRect();
+      const windowHeight = window.innerHeight;
+
+      // Calculate progress of timeline traversal
+      const startTrigger = windowHeight * 0.75;
+      const endTrigger = windowHeight * 0.35;
+      const totalScrollableDistance = rect.height;
+
+      const currentScrollOffset = startTrigger - rect.top;
+      const rawProgress = currentScrollOffset / (totalScrollableDistance + (startTrigger - endTrigger));
+      const clampedProgress = Math.min(Math.max(rawProgress, 0), 1);
+      setTimelineProgress(clampedProgress);
+
+      // Determine active milestone based on viewport center
+      const focalLine = windowHeight * 0.5;
+      let closestIdx = 0;
+      let minDistance = Infinity;
+
+      TIMELINE_MILESTONES.forEach((m, idx) => {
+        const el = document.getElementById(`milestone-node-${idx}`);
+        if (el) {
+          const elRect = el.getBoundingClientRect();
+          const dist = Math.abs(elRect.top - focalLine);
+          if (dist < minDistance) {
+            minDistance = dist;
+            closestIdx = idx;
+          }
+
+          // Mark as revealed when approaching viewport
+          if (elRect.top < windowHeight * 0.88) {
+            setRevealedSet((prev) => {
+              if (prev.has(idx)) return prev;
+              const next = new Set(prev);
+              next.add(idx);
+              return next;
+            });
+          }
+        }
+      });
+
+      setActiveMilestoneIdx(closestIdx);
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll();
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const tt = TRANSLATIONS.trust;
 
   return (
-    <section id="trust" className="bg-surface-ecru-light py-12 sm:py-16 lg:py-20 border-t border-neutral-200">
+    <section id="trust" className="bg-surface-ecru-light py-12 sm:py-16 lg:py-20 border-t border-neutral-200 overflow-hidden">
       <div className="mx-auto w-full max-w-[1560px] px-4 sm:px-8 lg:px-12 2xl:px-16">
         {/* Section Header */}
-        <div className="max-w-3xl">
+        <div className="max-w-3xl reveal-on-scroll">
           <span className="text-xs sm:text-sm font-semibold tracking-wider text-accent-brass-dark uppercase">
-            আমাদের পথচলা
+            {t(tt.badge.bn, tt.badge.en)}
           </span>
           <h2 className="mt-1 text-2xl sm:text-3xl md:text-4xl font-bold text-text-primary-dark">
-            স্বীকৃতি, মেলা আর আমাদের কিছু স্মৃতি
+            {t("স্বীকৃতি, মেলা আর আমাদের কিছু স্মৃতি", "Recognition, Fair Pavilions & Trusted Memories")}
           </h2>
           <p className="mt-2 text-sm sm:text-base text-text-secondary-dark leading-relaxed">
-            শুধু ফার্নিচার বিক্রি নয়, বিভিন্ন মেলা ও আয়োজনের মধ্য দিয়েও আমাদের পথচলা হয়েছে।
-            এই ছবিগুলো সেই পথচলার কিছু বাস্তব মুহূর্ত।
+            {t(
+              "শুধু ফার্নিচার বিক্রি নয়, বিগত ১৫+ বছর ধরে বিভিন্ন মেলা ও প্রাতিষ্ঠানিক স্বীকৃতির মধ্য দিয়েও আমাদের পথচলা হয়েছে। এই ছবিগুলো সেই পথচলার কিছু বাস্তব মুহূর্ত।",
+              "Beyond crafting furniture, Heaven Furniture Mart has been celebrated across regional and international furniture exhibitions. These photographs document our genuine heritage."
+            )}
           </p>
         </div>
 
-        {/* Leadership Statement Card (Verbatim MD Quote from Company Deck) */}
-        <div className="mt-8 sm:mt-10 rounded-sm border border-neutral-200 bg-white p-5 sm:p-8 shadow-xs">
-          <div className="grid gap-6 lg:grid-cols-12 lg:items-center">
-            {/* Quote Body */}
-            <div className="lg:col-span-7 xl:col-span-8">
-              <span className="text-3xl sm:text-4xl text-accent-brass-dark font-serif block mb-1">
-                “
-              </span>
-              <blockquote className="text-base sm:text-lg md:text-xl font-medium leading-relaxed text-text-primary-dark">
-                {founder.quoteBn}
-              </blockquote>
-              <p className="mt-2.5 text-xs text-text-secondary-dark italic leading-relaxed">
-                &ldquo;{founder.verbatimQuoteEn}&rdquo;
-              </p>
+        {/* Leadership & Credibility Showcase */}
+        <div className="mt-8 sm:mt-10 rounded-2xl border border-neutral-200/90 bg-white p-6 sm:p-9 lg:p-10 shadow-xs reveal-on-scroll">
+          <div className="grid gap-8 lg:grid-cols-12 lg:items-center">
+            {/* Left: Founder's Philosophy & Integrated Credibility Strip */}
+            <div className="lg:col-span-7 xl:col-span-8 flex flex-col justify-between space-y-6">
+              <div>
+                {/* Badge & Quotation Mark */}
+                <div className="flex items-center justify-between mb-2">
+                  <span className="inline-flex items-center gap-1.5 rounded-full bg-accent-brass-dark/10 px-3 py-1 text-xs font-bold text-accent-brass-dark uppercase tracking-wider">
+                    ⭐ {t("১৫+ বছরের সুনাম ও অঙ্গীকার", "15+ Years Heritage & Commitment")}
+                  </span>
+                  <span className="text-3xl text-accent-brass-dark/30 font-serif select-none">“</span>
+                </div>
 
-              <div className="mt-4 border-t border-neutral-100 pt-3">
-                <p className="text-base font-bold text-text-primary-dark">
-                  {founder.nameBn} ({founder.nameEn})
-                </p>
-                <p className="text-xs font-semibold text-accent-brass-dark">
-                  {founder.titleBn}
-                </p>
+                {/* Quote Body */}
+                <blockquote className="text-base sm:text-lg md:text-xl font-medium leading-relaxed text-text-primary-dark">
+                  &ldquo;{lang === "en" ? founder.verbatimQuoteEn : founder.quoteBn}&rdquo;
+                </blockquote>
+
+                {/* Founder Signature Block */}
+                <div className="mt-5 border-t border-neutral-100 pt-3.5 flex items-center gap-3.5">
+                  <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-brand-slate-deep text-accent-brass text-sm font-bold shadow-xs">
+                    HFM
+                  </div>
+                  <div>
+                    <h4 className="text-base font-bold text-text-primary-dark">
+                      {lang === "en" ? founder.nameEn : founder.nameBn}
+                    </h4>
+                    <p className="text-xs font-semibold text-accent-brass-dark">
+                      {lang === "en" ? founder.titleEn : founder.titleBn}
+                    </p>
+                    <p className="text-[11px] text-text-secondary-dark">
+                      {t("হেভেন ফার্নিচার মার্ট · আগ্রাবাদ, চট্টগ্রাম", "Heaven Furniture Mart · Agrabad, Chattogram")}
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Integrated Verified Institutional Badges */}
+              <div className="border-t border-neutral-100 pt-5">
+                <span className="text-[11px] font-bold text-text-secondary-dark uppercase tracking-wider block mb-2.5">
+                  {t("প্রাতিষ্ঠানিক স্বীকৃতি ও সদস্যপদ:", "Institutional Recognition & Memberships:")}
+                </span>
+                <div className="grid sm:grid-cols-3 gap-3">
+                  {credentials.map((cred) => (
+                    <div
+                      key={cred.titleBn}
+                      className="rounded-lg border border-neutral-200/80 bg-surface-ecru-light/60 p-3 transition hover:border-neutral-300"
+                    >
+                      <div className="flex items-center gap-1.5 text-xs font-bold text-text-primary-dark">
+                        <span className="text-emerald-600 font-extrabold text-sm">✓</span>
+                        <span>{lang === "en" && cred.titleEn ? cred.titleEn : cred.titleBn}</span>
+                      </div>
+                      <p className="mt-1 text-[11px] text-text-secondary-dark leading-relaxed">
+                        {lang === "en" && cred.descriptionEn ? cred.descriptionEn : cred.descriptionBn}
+                      </p>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
 
-            {/* Award Ceremony Photo */}
+            {/* Right: Real Award Ceremony Portrait */}
             <div className="lg:col-span-5 xl:col-span-4">
-              <div className="overflow-hidden rounded-sm border border-neutral-200 bg-surface-ecru-paper">
+              <div className="overflow-hidden rounded-xl border border-neutral-200 bg-surface-ecru-paper shadow-xs">
                 <div className="relative aspect-[4/3] w-full overflow-hidden">
                   <Image
                     src="/assets/trust/recognition/heaven-md-receiving-fair-crest.webp"
-                    alt="সম্মাননা ক্রেস্ট গ্রহণকালে ব্যবস্থাপনা পরিচালক আবুল কালাম ভূঁইয়া"
+                    alt={t(tt.mdHonour.title.bn, tt.mdHonour.title.en)}
                     fill
                     sizes="(max-width: 1024px) 100vw, 33vw"
-                    className="object-cover"
+                    className="object-cover transition-transform duration-500 hover:scale-103"
                   />
-                </div>
-                <div className="p-2.5 text-center bg-surface-ecru-paper">
-                  <p className="text-xs font-semibold text-text-primary-dark">
-                    সম্মাননা স্মারক গ্রহণকালে ব্যবস্থাপনা পরিচালক
-                  </p>
-                  <p className="text-[11px] text-text-secondary-dark">
-                    ব্যবস্থাপনা পরিচালক আবুল কালাম ভূঁইয়া
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* 3 Verified Credibility Badges */}
-        <div className="mt-6 grid gap-3.5 sm:grid-cols-3">
-          {credentials.map((cred) => (
-            <div
-              key={cred.titleBn}
-              className="flex items-start gap-3 rounded-sm border border-neutral-200 bg-white p-3.5 shadow-2xs"
-            >
-              <div className="flex-shrink-0 w-7 h-7 rounded-full bg-accent-brass-dark/10 flex items-center justify-center text-accent-brass-dark font-bold text-xs">
-                ✓
-              </div>
-              <div>
-                <h4 className="text-xs sm:text-sm font-bold text-text-primary-dark">
-                  {cred.titleBn}
-                </h4>
-                <p className="mt-0.5 text-[11px] sm:text-xs text-text-secondary-dark leading-relaxed">
-                  {cred.descriptionBn}
-                </p>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Vertical Timeline Journey Header */}
-        <div className="mt-14 sm:mt-18 text-center max-w-2xl mx-auto mb-8 sm:mb-12">
-          <h3 className="text-xl sm:text-2xl font-bold text-text-primary-dark">
-            আমাদের পথচলার সময়রেখা
-          </h3>
-          <p className="mt-1 text-xs sm:text-sm text-text-secondary-dark">
-            ২০২০ থেকে আজ পর্যন্ত হেভেন ফার্নিচার মার্টের কিছু বাস্তব মাইলফলক ও মেলার স্মৃতি।
-          </p>
-        </div>
-
-        {/* Desktop Vertical Timeline (lg:block with central track) */}
-        <div className="hidden lg:block relative max-w-5xl mx-auto">
-          {/* Central Vertical Line */}
-          <div className="absolute left-1/2 top-4 bottom-4 w-0.5 bg-neutral-300 -translate-x-1/2" />
-
-          <div className="space-y-12">
-            {TIMELINE_MILESTONES.map((item: TimelineMilestone, idx: number) => {
-              const isEven = idx % 2 === 0;
-
-              return (
-                <div key={item.year} className="relative grid grid-cols-12 gap-8 items-center">
-                  {/* Central Year Node */}
-                  <div className="absolute left-1/2 -translate-x-1/2 z-10 flex h-10 px-3 items-center justify-center rounded-full border-2 border-white bg-accent-brass-dark text-xs font-bold text-white shadow-sm">
-                    {item.year}
+                  <div className="absolute top-2.5 left-2.5 rounded-full bg-brand-slate-deep/85 backdrop-blur-xs px-2.5 py-0.5 text-[10px] font-bold text-accent-brass shadow-xs">
+                    {t(tt.mdHonour.crestBadge.bn, tt.mdHonour.crestBadge.en)}
                   </div>
-
-                  {isEven ? (
-                    <>
-                      {/* Left: Narrative */}
-                      <div className="col-span-5 text-right pr-6">
-                        <span className="text-xs font-semibold text-accent-brass-dark">
-                          {item.year}
-                        </span>
-                        <h4 className="text-base sm:text-lg font-bold text-text-primary-dark mt-0.5">
-                          {item.titleBn}
-                        </h4>
-                        <p className="mt-1 text-xs sm:text-sm text-text-secondary-dark leading-relaxed">
-                          {item.descriptionBn}
-                        </p>
-                      </div>
-
-                      {/* Middle Spacer */}
-                      <div className="col-span-2" />
-
-                      {/* Right: Real Photograph */}
-                      <div className="col-span-5 pl-6">
-                        <div className="overflow-hidden rounded-sm border border-neutral-200 bg-white shadow-2xs">
-                          <div className="relative aspect-[16/10] w-full overflow-hidden bg-neutral-100">
-                            <Image
-                              src={item.imageSrc}
-                              alt={item.imageAlt}
-                              fill
-                              sizes="420px"
-                              className="object-cover"
-                            />
-                          </div>
-                          <div className="p-2.5 bg-surface-ecru-paper text-center">
-                            <p className="text-xs font-medium text-text-secondary-dark">
-                              {item.captionBn}
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                    </>
-                  ) : (
-                    <>
-                      {/* Left: Real Photograph */}
-                      <div className="col-span-5 pr-6">
-                        <div className="overflow-hidden rounded-sm border border-neutral-200 bg-white shadow-2xs">
-                          <div className="relative aspect-[16/10] w-full overflow-hidden bg-neutral-100">
-                            <Image
-                              src={item.imageSrc}
-                              alt={item.imageAlt}
-                              fill
-                              sizes="420px"
-                              className="object-cover"
-                            />
-                          </div>
-                          <div className="p-2.5 bg-surface-ecru-paper text-center">
-                            <p className="text-xs font-medium text-text-secondary-dark">
-                              {item.captionBn}
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-
-                      {/* Middle Spacer */}
-                      <div className="col-span-2" />
-
-                      {/* Right: Narrative */}
-                      <div className="col-span-5 text-left pl-6">
-                        <span className="text-xs font-semibold text-accent-brass-dark">
-                          {item.year}
-                        </span>
-                        <h4 className="text-base sm:text-lg font-bold text-text-primary-dark mt-0.5">
-                          {item.titleBn}
-                        </h4>
-                        <p className="mt-1 text-xs sm:text-sm text-text-secondary-dark leading-relaxed">
-                          {item.descriptionBn}
-                        </p>
-                      </div>
-                    </>
-                  )}
                 </div>
-              );
-            })}
+                <div className="p-3 text-center bg-surface-ecru-paper border-t border-neutral-100">
+                  <p className="text-xs font-bold text-text-primary-dark">
+                    {t(tt.mdHonour.title.bn, tt.mdHonour.title.en)}
+                  </p>
+                  <p className="text-[11px] text-text-secondary-dark mt-0.5">
+                    {t(tt.mdHonour.subtitle.bn, tt.mdHonour.subtitle.en)}
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
-        {/* Mobile Vertical Feed (lg:hidden) */}
-        <div className="lg:hidden space-y-6">
-          {TIMELINE_MILESTONES.map((item: TimelineMilestone) => (
-            <div
-              key={item.year}
-              className="rounded-sm border border-neutral-200 bg-white p-4 shadow-2xs"
-            >
-              {/* Year Badge */}
-              <div className="flex items-center gap-2 mb-2.5">
-                <span className="rounded bg-accent-brass-dark px-2.5 py-0.5 text-xs font-bold text-white">
-                  {item.year}
-                </span>
-                <span className="text-xs font-bold text-text-primary-dark">
-                  {item.titleBn}
-                </span>
-              </div>
-
-              {/* Large Mobile Photo */}
-              <div className="relative aspect-[16/10] w-full overflow-hidden rounded-sm bg-neutral-100">
-                <Image
-                  src={item.imageSrc}
-                  alt={item.imageAlt}
-                  fill
-                  sizes="(max-width: 768px) 100vw, 600px"
-                  className="object-cover"
-                />
-              </div>
-
-              {/* Description & Caption */}
-              <div className="mt-3">
-                <p className="text-xs sm:text-sm text-text-secondary-dark leading-relaxed">
-                  {item.descriptionBn}
-                </p>
-                <p className="mt-1 text-[11px] text-accent-brass-dark font-medium">
-                  📷 {item.captionBn}
-                </p>
-              </div>
-            </div>
-          ))}
+        {/* Vertical Timeline Journey Section Header */}
+        <div className="mt-16 sm:mt-20 text-center max-w-2xl mx-auto mb-10 sm:mb-14 reveal-on-scroll">
+          <span className="inline-flex items-center gap-1.5 rounded-full bg-accent-brass-dark/10 px-3 py-1 text-xs font-bold text-accent-brass-dark uppercase tracking-wider mb-2">
+            {t(tt.badge.bn, tt.badge.en)}
+          </span>
+          <h3 className="text-2xl sm:text-3xl font-bold text-text-primary-dark">
+            {t(tt.title.bn, tt.title.en)}
+          </h3>
+          <p className="mt-1 text-xs sm:text-sm text-text-secondary-dark leading-relaxed">
+            {t(tt.subtitle.bn, tt.subtitle.en)}
+          </p>
         </div>
 
-        {/* More Real Photos Social CTA */}
-        <div className="mt-10 sm:mt-14 rounded-sm border border-neutral-200 bg-white p-5 sm:p-7 text-center shadow-xs">
-          <h4 className="text-sm sm:text-base font-bold text-text-primary-dark">
-            আরও ছবি ও মেলার ভিডিও দেখতে চান?
+        {/* Continuous Scroll-Driven Timeline Container */}
+        <div ref={timelineContainerRef} className="relative max-w-5xl mx-auto">
+          {/* ================= DESKTOP TIMELINE (lg:block) ================= */}
+          <div className="hidden lg:block relative py-6">
+            {/* Background Central Track Line */}
+            <div className="absolute left-1/2 top-4 bottom-4 w-1 -translate-x-1/2 rounded-full bg-neutral-200/80" />
+
+            {/* Glowing Active Progress Spine */}
+            <div
+              className="absolute left-1/2 top-4 w-1 -translate-x-1/2 rounded-full bg-gradient-to-b from-accent-brass via-amber-400 to-accent-brass-dark shadow-[0_0_10px_rgba(197,168,105,0.7)] transition-[height] duration-150 ease-out"
+              style={{ height: `${Math.max(4, Math.min(timelineProgress * 100, 100))}%` }}
+            />
+
+            {/* Traveling Glowing Head Bead */}
+            <div
+              className="absolute left-1/2 w-3.5 h-3.5 -translate-x-1/2 rounded-full bg-accent-brass border-2 border-white shadow-[0_0_14px_rgba(197,168,105,0.95)] transition-[top] duration-150 ease-out pointer-events-none z-20"
+              style={{
+                top: `calc(1rem + ${Math.max(0, Math.min(timelineProgress * 100, 100)) * 0.96}%)`,
+              }}
+            />
+
+            <div className="space-y-16">
+              {TIMELINE_MILESTONES.map((item: TimelineMilestone, idx: number) => {
+                const isEven = idx % 2 === 0;
+                const isHighlighted = activeMilestoneIdx === idx;
+                const isPastOrCurrent = idx <= activeMilestoneIdx;
+                const isRevealed = revealedSet.has(idx);
+
+                const itemTitle = lang === "en" && item.titleEn ? item.titleEn : item.titleBn;
+                const itemDesc = lang === "en" && item.descriptionEn ? item.descriptionEn : item.descriptionBn;
+                const itemCaption = lang === "en" && item.captionEn ? item.captionEn : item.captionBn;
+
+                return (
+                  <div
+                    id={`milestone-node-${idx}`}
+                    key={item.year}
+                    className="relative grid grid-cols-12 gap-8 items-center scroll-mt-32"
+                  >
+                    {/* Central Year Glowing Node */}
+                    <div
+                      className={`absolute left-1/2 -translate-x-1/2 z-10 flex h-11 px-3.5 items-center justify-center rounded-full border-2 transition-all duration-500 shadow-md ${
+                        isHighlighted
+                          ? "border-accent-brass bg-brand-slate-deep text-accent-brass scale-110 ring-4 ring-accent-brass/25 shadow-[0_0_15px_rgba(197,168,105,0.5)]"
+                          : isPastOrCurrent
+                          ? "border-accent-brass/70 bg-brand-slate-surface text-accent-brass scale-100"
+                          : "border-neutral-300 bg-white text-neutral-400 scale-95 opacity-70"
+                      } text-xs font-bold`}
+                    >
+                      <span>{item.year}</span>
+                    </div>
+
+                    {isEven ? (
+                      <>
+                        {/* Left: Narrative Card */}
+                        <div className="col-span-5 text-right pr-6">
+                          <div
+                            className={`rounded-xl border p-5 transition-all duration-700 ease-out ${
+                              isRevealed
+                                ? "opacity-100 translate-x-0 translate-y-0"
+                                : "opacity-0 -translate-x-6 translate-y-4"
+                            } ${
+                              isHighlighted
+                                ? "border-accent-brass-dark/50 bg-white shadow-md ring-1 ring-accent-brass/20"
+                                : "border-neutral-200/80 bg-white/95 shadow-2xs"
+                            }`}
+                          >
+                            <span className="text-xs font-bold text-accent-brass-dark uppercase tracking-wider">
+                              {item.year} {t("মাইলফলক", "Milestone")}
+                            </span>
+                            <h4 className="text-base sm:text-lg font-bold text-text-primary-dark mt-1">
+                              {itemTitle}
+                            </h4>
+                            <p className="mt-1.5 text-xs sm:text-sm text-text-secondary-dark leading-relaxed">
+                              {itemDesc}
+                            </p>
+                          </div>
+                        </div>
+
+                        {/* Middle Spacer */}
+                        <div className="col-span-2" />
+
+                        {/* Right: Photograph Card */}
+                        <div className="col-span-5 pl-6">
+                          <div
+                            className={`group overflow-hidden rounded-xl border border-neutral-200 bg-white shadow-xs transition-all duration-700 ease-out hover:shadow-md ${
+                              isRevealed
+                                ? "opacity-100 translate-x-0 translate-y-0"
+                                : "opacity-0 translate-x-6 translate-y-4"
+                            } ${isHighlighted ? "border-accent-brass/50 ring-1 ring-accent-brass/20" : ""}`}
+                          >
+                            <div className="relative aspect-[16/10] w-full overflow-hidden bg-neutral-100">
+                              <Image
+                                src={item.imageSrc}
+                                alt={item.imageAlt}
+                                fill
+                                sizes="420px"
+                                className="object-cover transition-transform duration-500 group-hover:scale-103"
+                              />
+                            </div>
+                            <div className="p-3 bg-surface-ecru-paper text-center border-t border-neutral-100">
+                              <p className="text-xs font-medium text-text-secondary-dark">
+                                📷 {itemCaption}
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      </>
+                    ) : (
+                      <>
+                        {/* Left: Photograph Card */}
+                        <div className="col-span-5 pr-6">
+                          <div
+                            className={`group overflow-hidden rounded-xl border border-neutral-200 bg-white shadow-xs transition-all duration-700 ease-out hover:shadow-md ${
+                              isRevealed
+                                ? "opacity-100 translate-x-0 translate-y-0"
+                                : "opacity-0 -translate-x-6 translate-y-4"
+                            } ${isHighlighted ? "border-accent-brass/50 ring-1 ring-accent-brass/20" : ""}`}
+                          >
+                            <div className="relative aspect-[16/10] w-full overflow-hidden bg-neutral-100">
+                              <Image
+                                src={item.imageSrc}
+                                alt={item.imageAlt}
+                                fill
+                                sizes="420px"
+                                className="object-cover transition-transform duration-500 group-hover:scale-103"
+                              />
+                            </div>
+                            <div className="p-3 bg-surface-ecru-paper text-center border-t border-neutral-100">
+                              <p className="text-xs font-medium text-text-secondary-dark">
+                                📷 {itemCaption}
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Middle Spacer */}
+                        <div className="col-span-2" />
+
+                        {/* Right: Narrative Card */}
+                        <div className="col-span-5 text-left pl-6">
+                          <div
+                            className={`rounded-xl border p-5 transition-all duration-700 ease-out ${
+                              isRevealed
+                                ? "opacity-100 translate-x-0 translate-y-0"
+                                : "opacity-0 translate-x-6 translate-y-4"
+                            } ${
+                              isHighlighted
+                                ? "border-accent-brass-dark/50 bg-white shadow-md ring-1 ring-accent-brass/20"
+                                : "border-neutral-200/80 bg-white/95 shadow-2xs"
+                            }`}
+                          >
+                            <span className="text-xs font-bold text-accent-brass-dark uppercase tracking-wider">
+                              {item.year} {t("মাইলফলক", "Milestone")}
+                            </span>
+                            <h4 className="text-base sm:text-lg font-bold text-text-primary-dark mt-1">
+                              {itemTitle}
+                            </h4>
+                            <p className="mt-1.5 text-xs sm:text-sm text-text-secondary-dark leading-relaxed">
+                              {itemDesc}
+                            </p>
+                          </div>
+                        </div>
+                      </>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* ================= MOBILE TIMELINE (lg:hidden) ================= */}
+          <div className="lg:hidden relative py-4 pl-2 sm:pl-4">
+            {/* Left Vertical Track Line */}
+            <div className="absolute left-4 sm:left-6 top-3 bottom-3 w-0.5 bg-neutral-200 rounded-full" />
+
+            {/* Dynamic Progress Fill Line on Mobile */}
+            <div
+              className="absolute left-4 sm:left-6 top-3 w-0.5 bg-gradient-to-b from-accent-brass via-amber-400 to-accent-brass-dark rounded-full shadow-[0_0_6px_rgba(197,168,105,0.6)] transition-[height] duration-150 ease-out"
+              style={{ height: `${Math.max(4, Math.min(timelineProgress * 100, 100))}%` }}
+            />
+
+            <div className="space-y-8">
+              {TIMELINE_MILESTONES.map((item: TimelineMilestone, idx: number) => {
+                const isHighlighted = activeMilestoneIdx === idx;
+                const isPastOrCurrent = idx <= activeMilestoneIdx;
+                const isRevealed = revealedSet.has(idx);
+
+                const itemTitle = lang === "en" && item.titleEn ? item.titleEn : item.titleBn;
+                const itemDesc = lang === "en" && item.descriptionEn ? item.descriptionEn : item.descriptionBn;
+                const itemCaption = lang === "en" && item.captionEn ? item.captionEn : item.captionBn;
+
+                return (
+                  <div
+                    key={item.year}
+                    className="relative pl-10 sm:pl-14 transition-all duration-700 ease-out"
+                  >
+                    {/* Left Node Badge */}
+                    <div
+                      className={`absolute left-4 sm:left-6 -translate-x-1/2 top-3 z-10 flex h-7 px-2.5 items-center justify-center rounded-full border-2 text-[11px] font-bold shadow-xs transition-all duration-300 ${
+                        isHighlighted
+                          ? "border-accent-brass bg-brand-slate-deep text-accent-brass scale-110 ring-2 ring-accent-brass/30"
+                          : isPastOrCurrent
+                          ? "border-accent-brass/70 bg-brand-slate-surface text-accent-brass"
+                          : "border-neutral-300 bg-white text-neutral-400"
+                      }`}
+                    >
+                      <span>{item.year}</span>
+                    </div>
+
+                    {/* Milestone Card */}
+                    <div
+                      className={`overflow-hidden rounded-xl border bg-white p-4 shadow-2xs transition-all duration-700 ease-out ${
+                        isRevealed
+                          ? "opacity-100 translate-y-0"
+                          : "opacity-0 translate-y-6"
+                      } ${
+                        isHighlighted
+                          ? "border-accent-brass-dark/40 shadow-sm ring-1 ring-accent-brass/15"
+                          : "border-neutral-200"
+                      }`}
+                    >
+                      <div className="mb-2">
+                        <span className="text-xs font-bold text-text-primary-dark">
+                          {itemTitle}
+                        </span>
+                      </div>
+
+                      {/* Photo */}
+                      <div className="relative aspect-[16/10] w-full overflow-hidden rounded-lg bg-neutral-100">
+                        <Image
+                          src={item.imageSrc}
+                          alt={item.imageAlt}
+                          fill
+                          sizes="(max-width: 768px) 100vw, 600px"
+                          className="object-cover"
+                        />
+                      </div>
+
+                      {/* Description & Caption */}
+                      <div className="mt-3">
+                        <p className="text-xs sm:text-sm text-text-secondary-dark leading-relaxed">
+                          {itemDesc}
+                        </p>
+                        <p className="mt-1.5 text-[11px] text-accent-brass-dark font-medium">
+                          📷 {itemCaption}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+
+        {/* Customer-Centric Trust Callout & Social Links */}
+        <div className="mt-14 sm:mt-18 rounded-2xl border border-neutral-200 bg-white p-6 sm:p-8 text-center shadow-xs max-w-3xl mx-auto reveal-on-scroll">
+          <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700 mb-2">
+            📍 {t("আগ্রাবাদ শোরুমে স্বাগতম", "Welcome to Our Agrabad Showroom")}
+          </span>
+          <h4 className="text-base sm:text-lg font-bold text-text-primary-dark">
+            {t("সরাসরি শোরুমে এসে কাঠের কোয়ালিটি দেখে নিতে চান?", "Prefer to Inspect Wood Quality Firsthand?")}
           </h4>
-          <p className="mt-1 text-xs sm:text-sm text-text-secondary-dark max-w-lg mx-auto">
-            আমাদের অফিসিয়াল ফেসবুক পেজে শোরুম ও মেলার নিয়মিত ছবি ও ভিডিও দেখতে পাবেন।
+          <p className="mt-1.5 text-xs sm:text-sm text-text-secondary-dark max-w-lg mx-auto leading-relaxed">
+            {t(
+              "চট্টগ্রামের আগ্রাবাদ এক্সেস রোডে আমাদের শোরুমে সরাসরি ডিসপ্লে দেখে পছন্দ করতে পারেন অথবা আপনার পছন্দের সাইজ ও কালার অনুযায়ী অর্ডার করতে পারেন।",
+              "Visit our showroom on Agrabad Access Road, Chattogram to explore floor collections or commission bespoke furniture tailored to your residence."
+            )}
           </p>
-          <div className="mt-4 flex flex-wrap items-center justify-center gap-3">
+
+          <div className="mt-5 flex flex-wrap items-center justify-center gap-3">
+            <a
+              href={BRAND_CONFIG.contact.whatsAppUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 rounded-xl bg-accent-whatsapp px-4 py-2.5 text-xs sm:text-sm font-bold text-brand-slate-deep shadow-xs hover:bg-accent-whatsapp-hover transition-colors"
+            >
+              <WhatsAppIcon size={18} />
+              <span>{t("WhatsApp এ যোগাযোগ", "Contact on WhatsApp")}</span>
+            </a>
+
+            <a
+              href={BRAND_CONFIG.contact.phoneUrl}
+              className="inline-flex items-center gap-2 rounded-xl border border-neutral-300 bg-white px-4 py-2.5 text-xs sm:text-sm font-bold text-text-primary-dark shadow-2xs hover:bg-neutral-50 transition-colors"
+            >
+              <PhoneIcon className="h-4 w-4 text-accent-brass-dark" />
+              <span>{t("সরাসরি কল:", "Call Directly:")} {BRAND_CONFIG.contact.primaryPhoneDisplay}</span>
+            </a>
+
             <a
               href={social.facebook.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded-sm bg-[#1877F2] px-4 py-2 text-xs sm:text-sm font-semibold text-white shadow-2xs hover:bg-[#166fe5] transition-colors"
+              className="inline-flex items-center gap-2 rounded-xl bg-[#1877F2] px-4 py-2.5 text-xs sm:text-sm font-semibold text-white shadow-2xs hover:bg-[#166fe5] transition-colors"
             >
-              <span>Facebook পেজ দেখুন</span>
-            </a>
-            <a
-              href={social.instagram.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded-sm border border-neutral-300 bg-white px-4 py-2 text-xs sm:text-sm font-semibold text-text-primary-dark shadow-2xs hover:bg-neutral-50 transition-colors"
-            >
-              <span>Instagram প্রোফাইল</span>
+              <span>Facebook</span>
             </a>
           </div>
         </div>

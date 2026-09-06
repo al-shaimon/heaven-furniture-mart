@@ -1,28 +1,59 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { BRAND_CONFIG } from "@/content/brand";
+import { TRANSLATIONS } from "@/content/translations";
+import { useLanguage } from "@/context/LanguageContext";
+import { useQuoteModal } from "@/context/QuoteModalContext";
 import { PhoneIcon, WhatsAppIcon } from "@/components/icons";
 
 export default function FloatingActionBar() {
+  const { lang, t } = useLanguage();
+  const { openQuoteModal } = useQuoteModal();
+  const tf = TRANSLATIONS.floating;
+
   const [bubbleDismissed, setBubbleDismissed] = useState(false);
+  const [showBubble, setShowBubble] = useState(false);
+
+  useEffect(() => {
+    let timer: NodeJS.Timeout | null = null;
+    let started = false;
+
+    const handleScroll = () => {
+      if (!started && window.scrollY > 40) {
+        started = true;
+        const randomDelayMs = Math.floor(Math.random() * 4500) + 3500;
+        timer = setTimeout(() => {
+          setShowBubble(true);
+        }, randomDelayMs);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      if (timer) clearTimeout(timer);
+    };
+  }, []);
+
+  const isBubbleVisible = !bubbleDismissed && showBubble;
 
   return (
     <>
-      {/* Mobile Fixed Bottom Action Bar (Call | WhatsApp | Showroom) - Hidden on desktop */}
+      {/* Mobile Fixed Bottom Action Bar (Call | WhatsApp | Quote | Showroom) */}
       <aside
-        className="fixed bottom-0 left-0 right-0 z-40 border-t border-brand-slate-border bg-brand-slate-deep/98 px-3 pt-2 pb-2 backdrop-blur-md safe-bottom md:hidden shadow-2xl"
-        aria-label="মোবাইল কুইক অ্যাকশন"
+        className="fixed bottom-0 left-0 right-0 z-40 border-t border-brand-slate-border bg-brand-slate-deep/98 px-2 pt-2 pb-2 backdrop-blur-md safe-bottom md:hidden shadow-2xl"
+        aria-label={t("মোবাইল কুইক অ্যাকশন", "Mobile Quick Actions")}
       >
-        <div className="mx-auto flex max-w-md items-center gap-2">
+        <div className="mx-auto flex max-w-md items-center gap-1.5">
           {/* Direct Call Button */}
           <a
             href={BRAND_CONFIG.contact.phoneUrl}
-            className="flex h-[52px] flex-1 items-center justify-center gap-1.5 rounded-sm border border-neutral-600 bg-brand-slate-surface px-2 text-xs font-bold text-white transition-colors hover:border-accent-brass"
-            aria-label="সরাসরি কল করুন"
+            className="flex h-[48px] flex-1 flex-col items-center justify-center rounded-lg border border-neutral-700 bg-brand-slate-surface text-[11px] font-bold text-white transition-colors hover:border-accent-brass"
+            aria-label={t("সরাসরি কল করুন", "Call directly")}
           >
-            <PhoneIcon />
-            <span>কল করুন</span>
+            <PhoneIcon className="h-4 w-4 text-accent-brass" />
+            <span className="mt-0.5">{t(tf.call.bn, tf.call.en)}</span>
           </a>
 
           {/* WhatsApp Button */}
@@ -30,20 +61,32 @@ export default function FloatingActionBar() {
             href={BRAND_CONFIG.contact.whatsAppUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex h-[52px] flex-[1.4] items-center justify-center gap-1.5 rounded-sm bg-accent-whatsapp px-3 text-sm font-bold text-brand-slate-deep shadow-xs transition-colors hover:bg-accent-whatsapp-hover"
-            aria-label="WhatsApp এ মেসেজ দিন"
+            className="flex h-[48px] flex-[1.2] flex-col items-center justify-center rounded-lg bg-accent-whatsapp text-[11px] font-bold text-brand-slate-deep shadow-xs transition-colors hover:bg-accent-whatsapp-hover"
+            aria-label="WhatsApp"
           >
-            <WhatsAppIcon size={18} />
-            <span>WhatsApp</span>
+            <WhatsAppIcon size={16} />
+            <span className="mt-0.5">{t(tf.whatsapp.bn, tf.whatsapp.en)}</span>
           </a>
+
+          {/* Request Quote Button */}
+          <button
+            type="button"
+            onClick={() => openQuoteModal()}
+            className="flex h-[48px] flex-1 flex-col items-center justify-center rounded-lg border border-accent-brass/50 bg-brand-slate-surface text-[11px] font-bold text-accent-brass transition-colors hover:bg-accent-brass hover:text-brand-slate-deep cursor-pointer"
+            aria-label={t("কোটেশন রিকোয়েস্ট", "Request Quote")}
+          >
+            <span className="text-sm leading-none">📋</span>
+            <span className="mt-0.5">{t(tf.quote.bn, tf.quote.en)}</span>
+          </button>
 
           {/* Showroom Button */}
           <a
             href="#showroom"
-            className="flex h-[52px] flex-1 items-center justify-center gap-1 rounded-sm border border-neutral-600 bg-brand-slate-surface px-2 text-xs font-bold text-neutral-200 transition-colors hover:text-white"
-            aria-label="শোরুমের লোকেশন দেখুন"
+            className="flex h-[48px] flex-1 flex-col items-center justify-center rounded-lg border border-neutral-700 bg-brand-slate-surface text-[11px] font-bold text-neutral-300 transition-colors hover:text-white"
+            aria-label={t("শোরুমের লোকেশন দেখুন", "View Showroom Location")}
           >
-            <span>📍 শোরুম</span>
+            <span className="text-sm leading-none">📍</span>
+            <span className="mt-0.5">{t(tf.showroom.bn, tf.showroom.en)}</span>
           </a>
         </div>
       </aside>
@@ -51,13 +94,13 @@ export default function FloatingActionBar() {
       {/* Desktop Floating WhatsApp Button & Incoming Message Bubble (Desktop Only) */}
       <aside
         className="fixed bottom-8 right-8 z-40 hidden lg:flex flex-col items-end gap-2.5 pointer-events-none"
-        aria-label="ডেস্কটপ দ্রুত যোগাযোগ"
+        aria-label={t("ডেস্কটপ দ্রুত যোগাযোগ", "Desktop Quick Contact")}
       >
-        {/* Realistic Incoming WhatsApp Message Bubble */}
-        {!bubbleDismissed && (
-          <div className="pointer-events-auto relative max-w-[285px] animate-bubble-float transition-all duration-300">
+        {/* Incoming WhatsApp Message Bubble */}
+        {isBubbleVisible && (
+          <div className="pointer-events-auto relative max-w-[290px] animate-bubble-float transition-all duration-300">
             <div className="relative rounded-2xl rounded-br-xs border border-neutral-200/90 bg-white/98 p-3.5 shadow-2xl backdrop-blur-md">
-              {/* Header inside Bubble: Brand Name & Online Status */}
+              {/* Header inside Bubble */}
               <div className="flex items-center justify-between pb-2 border-b border-neutral-100 mb-2">
                 <div className="flex items-center gap-2">
                   <div className="relative flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-accent-whatsapp text-white shadow-xs">
@@ -69,82 +112,66 @@ export default function FloatingActionBar() {
                       Heaven Furniture Mart
                     </p>
                     <p className="text-[10px] text-emerald-600 font-medium leading-none mt-0.5">
-                      অনলাইন • সরাসরি সাপোর্ট
+                      {t("অনলাইন • সরাসরি সাপোর্ট", "Online • Live Support")}
                     </p>
                   </div>
                 </div>
 
-                {/* Dismiss button */}
                 <button
                   type="button"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    setBubbleDismissed(true);
-                  }}
+                  onClick={() => setBubbleDismissed(true)}
                   className="flex h-5 w-5 items-center justify-center rounded-full text-neutral-400 hover:bg-neutral-100 hover:text-neutral-700 transition-colors cursor-pointer text-xs"
-                  aria-label="মেসেজ বন্ধ করুন"
-                  title="বন্ধ করুন"
+                  aria-label="Close message"
                 >
                   ✕
                 </button>
               </div>
 
-              {/* Message text with link */}
+              {/* Message Body */}
               <a
                 href={BRAND_CONFIG.contact.whatsAppUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="block group cursor-pointer"
+                className="block text-xs font-medium text-text-primary-dark hover:text-accent-whatsapp-dark transition-colors leading-relaxed group"
               >
-                <p className="text-xs text-text-primary-dark font-medium leading-relaxed group-hover:text-accent-whatsapp-dark transition-colors">
-                  আসসালামু আলাইকুম! কোনো ফার্নিচারের দাম বা সাইজ জানতে চান? সরাসরি WhatsApp-এ মেসেজ দিন 👋
+                <p>
+                  {t(tf.bubblePrompt.bn, tf.bubblePrompt.en)}
                 </p>
-
-                {/* Timestamp & WhatsApp Blue Double Ticks */}
-                <div className="mt-2 flex items-center justify-end gap-1 text-[10px] text-neutral-400">
-                  <span>এখনই</span>
-                  <span className="font-bold text-sky-500 tracking-tighter" aria-label="দেখা হয়েছে">
-                    ✓✓
-                  </span>
-                </div>
+                <span className="mt-2 inline-flex items-center gap-1 text-[11px] font-bold text-accent-whatsapp-dark group-hover:underline">
+                  <span>{t("WhatsApp এ মেসেজ করুন", "Chat on WhatsApp")}</span>
+                  <span>→</span>
+                </span>
               </a>
 
-              {/* Chat Bubble Tail pointing directly to the WhatsApp circle button below */}
-              <div
-                className="absolute -bottom-2 right-6 h-0 w-0 border-x-8 border-t-8 border-x-transparent border-t-white drop-shadow-sm"
-                aria-hidden="true"
-              />
+              {/* Subtle Pointer Tail */}
+              <div className="absolute -bottom-2 right-5 h-3 w-3 rotate-45 border-r border-b border-neutral-200/90 bg-white" />
             </div>
           </div>
         )}
 
-        {/* Circular Floating WhatsApp Button (Only Icon, No Text, Looping Radar Pulse) */}
-        <div className="pointer-events-auto relative flex items-center justify-center">
-          {/* Looping Radar Pulse Rings */}
-          <span
-            className="pointer-events-none absolute h-16 w-16 rounded-full bg-accent-whatsapp/40 animate-radar"
-            aria-hidden="true"
-          />
-          <span
-            className="pointer-events-none absolute h-16 w-16 rounded-full bg-accent-whatsapp/25 animate-radar [animation-delay:1.3s]"
-            aria-hidden="true"
-          />
+        {/* Floating WhatsApp Action Button */}
+        <div className="pointer-events-auto flex items-center gap-3">
+          {/* Request Quote Floating Pill Button */}
+          <button
+            type="button"
+            onClick={() => openQuoteModal()}
+            className="flex items-center gap-1.5 rounded-full bg-brand-slate-deep px-4 py-2.5 text-xs font-bold text-accent-brass border border-accent-brass/40 shadow-xl hover:bg-brand-slate-surface transition-all cursor-pointer"
+          >
+            <span>📋 {t("কোটেশন রিকোয়েস্ট", "Request Quote")}</span>
+          </button>
 
-          {/* Main Circular Button */}
+          {/* Floating WhatsApp Button */}
           <a
             href={BRAND_CONFIG.contact.whatsAppUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="group relative flex h-16 w-16 items-center justify-center rounded-full bg-accent-whatsapp text-white shadow-2xl transition-all duration-300 hover:scale-110 hover:bg-accent-whatsapp-hover hover:shadow-emerald-500/40 active:scale-95 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-accent-whatsapp/50 cursor-pointer"
-            aria-label="WhatsApp এ সরাসরি কথা বলুন"
+            className="relative flex h-14 w-14 items-center justify-center rounded-full bg-accent-whatsapp text-brand-slate-deep shadow-2xl transition-all duration-300 hover:scale-108 hover:bg-accent-whatsapp-hover active:scale-95 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-accent-whatsapp/50 group"
+            aria-label="WhatsApp Support"
           >
-            <WhatsAppIcon size={34} className="transition-transform duration-300 group-hover:rotate-6" />
-
-            {/* Unread Message Count "1" Badge with Ping */}
-            <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-red-600 text-[11px] font-extrabold text-white shadow-md ring-2 ring-white">
-              1
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-red-400 opacity-60 pointer-events-none" />
+            <WhatsAppIcon size={28} className="transition-transform group-hover:scale-110" />
+            <span className="absolute -top-1 -right-1 flex h-4 w-4">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
+              <span className="relative inline-flex h-4 w-4 rounded-full bg-emerald-500 border-2 border-white" />
             </span>
           </a>
         </div>

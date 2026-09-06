@@ -62,6 +62,7 @@
 
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: 5.5rem;
   width: 100%;
   max-width: 100%;
 }
@@ -93,6 +94,32 @@ textarea,
 ::selection {
   background-color: rgba(197, 168, 105, 0.25);
   color: #142420;
+}
+
+/* Custom Thin Scrollbar matching brand accent brass */
+.scrollbar-thin-brass {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(197, 168, 105, 0.45) rgba(0, 0, 0, 0.03);
+}
+
+.scrollbar-thin-brass::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+.scrollbar-thin-brass::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.03);
+  border-radius: 9999px;
+}
+
+.scrollbar-thin-brass::-webkit-scrollbar-thumb {
+  background: rgba(197, 168, 105, 0.5);
+  border-radius: 9999px;
+  transition: background-color 0.2s ease;
+}
+
+.scrollbar-thin-brass::-webkit-scrollbar-thumb:hover {
+  background: rgba(197, 168, 105, 0.85);
 }
 
 /* Safe area support for iOS devices with home bar */
@@ -138,6 +165,60 @@ textarea,
 .animate-bubble-float {
   animation: bubbleFloat 3.2s ease-in-out infinite;
 }
+
+/* Smooth scroll reveal animation utilities */
+.reveal-on-scroll {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1), transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+.reveal-on-scroll.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.reveal-fade {
+  opacity: 0;
+  transition: opacity 0.8s ease-out;
+  will-change: opacity;
+}
+
+.reveal-fade.is-visible {
+  opacity: 1;
+}
+
+.reveal-slide-left {
+  opacity: 0;
+  transform: translateX(-24px);
+  transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1), transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+.reveal-slide-left.is-visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.reveal-slide-right {
+  opacity: 0;
+  transform: translateX(24px);
+  transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1), transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+.reveal-slide-right.is-visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Stagger transition delay helpers */
+.delay-75 { transition-delay: 75ms; }
+.delay-150 { transition-delay: 150ms; }
+.delay-225 { transition-delay: 225ms; }
+.delay-300 { transition-delay: 300ms; }
+.delay-400 { transition-delay: 400ms; }
 
 /* Strict prefers-reduced-motion compliance */
 @media (prefers-reduced-motion: reduce) {

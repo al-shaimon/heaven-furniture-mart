@@ -1,7 +1,6 @@
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import CuratedSpaces from "@/components/CuratedSpaces";
-import FurnitureTourSlider from "@/components/FurnitureTourSlider";
 import BespokeProcess from "@/components/BespokeProcess";
 import ShowroomMedia from "@/components/ShowroomMedia";
 import Showroom from "@/components/Showroom";
@@ -16,7 +15,6 @@ export default function Home() {
       <Navbar />
       <main id="main-content" className="flex-1 pb-16 md:pb-0">
         <Hero />
-        <FurnitureTourSlider />
         <CuratedSpaces />
         <BespokeProcess />
         <ShowroomMedia />

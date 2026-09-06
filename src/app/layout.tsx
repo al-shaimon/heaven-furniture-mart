@@ -3,6 +3,10 @@ import { Playfair_Display, Plus_Jakarta_Sans, Noto_Sans_Bengali } from "next/fon
 import "./globals.css";
 
 import JsonLd from "@/components/JsonLd";
+import SmoothScrollProvider from "@/components/SmoothScrollProvider";
+import { LanguageProvider } from "@/context/LanguageContext";
+import { QuoteModalProvider } from "@/context/QuoteModalContext";
+import RequestQuoteModal from "@/components/RequestQuoteModal";
 
 const playfair = Playfair_Display({
   variable: "--font-playfair",
@@ -27,7 +31,7 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://heavenfurnituremart.com"),
   title: "হেভেন ফার্নিচার মার্ট | Heaven Furniture Mart — আগ্রাবাদ, চট্টগ্রাম",
   description:
-    "আগ্রাবাদ এক্সেস রোড, চট্টগ্রাম। হোম ও অফিস ফার্নিচার এবং আপনার ঘরের নির্দিষ্ট মাপে কাস্টম ফার্নিচার তৈরির বিশ্বস্ত ঠিকানা। সরাসরি কল: 01960-481983।",
+    "আগ্রাবাদ এক্সেস রোড, চট্টগ্রাম। লিভিং, বেডরুম ও ডাইনিং ফার্নিচার এবং আপনার ঘরের নির্দিষ্ট মাপে কাস্টম ফার্নিচার তৈরির বিশ্বস্ত ঠিকানা। সরাসরি কল: 01960-481983।",
   keywords: [
     "Heaven Furniture Mart",
     "হেভেন ফার্নিচার মার্ট",
@@ -38,7 +42,7 @@ export const metadata: Metadata = {
     "Agrabad furniture showroom",
     "সোফা সেট চট্টগ্রাম",
     "ডাইনিং টেবিল চট্টগ্রাম",
-    "অফিস ফার্নিচার",
+    "বেডরুম খাট চট্টগ্রাম",
   ],
   alternates: {
     canonical: "/",
@@ -46,7 +50,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "হেভেন ফার্নিচার মার্ট — আপনার জায়গার জন্য, আপনার পছন্দের ফার্নিচার।",
     description:
-      "হোম ও অফিস ফার্নিচার এবং আপনার ঘরের নির্দিষ্ট মাপে কাস্টমাইজেশন। শোরুম: আগ্রাবাদ এক্সেস রোড, চট্টগ্রাম।",
+      "লিভিং, বেডরুম ও ডাইনিং ফার্নিচার এবং আপনার ঘরের নির্দিষ্ট মাপে কাস্টমাইজেশন। শোরুম: আগ্রাবাদ এক্সেস রোড, চট্টগ্রাম।",
     url: "https://heavenfurnituremart.com",
     siteName: "Heaven Furniture Mart",
     locale: "bn_BD",
@@ -64,7 +68,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "হেভেন ফার্নিচার মার্ট | Heaven Furniture Mart",
     description:
-      "হোম ও অফিস ফার্নিচার এবং কাস্টম ফার্নিচার। আগ্রাবাদ এক্সেস রোড, চট্টগ্রাম।",
+      "লিভিং, বেডরুম, ডাইনিং ও কাস্টম ফার্নিচার। আগ্রাবাদ এক্সেস রোড, চট্টগ্রাম।",
     images: ["/assets/hero/heaven-classic-living-hero.webp"],
   },
   icons: {
@@ -91,14 +95,20 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       className={`${playfair.variable} ${jakarta.variable} ${bengali.variable} antialiased notranslate`}
     >
       <body className="min-h-screen flex flex-col bg-surface-ecru-light text-text-primary-dark">
-        <JsonLd />
-        <a
-          href="#main-content"
-          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:rounded-sm focus:bg-brand-slate-deep focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-white focus:shadow-lg focus:outline-none focus:ring-2 focus:ring-accent-whatsapp"
-        >
-          মূল কন্টেন্টে যান (Skip to main content)
-        </a>
-        {children}
+        <LanguageProvider>
+          <QuoteModalProvider>
+            <JsonLd />
+            <SmoothScrollProvider />
+            <a
+              href="#main-content"
+              className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:rounded-sm focus:bg-brand-slate-deep focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-white focus:shadow-lg focus:outline-none focus:ring-2 focus:ring-accent-whatsapp"
+            >
+              মূল কন্টেন্টে যান (Skip to main content)
+            </a>
+            {children}
+            <RequestQuoteModal />
+          </QuoteModalProvider>
+        </LanguageProvider>
       </body>
     </html>
   );
