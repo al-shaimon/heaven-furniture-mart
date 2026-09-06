@@ -7,6 +7,7 @@ import SmoothScrollProvider from "@/components/SmoothScrollProvider";
 import { LanguageProvider } from "@/context/LanguageContext";
 import { QuoteModalProvider } from "@/context/QuoteModalContext";
 import RequestQuoteModal from "@/components/RequestQuoteModal";
+import { Analytics } from "@vercel/analytics/next";
 
 const playfair = Playfair_Display({
   variable: "--font-playfair",
@@ -121,6 +122,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <RequestQuoteModal />
           </QuoteModalProvider>
         </LanguageProvider>
+        <Analytics />
       </body>
     </html>
   );
