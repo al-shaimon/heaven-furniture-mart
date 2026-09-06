@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import { BRAND_CONFIG, CRAFT_VIDEOS, CraftVideoItem } from "@/content/brand";
 import { TRANSLATIONS } from "@/content/translations";
 import { useLanguage } from "@/context/LanguageContext";
+import { FacebookIcon, YouTubeIcon, InstagramIcon } from "@/components/icons";
 
 interface AutoPlayVideoProps {
   src: string;
@@ -274,7 +275,7 @@ export default function ShowroomMedia() {
         </div>
 
         {/* Bottom Showroom Action & Official Social Links */}
-        <div className="mt-10 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 rounded-xl border border-brand-slate-border bg-brand-slate-surface p-5 sm:p-6">
+        <div className="mt-10 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 rounded-xl border border-brand-slate-border bg-brand-slate-surface p-4 sm:p-6">
           <div>
             <h3 className="text-base sm:text-lg font-bold text-white">
               {t("ভালো লাগলে সরাসরি আগ্রাবাদ শোরুমে এসে দেখে যান", "Experience It Firsthand at Our Agrabad Showroom")}
@@ -288,38 +289,47 @@ export default function ShowroomMedia() {
             {/* Primary Action Button */}
             <a
               href="#showroom"
-              className="inline-flex h-11 items-center justify-center rounded-xl bg-accent-brass px-5 text-xs sm:text-sm font-bold text-brand-slate-deep hover:bg-accent-brass-hover transition-colors w-full sm:w-auto text-center"
+              className="inline-flex h-11 items-center justify-center rounded-xl bg-accent-brass px-4 sm:px-5 text-xs sm:text-sm font-bold text-brand-slate-deep hover:bg-accent-brass-hover transition-colors w-full sm:w-auto text-center shadow-xs"
             >
               📍 {t("শোরুমের ঠিকানা ও ম্যাপ", "Showroom Address & Map")}
             </a>
 
-            {/* Social Channels: Grouped together on the 2nd line on mobile */}
-            <div className="flex items-center gap-2 sm:gap-2.5 w-full sm:w-auto">
+            {/* Social Channels: Logo-only on extra small devices (<380px), Logo + Name on larger screens */}
+            <div className="grid grid-cols-3 gap-2 w-full sm:flex sm:w-auto sm:gap-2.5">
               <a
                 href={BRAND_CONFIG.social.facebook.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex-1 sm:flex-initial inline-flex h-11 items-center justify-center rounded-xl border border-neutral-600 bg-brand-slate-deep px-3 sm:px-4 text-xs font-semibold text-neutral-200 hover:text-white hover:border-neutral-400 transition-colors text-center"
+                aria-label="Facebook"
+                title="Facebook"
+                className="inline-flex h-11 items-center justify-center gap-1.5 rounded-xl border border-neutral-700 bg-brand-slate-deep px-2 sm:px-4 text-xs font-semibold text-neutral-200 hover:text-white hover:border-[#1877F2] hover:bg-[#1877F2]/10 transition-all"
               >
-                Facebook ↗
+                <FacebookIcon size={18} className="text-[#1877F2] shrink-0" />
+                <span className="hidden min-[380px]:inline">Facebook</span>
               </a>
 
               <a
                 href={BRAND_CONFIG.social.youtube.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex-1 sm:flex-initial inline-flex h-11 items-center justify-center rounded-xl border border-neutral-600 bg-brand-slate-deep px-3 sm:px-4 text-xs font-semibold text-neutral-200 hover:text-white hover:border-neutral-400 transition-colors text-center"
+                aria-label="YouTube"
+                title="YouTube"
+                className="inline-flex h-11 items-center justify-center gap-1.5 rounded-xl border border-neutral-700 bg-brand-slate-deep px-2 sm:px-4 text-xs font-semibold text-neutral-200 hover:text-white hover:border-[#FF0000] hover:bg-[#FF0000]/10 transition-all"
               >
-                YouTube ↗
+                <YouTubeIcon size={18} className="text-[#FF0000] shrink-0" />
+                <span className="hidden min-[380px]:inline">YouTube</span>
               </a>
 
               <a
                 href={BRAND_CONFIG.social.instagram.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex-1 sm:flex-initial inline-flex h-11 items-center justify-center rounded-xl border border-neutral-600 bg-brand-slate-deep px-3 sm:px-4 text-xs font-semibold text-neutral-200 hover:text-white hover:border-neutral-400 transition-colors text-center"
+                aria-label="Instagram"
+                title="Instagram"
+                className="inline-flex h-11 items-center justify-center gap-1.5 rounded-xl border border-neutral-700 bg-brand-slate-deep px-2 sm:px-4 text-xs font-semibold text-neutral-200 hover:text-white hover:border-[#E4405F] hover:bg-[#E4405F]/10 transition-all"
               >
-                Instagram ↗
+                <InstagramIcon size={18} className="text-[#E4405F] shrink-0" />
+                <span className="hidden min-[380px]:inline">Instagram</span>
               </a>
             </div>
           </div>
