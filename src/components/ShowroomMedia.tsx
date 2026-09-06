@@ -284,40 +284,44 @@ export default function ShowroomMedia() {
             </p>
           </div>
 
-          <div className="flex flex-wrap items-center gap-3 shrink-0">
+          <div className="flex flex-col sm:flex-row sm:items-center gap-3 shrink-0 w-full sm:w-auto">
+            {/* Primary Action Button */}
             <a
               href="#showroom"
-              className="inline-flex h-11 items-center justify-center rounded-xl bg-accent-brass px-5 text-xs sm:text-sm font-bold text-brand-slate-deep hover:bg-accent-brass-hover transition-colors"
+              className="inline-flex h-11 items-center justify-center rounded-xl bg-accent-brass px-5 text-xs sm:text-sm font-bold text-brand-slate-deep hover:bg-accent-brass-hover transition-colors w-full sm:w-auto text-center"
             >
               📍 {t("শোরুমের ঠিকানা ও ম্যাপ", "Showroom Address & Map")}
             </a>
 
-            <a
-              href={BRAND_CONFIG.social.facebook.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex h-11 items-center justify-center rounded-xl border border-neutral-600 bg-brand-slate-deep px-4 text-xs font-semibold text-neutral-200 hover:text-white hover:border-neutral-400 transition-colors"
-            >
-              Facebook ↗
-            </a>
+            {/* Social Channels: Grouped together on the 2nd line on mobile */}
+            <div className="flex items-center gap-2 sm:gap-2.5 w-full sm:w-auto">
+              <a
+                href={BRAND_CONFIG.social.facebook.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex-1 sm:flex-initial inline-flex h-11 items-center justify-center rounded-xl border border-neutral-600 bg-brand-slate-deep px-3 sm:px-4 text-xs font-semibold text-neutral-200 hover:text-white hover:border-neutral-400 transition-colors text-center"
+              >
+                Facebook ↗
+              </a>
 
-            <a
-              href={BRAND_CONFIG.social.youtube.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex h-11 items-center justify-center rounded-xl border border-neutral-600 bg-brand-slate-deep px-4 text-xs font-semibold text-neutral-200 hover:text-white hover:border-neutral-400 transition-colors"
-            >
-              YouTube ↗
-            </a>
+              <a
+                href={BRAND_CONFIG.social.youtube.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex-1 sm:flex-initial inline-flex h-11 items-center justify-center rounded-xl border border-neutral-600 bg-brand-slate-deep px-3 sm:px-4 text-xs font-semibold text-neutral-200 hover:text-white hover:border-neutral-400 transition-colors text-center"
+              >
+                YouTube ↗
+              </a>
 
-            <a
-              href={BRAND_CONFIG.social.instagram.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex h-11 items-center justify-center rounded-xl border border-neutral-600 bg-brand-slate-deep px-4 text-xs font-semibold text-neutral-200 hover:text-white hover:border-neutral-400 transition-colors"
-            >
-              Instagram ↗
-            </a>
+              <a
+                href={BRAND_CONFIG.social.instagram.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex-1 sm:flex-initial inline-flex h-11 items-center justify-center rounded-xl border border-neutral-600 bg-brand-slate-deep px-3 sm:px-4 text-xs font-semibold text-neutral-200 hover:text-white hover:border-neutral-400 transition-colors text-center"
+              >
+                Instagram ↗
+              </a>
+            </div>
           </div>
         </div>
       </div>
