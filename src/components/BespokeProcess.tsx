@@ -76,7 +76,7 @@ export default function BespokeProcess() {
             ))}
 
             {/* Custom Furniture CTAs: Dual WhatsApp + Modal */}
-            <div className="pt-3 flex flex-col sm:flex-row gap-3">
+            <div className="pt-3 flex flex-col sm:flex-row gap-3 w-full">
               <button
                 type="button"
                 onClick={() =>
@@ -85,7 +85,7 @@ export default function BespokeProcess() {
                     defaultProductTitle: t("কাস্টম ফার্নিচার রিকোয়েস্ট", "Custom Furniture Request"),
                   })
                 }
-                className="inline-flex h-[50px] items-center justify-center gap-2 rounded-xl bg-brand-slate-deep px-6 text-sm sm:text-base font-bold text-white shadow-md transition-all hover:bg-brand-slate-surface active:scale-[0.99] cursor-pointer border border-neutral-700"
+                className="w-full sm:w-auto inline-flex h-[50px] items-center justify-center gap-2 rounded-xl bg-brand-slate-deep px-6 text-sm sm:text-base font-bold text-white shadow-md transition-all hover:bg-brand-slate-surface active:scale-[0.99] cursor-pointer border border-neutral-700"
               >
                 <span>📋 {t(tb.ctaBespoke.bn, tb.ctaBespoke.en)}</span>
               </button>
@@ -93,12 +93,12 @@ export default function BespokeProcess() {
               <a
                 href={`https://wa.me/8801960481983?text=${encodeURIComponent(
                   lang === "en"
-                    ? "Hello, I would like to order bespoke custom furniture crafted to my room dimensions. How do I get started?"
-                    : "আসসালামু আলাইকুম, আমি আমার জায়গার মাপে কাস্টম ফার্নিচার তৈরি করাতে চাই। কীভাবে শুরু করব?"
+                    ? "Hello Heaven Furniture Mart, I would like to discuss custom bespoke furniture dimensions and wood requirements."
+                    : "আসসালামু আলাইকুম হেভেন ফার্নিচার মার্ট, আমি কাস্টম মাপের ফার্নিচার ও কাঠের বিষয়ে বিস্তারিত কথা বলতে চাই।"
                 )}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex h-[50px] items-center justify-center gap-2 rounded-xl bg-accent-whatsapp px-6 text-sm sm:text-base font-bold text-brand-slate-deep shadow-xs transition-colors hover:bg-accent-whatsapp-hover active:scale-[0.99]"
+                className="w-full sm:w-auto inline-flex h-[50px] items-center justify-center gap-2 rounded-xl bg-accent-whatsapp px-6 text-sm sm:text-base font-bold text-brand-slate-deep shadow-md transition-all hover:bg-accent-whatsapp-hover active:scale-[0.99]"
                 aria-label="WhatsApp"
               >
                 <WhatsAppIcon size={19} className="shrink-0" />

@@ -185,7 +185,8 @@ export default function Navbar() {
       {/* ================= FULLSCREEN MOBILE DRAWER ================= */}
       {mobileOpen && (
         <div
-          className="fixed inset-0 z-[100] flex flex-col bg-brand-slate-deep text-white lg:hidden overflow-y-auto"
+          data-lenis-prevent
+          className="fixed inset-0 z-[100] flex flex-col bg-brand-slate-deep text-white lg:hidden overflow-y-auto overscroll-contain touch-pan-y"
           role="dialog"
           aria-modal="true"
           aria-label={t("মোবাইল নেভিগেশন মেনু", "Mobile Navigation Menu")}

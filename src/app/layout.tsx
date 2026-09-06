@@ -74,9 +74,13 @@ export const metadata: Metadata = {
   icons: {
     icon: [
       { url: "/favicon.ico", sizes: "any" },
+      { url: "/icon.png", type: "image/png" },
       { url: "/favicon.png", type: "image/png" },
     ],
-    apple: "/apple-icon.png",
+    shortcut: "/favicon.ico",
+    apple: [
+      { url: "/apple-icon.png", sizes: "180x180", type: "image/png" },
+    ],
   },
   robots: {
     index: true,
@@ -94,6 +98,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       translate="no"
       className={`${playfair.variable} ${jakarta.variable} ${bengali.variable} antialiased notranslate`}
     >
+      <head>
+        <script
+          id="hfm-lang-init"
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var s=localStorage.getItem('hfm_language');if(!s){var m=document.cookie.match(/(?:^|; )hfm_language=([^;]*)/);if(m)s=decodeURIComponent(m[1]);}if(s==='en'){document.documentElement.lang='en';document.title='Heaven Furniture Mart | Agrabad, Chattogram — Premium Solid Wood Furniture';}else if(s==='bn'){document.documentElement.lang='bn';document.title='হেভেন ফার্নিচার মার্ট | Heaven Furniture Mart — আগ্রাবাদ, চট্টগ্রাম';}}catch(e){}})();`,
+          }}
+        />
+      </head>
       <body className="min-h-screen flex flex-col bg-surface-ecru-light text-text-primary-dark">
         <LanguageProvider>
           <QuoteModalProvider>

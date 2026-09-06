@@ -18,24 +18,77 @@ export default function SmoothScrollProvider() {
       return;
     }
 
-    // --- Lenis Smooth Scrolling ---
-    const lenis = new Lenis({
-      duration: 1.15,
-      easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      touchMultiplier: 1.8,
-      infinite: false,
-      autoResize: true,
-    });
-    lenisRef.current = lenis;
-    if (typeof window !== "undefined") {
-      (window as unknown as { __lenis?: Lenis }).__lenis = lenis;
-    }
+    // Detect if device is touch-only (mobile phones & tablets without mouse/trackpad)
+    const isTouchOnly =
+      window.matchMedia("(pointer: coarse)").matches &&
+      !window.matchMedia("(pointer: fine)").matches;
 
-    function raf(time: number) {
-      lenis.raf(time);
-      requestAnimationFrame(raf);
+    // --- Smooth anchor link handler ---
+    const handleAnchorClick = (e: MouseEvent) => {
+      const anchor = (e.target as HTMLElement).closest("a");
+      if (!anchor) return;
+
+      const href = anchor.getAttribute("href");
+      if (href && href.startsWith("#") && href.length > 1) {
+        const targetElement = document.querySelector(href);
+        if (targetElement) {
+          e.preventDefault();
+          if (lenisRef.current) {
+            lenisRef.current.scrollTo(targetElement as HTMLElement, {
+              offset: -88,
+              duration: 1.0,
+            });
+          } else {
+            const targetPosition =
+              (targetElement as HTMLElement).getBoundingClientRect().top + window.scrollY;
+            window.scrollTo({
+              top: Math.max(0, targetPosition - 88),
+              behavior: "smooth",
+            });
+          }
+          window.history.pushState(null, "", href);
+        }
+      }
+    };
+
+    document.addEventListener("click", handleAnchorClick);
+
+    // --- Desktop Smooth Scrolling ---
+    // On pure touch devices (smartphones/tablets), we NEVER hijack touch gestures.
+    // Mobile OS (iOS Safari, Android Chrome) provides hardware-accelerated 60/120Hz
+    // compositor momentum scrolling with zero input lag.
+    let lenis: Lenis | null = null;
+    let rafId: number | null = null;
+
+    if (!isTouchOnly) {
+      lenis = new Lenis({
+        duration: 1.0,
+        easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        smoothWheel: true,
+        syncTouch: false, // NEVER hijack mobile touch events!
+        autoResize: true,
+        prevent: (node) => {
+          return (
+            node instanceof HTMLElement &&
+            (node.hasAttribute("data-lenis-prevent") ||
+              Boolean(node.closest("[data-lenis-prevent]")) ||
+              Boolean(node.closest("[role='dialog']")))
+          );
+        },
+      });
+      lenisRef.current = lenis;
+      if (typeof window !== "undefined") {
+        (window as unknown as { __lenis?: Lenis }).__lenis = lenis;
+      }
+
+      const raf = (time: number) => {
+        lenis?.raf(time);
+        rafId = requestAnimationFrame(raf);
+      };
+      rafId = requestAnimationFrame(raf);
+    } else {
+      document.documentElement.style.scrollBehavior = "smooth";
     }
-    requestAnimationFrame(raf);
 
     // --- IntersectionObserver for scroll reveal ---
     const observer = new IntersectionObserver(
@@ -47,7 +100,7 @@ export default function SmoothScrollProvider() {
           }
         });
       },
-      { threshold: 0.08, rootMargin: "0px 0px -40px 0px" }
+      { threshold: 0.05, rootMargin: "0px 0px -20px 0px" }
     );
 
     const observeElements = () => {
@@ -59,42 +112,32 @@ export default function SmoothScrollProvider() {
 
     observeElements();
 
-    // Re-observe on dynamic DOM changes
-    const mutationObserver = new MutationObserver(() => observeElements());
+    // Debounced observer for dynamic DOM changes (avoids thrashing main thread during scroll)
+    let debounceTimer: ReturnType<typeof setTimeout> | null = null;
+    const mutationObserver = new MutationObserver(() => {
+      if (debounceTimer) clearTimeout(debounceTimer);
+      debounceTimer = setTimeout(() => {
+        observeElements();
+      }, 250);
+    });
     mutationObserver.observe(document.body, { childList: true, subtree: true });
-
-    // --- Smooth anchor link handler (through Lenis) ---
-    const handleAnchorClick = (e: MouseEvent) => {
-      const anchor = (e.target as HTMLElement).closest("a");
-      if (!anchor) return;
-
-      const href = anchor.getAttribute("href");
-      if (href && href.startsWith("#") && href.length > 1) {
-        const targetElement = document.querySelector(href);
-        if (targetElement) {
-          e.preventDefault();
-          lenis.scrollTo(targetElement as HTMLElement, {
-            offset: -88, // matches scroll-padding-top for navbar
-            duration: 1.2,
-          });
-          window.history.pushState(null, "", href);
-        }
-      }
-    };
-
-    document.addEventListener("click", handleAnchorClick);
 
     return () => {
       observer.disconnect();
       mutationObserver.disconnect();
+      if (debounceTimer) clearTimeout(debounceTimer);
       document.removeEventListener("click", handleAnchorClick);
-      lenis.destroy();
-      lenisRef.current = null;
-      if (typeof window !== "undefined") {
-        delete (window as unknown as { __lenis?: Lenis }).__lenis;
+      if (rafId) cancelAnimationFrame(rafId);
+      if (lenis) {
+        lenis.destroy();
+        lenisRef.current = null;
+        if (typeof window !== "undefined") {
+          delete (window as unknown as { __lenis?: Lenis }).__lenis;
+        }
       }
     };
   }, []);
 
   return null;
 }
+

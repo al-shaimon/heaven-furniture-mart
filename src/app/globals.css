@@ -75,8 +75,18 @@ html.lenis, html.lenis body {
   scroll-behavior: auto !important;
 }
 
-.lenis.lenis-smooth [data-lenis-prevent] {
+/* Enable native smooth scrolling on mobile devices */
+@media (pointer: coarse), (max-width: 768px) {
+  html {
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+[data-lenis-prevent],
+[role="dialog"] {
   overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
 }
 
 .lenis.lenis-stopped {
@@ -189,9 +199,8 @@ textarea,
 /* Smooth scroll reveal animation utilities */
 .reveal-on-scroll {
   opacity: 0;
-  transform: translateY(24px);
-  transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1), transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
-  will-change: opacity, transform;
+  transform: translateY(20px);
+  transition: opacity 0.55s cubic-bezier(0.16, 1, 0.3, 1), transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .reveal-on-scroll.is-visible {
@@ -201,8 +210,7 @@ textarea,
 
 .reveal-fade {
   opacity: 0;
-  transition: opacity 0.8s ease-out;
-  will-change: opacity;
+  transition: opacity 0.55s ease-out;
 }
 
 .reveal-fade.is-visible {
@@ -211,9 +219,8 @@ textarea,
 
 .reveal-slide-left {
   opacity: 0;
-  transform: translateX(-24px);
-  transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1), transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
-  will-change: opacity, transform;
+  transform: translateX(-20px);
+  transition: opacity 0.55s cubic-bezier(0.16, 1, 0.3, 1), transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .reveal-slide-left.is-visible {
@@ -223,14 +230,29 @@ textarea,
 
 .reveal-slide-right {
   opacity: 0;
-  transform: translateX(24px);
-  transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1), transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
-  will-change: opacity, transform;
+  transform: translateX(20px);
+  transition: opacity 0.55s cubic-bezier(0.16, 1, 0.3, 1), transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .reveal-slide-right.is-visible {
   opacity: 1;
   transform: translateX(0);
+}
+
+/* Lightweight reveals on mobile for instant 120Hz/60Hz compositor scrolling */
+@media (max-width: 768px) {
+  .reveal-on-scroll {
+    transform: translateY(12px);
+    transition-duration: 0.35s;
+  }
+  .reveal-slide-left {
+    transform: translateX(-12px);
+    transition-duration: 0.35s;
+  }
+  .reveal-slide-right {
+    transform: translateX(12px);
+    transition-duration: 0.35s;
+  }
 }
 
 /* Stagger transition delay helpers */
@@ -254,3 +276,19 @@ textarea,
     transition-duration: 0.001ms !important;
   }
 }
+
+/* YARL Professional Lightbox Brand Styling */
+.yarl__root {
+  --yarl__color_backdrop: rgba(10, 16, 13, 0.98);
+  --yarl__color_button: #faf8f5;
+  --yarl__color_button_active: #c5a869;
+  --yarl__thumbnails_thumbnail_border: transparent;
+  --yarl__thumbnails_thumbnail_active_border: #c5a869;
+  --yarl__thumbnails_container_background_color: rgba(14, 24, 21, 0.95);
+  z-index: 9999 !important;
+}
+
+.yarl__slide_image {
+  border-radius: 4px;
+}
+

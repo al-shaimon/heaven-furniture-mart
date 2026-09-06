@@ -188,18 +188,19 @@ export default function ConsultationCTA() {
                       </select>
                     </div>
 
-                    <div className="pt-2 flex flex-col sm:flex-row gap-3">
+                    <div className="pt-2 flex flex-col sm:flex-row gap-3 w-full">
                       <button
                         type="submit"
-                        className="flex-1 h-[48px] rounded-xl bg-accent-brass px-5 text-sm sm:text-base font-bold text-brand-slate-deep transition-all hover:bg-accent-brass-dark hover:text-white cursor-pointer shadow-md"
+                        className="w-full sm:flex-1 h-[48px] flex items-center justify-center gap-2 rounded-xl bg-accent-brass px-5 text-sm sm:text-base font-bold text-brand-slate-deep transition-all hover:bg-accent-brass-dark hover:text-white cursor-pointer shadow-md"
                       >
-                        📞 {t("আমাকে কল করুন", "Request Callback")}
+                        <span className="leading-none">📞</span>
+                        <span>{t("আমাকে কল করুন", "Request Callback")}</span>
                       </button>
 
                       <button
                         type="button"
                         onClick={handleWhatsAppSend}
-                        className="flex-1 h-[48px] flex items-center justify-center gap-2 rounded-xl bg-accent-whatsapp px-5 text-sm sm:text-base font-bold text-brand-slate-deep transition-all hover:bg-accent-whatsapp-hover cursor-pointer shadow-md"
+                        className="w-full sm:flex-1 h-[48px] flex items-center justify-center gap-2 rounded-xl bg-accent-whatsapp px-5 text-sm sm:text-base font-bold text-brand-slate-deep transition-all hover:bg-accent-whatsapp-hover cursor-pointer shadow-md"
                       >
                         <WhatsAppIcon size={18} />
                         <span>WhatsApp</span>

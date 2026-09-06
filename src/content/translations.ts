@@ -91,8 +91,8 @@ export const TRANSLATIONS = {
       en: "10-Year Wood Warranty",
     },
     stat4: {
-      bn: "চট্টগ্রাম শোরুম ডিসপ্লে",
-      en: "Agrabad Showroom Display",
+      bn: "শোরুম ডিসপ্লে",
+      en: "Showroom Display",
     },
   },
 
@@ -118,8 +118,8 @@ export const TRANSLATIONS = {
       custom: { bn: "কাস্টম তৈরি ফার্নিচার", en: "Custom Made" },
     },
     showroomStatus: {
-      bn: "আগ্রাবাদ শোরুম ডিসপ্লে",
-      en: "Agrabad Showroom Display",
+      bn: "শোরুম ডিসপ্লে",
+      en: "Showroom Display",
     },
     viewDetails: {
       bn: "বিস্তারিত দেখুন",

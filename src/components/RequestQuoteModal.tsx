@@ -135,31 +135,35 @@ export default function RequestQuoteModal() {
 
   return (
     <div
-      className="fixed inset-0 z-[100] flex items-center justify-center p-3 sm:p-4 md:p-6"
+      className="fixed inset-0 z-[100] overflow-y-auto overscroll-contain"
       role="dialog"
       aria-modal="true"
       aria-labelledby="quote-modal-title"
+      data-lenis-prevent
     >
       {/* Backdrop */}
       <div
-        className="fixed inset-0 bg-brand-slate-deep/80 backdrop-blur-sm transition-opacity"
+        className="fixed inset-0 bg-brand-slate-deep/80 backdrop-blur-sm transition-opacity -z-10"
         onClick={closeQuoteModal}
       />
 
-      {/* Modal Card */}
-      <div
-        ref={modalRef}
-        className="relative w-full max-w-2xl max-h-[92vh] overflow-y-auto rounded-2xl border border-neutral-200 bg-white p-5 sm:p-7 md:p-8 shadow-2xl transition-all"
-      >
-        {/* Close Button */}
-        <button
-          type="button"
-          onClick={closeQuoteModal}
-          className="absolute top-4 right-4 z-10 flex h-9 w-9 items-center justify-center rounded-full bg-neutral-100 text-neutral-500 hover:bg-neutral-200 hover:text-brand-slate-deep transition-colors cursor-pointer"
-          aria-label={t(tq.closeBtn.bn, tq.closeBtn.en)}
+      {/* Centering & Scroll Container Wrapper */}
+      <div className="flex min-h-full items-center justify-center p-3 sm:p-4 md:p-6 py-6 sm:py-8">
+        {/* Modal Card */}
+        <div
+          ref={modalRef}
+          data-lenis-prevent
+          className="relative w-full max-w-2xl my-auto rounded-2xl border border-neutral-200 bg-white p-5 sm:p-7 md:p-8 shadow-2xl transition-all overscroll-contain touch-pan-y"
         >
-          ✕
-        </button>
+          {/* Close Button */}
+          <button
+            type="button"
+            onClick={closeQuoteModal}
+            className="absolute top-4 right-4 z-10 flex h-9 w-9 items-center justify-center rounded-full bg-neutral-100 text-neutral-500 hover:bg-neutral-200 hover:text-brand-slate-deep transition-colors cursor-pointer"
+            aria-label={t(tq.closeBtn.bn, tq.closeBtn.en)}
+          >
+            ✕
+          </button>
 
         {!isSubmitted ? (
           <div>
@@ -180,7 +184,7 @@ export default function RequestQuoteModal() {
             </div>
 
             {/* Form */}
-            <form ref={quoteFormRef} className="mt-5 space-y-4 sm:space-y-5">
+            <form ref={quoteFormRef} data-lenis-prevent className="mt-5 space-y-4 sm:space-y-5 touch-pan-y">
               {/* If prefilled from a specific product */}
               {specificItem && (
                 <div className="flex items-center justify-between rounded-lg border border-accent-brass/40 bg-surface-ecru-light/60 p-3 text-xs">
@@ -334,11 +338,11 @@ export default function RequestQuoteModal() {
               </div>
 
               {/* Dual Action Buttons */}
-              <div className="pt-2 flex flex-col sm:flex-row gap-3">
+              <div className="pt-2 flex flex-col sm:flex-row gap-3 w-full">
                 <button
                   type="button"
                   onClick={handleWhatsAppSubmit}
-                  className="flex-1 flex items-center justify-center gap-2 rounded-xl bg-accent-whatsapp py-3 px-4 text-xs sm:text-sm font-bold text-brand-slate-deep shadow-md hover:bg-accent-whatsapp-hover transition-all cursor-pointer"
+                  className="w-full sm:flex-1 flex items-center justify-center gap-2 rounded-xl bg-accent-whatsapp py-3 px-4 text-xs sm:text-sm font-bold text-brand-slate-deep shadow-md hover:bg-accent-whatsapp-hover transition-all cursor-pointer"
                 >
                   <WhatsAppIcon size={18} />
                   <span>{t(tq.btnWhatsApp.bn, tq.btnWhatsApp.en)}</span>
@@ -347,7 +351,7 @@ export default function RequestQuoteModal() {
                 <button
                   type="button"
                   onClick={handleOnlineSubmit}
-                  className="flex-1 flex items-center justify-center gap-2 rounded-xl bg-brand-slate-deep py-3 px-4 text-xs sm:text-sm font-bold text-white shadow-md hover:bg-brand-slate-surface transition-all cursor-pointer border border-neutral-700"
+                  className="w-full sm:flex-1 flex items-center justify-center gap-2 rounded-xl bg-brand-slate-deep py-3 px-4 text-xs sm:text-sm font-bold text-white shadow-md hover:bg-brand-slate-surface transition-all cursor-pointer border border-neutral-700"
                 >
                   <span>{t(tq.btnOnlineSubmit.bn, tq.btnOnlineSubmit.en)}</span>
                 </button>
@@ -397,6 +401,7 @@ export default function RequestQuoteModal() {
             </div>
           </div>
         )}
+        </div>
       </div>
     </div>
   );
